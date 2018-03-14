@@ -1,9 +1,3 @@
 h1 {
-  color: fuchsia;
-}
-
-.glitchButton {
-  position: fixed !important;
-  top: 25px;
-  right: 25px;
+  font-style: italic
 }
