@@ -4,15 +4,17 @@ This file describes your project to the community. What's your cool website abou
 
 ヽ(๏∀๏ )ﾉ
 
-## ← index.html
+## Files this website contains
+
+### ← index.html
 
 Where you'll write the content of your website. 
 
-## ← styles.css
+### ← styles.css
 
-CSS files add styling rules to your content
+CSS files add styling rules to your content.
 
-## ← script.js
+### ← script.js
 
-If you're feeling fancy you can add interactivity to your site with Javascript
+If you're feeling fancy you can add interactivity to your site with JavaScript.
 
