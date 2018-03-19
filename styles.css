@@ -1,3 +1,9 @@
+/* this CSS (cascading stylesheet) includes rules for how our webpage looks */
+
+body {
+  font-family:"Benton Sans",-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",helvetica,arial,sans-serif;
+}
+
 h1 {
   font-style: italic
 }
