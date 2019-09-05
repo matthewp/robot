@@ -3,6 +3,7 @@ import { guard, state, transition, createMachine, interpret, reduce } from './ma
 const setFirst = (ev, ctx) => ({ ...ctx, first: ev.target.value });
 const setLast = (ev, ctx) => ({ ...ctx, last: ev.target.value });
 const nothingEntered = ({ first, last }) => !first && !last;
+const somethingEntered = (ctx) => !nothingEntered(ctx);
 
 const machine = createMachine({
   waiting: state(
@@ -12,12 +13,6 @@ const machine = createMachine({
     transition('last', 'waiting',
       reduce(setLast)
     )
-  ),
-  entering: state(
-    transition('first', 'waiting',
-      guard(nothingEntered)     
-    ),
-    transition('first', )
   )
 });
 
