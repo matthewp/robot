@@ -10,12 +10,14 @@ export function assign(key, fn) {
   });
 }
 
-export function transition(from, ...args) {
-  
-  return { from, to };
+function filter(Type, arr) {
+  return arr.filter(value => Type.isPrototypeOf(value));
 }
 
-
+export function transition(from, to, ...args) {
+  let assigns = filter(assignType, args);
+  return { from, to, assigns };
+}
 
 export function state(...transitions) {
   return {
@@ -32,22 +34,31 @@ const machine = {
   }
 };
 
+function defaultContext
+
 export function createMachine(current, states) {
   return Object.create(machine, {
-    context: valueEnumerable(Function.prototype),
+    context: valueEnumerable(),
     current: valueEnumerable(current),
     states: valueEnumerable(states)
   });
 }
 
 export function send(machine, event) {
+  let eventName = event.type || event;
   let { value: state } = machine.state;
-  let newState = state.transitions[event].to;
-  let original = machine.original || machine;
-  return Object.create(original, {
-    current: { enumerable: true, value: newState },
-    original: { value: original }
-  });
+  
+  if(eventName in state.transitions) {
+    let { to, assigns } = state.transitions[eventName];
+    assigns.forEach(a => machine.context[a.key] = a.fn.call(null, event, machine.context));
+    let original = machine.original || machine;
+    return Object.create(original, {
+      current: { enumerable: true, value: to },
+      original: { value: original }
+    });
+  }
+  
+  return machine;
 }
 
 const service = {

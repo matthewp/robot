@@ -3,7 +3,7 @@ import { assign, send, state, transition, createMachine, interpret } from './mac
 const machine = createMachine('wait', {
   wait: state(
     transition('first', 'input',
-      assign('first', (ev, ctx) => ev.target.value)
+      assign('first', (ev) => ev.target.value)
     )
   ),
   input: state(
@@ -13,11 +13,8 @@ const machine = createMachine('wait', {
 
 const service = interpret(machine);
 
+const name = document.querySelector('#name');
+const firstInput = document.querySelector('[name="first"]');
+const lastInput = document.querySelector('[name="last"]');
 
-
-function render() {
-  let state = service.machine.state;
-  light.className = `state ${state.name}`;
-}
-
-render();
+firstInput.oninput = ev => service.send({ type: 'first', target: ev.target });
