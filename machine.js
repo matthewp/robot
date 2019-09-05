@@ -34,11 +34,14 @@ const machine = {
   }
 };
 
-function defaultContext
+function defaultContext() {
+  return {};
+}
 
 export function createMachine(current, states) {
+  const contextFn = defaultContext;
   return Object.create(machine, {
-    context: valueEnumerable(),
+    context: valueEnumerable(contextFn),
     current: valueEnumerable(current),
     states: valueEnumerable(states)
   });
@@ -64,9 +67,10 @@ export function send(machine, event) {
 const service = {
   send(event) {
     this.machine = send(this.machine, event);
+    this.onChange();
   }
 };
-export function interpret(machine) {
+export function interpret(machine, onChange) {
   let s = Object.create(service, {
     machine: {
       enumerable: true,
@@ -74,7 +78,8 @@ export function interpret(machine) {
       value: Object.create(machine, {
         context: valueEnumerable(machine.context())
       })
-    }
+    },
+    onChange: valueEnumerable(onChange)
   });
   s.send = s.send.bind(s);
   return s;
