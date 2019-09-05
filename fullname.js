@@ -1,12 +1,12 @@
-import { assign, send, state, transition, createMachine, interpret } from './machine.js';
+import { assign, send, state, transition, createMachine, interpret, reduce } from './machine.js';
 
 const machine = createMachine('wait', {
   wait: state(
     transition('first', 'wait',
-      assign('first', (ev) => ev.target.value)
+      reduce((ev, ctx) => ({ ...ctx, first: ev.target.value }))
     ),
     transition('last', 'wait',
-      assign('last', (ev) => ev.target.value)
+      reduce((ev, ctx) => ({ ...ctx, first: ev.target.value }))
     )
   ),
   input: state(

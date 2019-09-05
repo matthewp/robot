@@ -2,6 +2,23 @@ function valueEnumerable(value) {
   return { enumerable: true, value };
 }
 
+const actionType = {};
+export function action(fn) {
+  return Object.create(actionType, {
+    fn: valueEnumerable(fn)
+  });
+}
+
+function applyReducer(fn) {
+  return function(...args) {
+    this.context = fn.apply(this, args);
+  }
+}
+
+export function reduce(fn) {
+  return action(applyReducer(fn));
+}
+
 const assignType = {};
 export function assign(key, fn) {
   return Object.create(assignType, {
@@ -15,8 +32,9 @@ function filter(Type, arr) {
 }
 
 export function transition(from, to, ...args) {
-  let assigns = filter(assignType, args);
-  return { from, to, assigns };
+  debugger;
+  let actions = filter(actionType, args);
+  return { from, to, actions };
 }
 
 export function state(...transitions) {
@@ -52,8 +70,8 @@ export function send(machine, event) {
   let { value: state } = machine.state;
   
   if(eventName in state.transitions) {
-    let { to, assigns } = state.transitions[eventName];
-    assigns.forEach(a => machine.context[a.key] = a.fn.call(null, event, machine.context));
+    let { to, actions } = state.transitions[eventName];
+    actions.forEach(a => a.fn.call(machine, event, machine.context));
     let original = machine.original || machine;
     return Object.create(original, {
       current: { enumerable: true, value: to },
