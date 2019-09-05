@@ -10,14 +10,18 @@
     <link rel="stylesheet" href="/style.css">
     
     <!-- import the webpage's javascript file -->
-    <script src="/script.js" defer></script>
+    <script src="/main.js" type="module"></script>
   </head>  
   <body>
-    <h1>Hi there!</h1>
-    
-    <p>
-      I'm your cool new webpage. Made with <a href="https://glitch.com">Glitch</a>!
-    </p>
+    <h1>Stop light</h1>
+
+    <main>
+      <div id="light" class="state"></div>
+      <button type="button">
+        Change
+      </button>
+    </main>
+
 
     <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix -->

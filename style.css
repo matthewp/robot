@@ -9,3 +9,31 @@ h1 {
   font-style: italic;
   color: #373fff;
 }
+
+.state {
+  width: 50px;
+  height: 50px;
+  background: blue;
+}
+
+.state.red {
+  background: red;
+  color: white;
+}
+
+.state.yellow {
+  background: yellow;
+  color: black;
+}
+
+.state.green {
+  background: green;
+  color: white;
+}
+
+button {
+  margin-top: 1rem;
+  font-size: 110%;
+  border: 1px solid tomato;
+  background: transparent;
+}
