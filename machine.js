@@ -2,9 +2,20 @@ function valueEnumerable(value) {
   return { enumerable: true, value };
 }
 
-export function transition(from, to) {
+const assignType = {};
+export function assign(key, fn) {
+  return Object.create(assignType, {
+    key: valueEnumerable(key),
+    fn: valueEnumerable(fn)
+  });
+}
+
+export function transition(from, ...args) {
+  
   return { from, to };
 }
+
+
 
 export function state(...transitions) {
   return {

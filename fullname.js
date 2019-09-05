@@ -1,30 +1,19 @@
-import { send, state, transition, createMachine, interpret } from './machine.js';
+import { assign, send, state, transition, createMachine, interpret } from './machine.js';
 
-
-
-const machine = createMachine('red', {
-  red: state(
-    transition('next', 'green')
+const machine = createMachine('wait', {
+  wait: state(
+    transition('first', 'input',
+      assign('first', (ev, ctx) => ev.target.value)
+    )
   ),
-  yellow: state(
-    transition('next', 'red')
-  ),
-  green: state(
-    transition('next', 'yellow')
+  input: state(
+    transition('done', 'wait')
   )
 });
 
 const service = interpret(machine);
 
 
-const light = document.querySelector('#light');
-const btn = document.querySelector('button');
-btn.onclick = change;
-
-function change() {
-  service.send('next');
-  render();
-}
 
 function render() {
   let state = service.machine.state;
