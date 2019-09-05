@@ -1,13 +1,23 @@
-import { assign, send, state, transition, createMachine, interpret, reduce } from './machine.js';
+import { guard, state, transition, createMachine, interpret, reduce } from './machine.js';
 
-const machine = createMachine('wait', {
-  wait: state(
-    transition('first', 'wait',
-      reduce((ev, ctx) => ({ ...ctx, first: ev.target.value }))
+const setFirst = (ev, ctx) => ({ ...ctx, first: ev.target.value });
+const setLast = (ev, ctx) => ({ ...ctx, last: ev.target.value });
+const nothingEntered = ({ first, last }) => !first && !last;
+
+const machine = createMachine({
+  waiting: state(
+    transition('first', 'waiting',
+      reduce(setFirst)
     ),
-    transition('last', 'wait',
-      reduce((ev, ctx) => ({ ...ctx, last: ev.target.value }))
+    transition('last', 'waiting',
+      reduce(setLast)
     )
+  ),
+  entering: state(
+    transition('first', 'waiting',
+      guard(nothingEntered)     
+    ),
+    transition('first', )
   )
 });
 

@@ -6,11 +6,8 @@ function valueEnumerableWritable(value) {
   return { enumerable: true, writable: true, value };
 }
 
-function fnType(fn) {
-  return Object.create(this, { fn: valueEnumerable(fn) });
-}
-
-function truthy() { return true; }
+let truthy = () => true;
+let empty = () => ({});
 
 function stack(fns) {
   return fns.reduce((par, fn) => {
@@ -20,20 +17,20 @@ function stack(fns) {
   }, truthy);
 }
 
-const actionType = {};
-export const action = fnType.bind(actionType);
-
-const 
-export const reduce = fnType.bind({});
-
-const guardType = {};
-export const guard = fnType.bind(guardType);
-
-export function reduce(fn) {
-  return action(fn);
+function fnType(fn) {
+  return Object.create(this, { fn: valueEnumerable(fn) });
 }
 
-const assignType = {};
+let actionType = {};
+export let action = fnType.bind(actionType);
+
+let reduceType = {};
+export let reduce = fnType.bind(reduceType);
+
+let guardType = {};
+export let guard = fnType.bind(guardType);
+
+let assignType = {};
 export function assign(key, fn) {
   return Object.create(assignType, {
     key: valueEnumerable(key),
@@ -46,9 +43,9 @@ function filter(Type, arr) {
 }
 
 export function transition(from, to, ...args) {
-  let actions = filter(actionType, args);
+  let reducers = stack(filter(reduceType, args).map(t => t.fn));
   let guards = stack(filter(guardType, args).map(t => t.fn));
-  return { from, to, actions, guards };
+  return { from, to, guards, reducers };
 }
 
 export function state(...transitions) {
@@ -57,7 +54,7 @@ export function state(...transitions) {
   };
 }
 
-const machine = {
+let machine = {
   get state() {
     return {
       name: this.current,
@@ -65,15 +62,10 @@ const machine = {
     };
   }
 };
-
-function defaultContext() {
-  return {};
-}
-
 export function createMachine(states, contextFn) {
-  const current = Object.keys(states)[0];
+  let current = Object.keys(states)[0];
   return Object.create(machine, {
-    context: valueEnumerable(contextFn || defaultContext),
+    context: valueEnumerable(contextFn || empty),
     current: valueEnumerable(current),
     states: valueEnumerable(states)
   });
@@ -85,13 +77,10 @@ export function send(service, event) {
   let { value: state } = machine.state;
   
   if(eventName in state.transitions) {
-    let { to, actions, guards } = state.transitions[eventName];
-
+    let { to, guards, reducers } = state.transitions[eventName];
+    
     if(guards(context)) {
-      service.context = actions.reduce(
-        (ctx, a) => a.fn.call(service, event, ctx),
-        service.context
-      );
+      service.context = reducers.call(service, event, context);
       
       let original = machine.original || machine;
       return Object.create(original, {
@@ -99,14 +88,13 @@ export function send(service, event) {
         original: { value: original }
       });
     }
-    
-
   }
   
   return machine;
 }
 
-const service = {
+
+let service = {
   send(event) {
     this.machine = send(this, event);
     this.onChange(this);
