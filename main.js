@@ -3,13 +3,8 @@ function transition(from, to) {
 }
 
 function state(...transitions) {
-  let t = {};
-  for(let transition of transitions) {
-    t[transition.from] = transition.to;
-  }
-  
   return {
-    transitions: t
+    transitions: Object.fromEntries(transitions.map(t => [t.from, t]))
   };
 }
 
@@ -36,7 +31,7 @@ let machine = {
 
 function send(machine, event) {
   let { value: state } = machine.state;
-  let newState = state.transitions[event];
+  let newState = state.transitions[event].to;
   let original = machine.original || machine;
   return Object.create(original, {
     current: { enumerable: true, value: newState },
