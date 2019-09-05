@@ -1,10 +1,15 @@
 function transition(from, to) {
-  
+  return { from, to };
 }
 
-function state(...args) {
+function state(...transitions) {
+  let t = {};
+  for(let transition of transitions) {
+    t[transition.from] = transition.to;
+  }
+  
   return {
-    transitions: args
+    transitions: t
   };
 }
 
@@ -30,7 +35,13 @@ let machine = {
 };
 
 function send(machine, event) {
-  
+  let { value: state } = machine.state;
+  let newState = state.transitions[event];
+  let original = machine.original || machine;
+  return Object.create(original, {
+    current: { enumerable: true, value: newState },
+    original: { value: original }
+  });
 }
 
 const light = document.querySelector('#light');
@@ -38,12 +49,12 @@ const btn = document.querySelector('button');
 btn.onclick = change;
 
 function change() {
-  let state = send(machine, 'next');
+  machine = send(machine, 'next');
+  render();
 }
 
 function render() {
-  debugger;
-  let state = machine.current;
+  let state = machine.state;
   light.className = `state ${state.name}`;
 }
 
