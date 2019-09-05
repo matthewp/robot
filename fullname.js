@@ -8,9 +8,6 @@ const machine = createMachine('wait', {
     transition('last', 'wait',
       reduce((ev, ctx) => ({ ...ctx, last: ev.target.value }))
     )
-  ),
-  input: state(
-    transition('done', 'wait')
   )
 });
 

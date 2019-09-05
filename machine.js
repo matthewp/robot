@@ -84,7 +84,7 @@ export function send(service, event) {
     );
     let original = machine.original || machine;
     return Object.create(original, {
-      current: { enumerable: true, value: to },
+      current: valueEnumerable(to),
       original: { value: original }
     });
   }
