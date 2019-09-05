@@ -21,13 +21,10 @@ function stack(fns) {
 }
 
 const actionType = {};
-export function action(fn) {
-  return Object.create(actionType, {
-    fn: valueEnumerable(fn)
-  });
-}
-export const action2 = fnType.bind(actionType);
-export const reduce2 = fnType.bind({});
+export const action = fnType.bind(actionType);
+
+const 
+export const reduce = fnType.bind({});
 
 const guardType = {};
 export const guard = fnType.bind(guardType);

@@ -8,6 +8,7 @@ const machine = createMachine({
     ),
     transition('dec', 'idle',
       reduce((e, {count}) => ({ count: count - 1 })),
+      guard(({count}) => count > 0)
     )
   )
 }, () => ({ count: 0 }));
