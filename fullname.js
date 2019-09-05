@@ -18,8 +18,8 @@ const name = document.querySelector('#name');
 const firstInput = document.querySelector('[name="first"]');
 const lastInput = document.querySelector('[name="last"]');
 
-const service = interpret(machine, () => {
-  const { first = '', last = '' } = service.context;
+const service = interpret(machine, ({ context }) => {
+  const { first = '', last = '' } = context;
   name.textContent = `${first} ${last}`;
 });
 

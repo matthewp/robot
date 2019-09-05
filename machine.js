@@ -6,12 +6,21 @@ function valueEnumerableWritable(value) {
   return { enumerable: true, writable: true, value };
 }
 
+function fnType(fn) {
+  return Object.create(this, { fn: valueEnumerable(fn) });
+}
+
 const actionType = {};
 export function action(fn) {
   return Object.create(actionType, {
     fn: valueEnumerable(fn)
   });
 }
+export const action2 = fnType.bind(actionType);
+export const reduce2 = fnType.bind({});
+
+const guardType = {};
+export const guard = fnType.bind(guardType);
 
 export function reduce(fn) {
   return action(fn);
@@ -86,7 +95,7 @@ export function send(service, event) {
 const service = {
   send(event) {
     this.machine = send(this, event);
-    this.onChange();
+    this.onChange(this);
   }
 };
 export function interpret(machine, onChange) {
