@@ -23,10 +23,11 @@ const machine = {
 
 export function createMachine(current, states) {
   return Object.create(machine, {
+    context: valueEnumerable(Function.prototype),
     current: valueEnumerable(current),
+    states: valueEnumerable(states)
   });
 }
-
 
 export function send(machine, event) {
   let { value: state } = machine.state;
@@ -36,4 +37,23 @@ export function send(machine, event) {
     current: { enumerable: true, value: newState },
     original: { value: original }
   });
+}
+
+const service = {
+  send(event) {
+    this.machine = send(this.machine, event);
+  }
+};
+export function interpret(machine) {
+  let s = Object.create(service, {
+    machine: {
+      enumerable: true,
+      writable: true,
+      value: Object.create(machine, {
+        context: valueEnumerable(machine.context())
+      })
+    }
+  });
+  s.send = s.send.bind(s);
+  return s;
 }
