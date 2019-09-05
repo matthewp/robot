@@ -6,7 +6,7 @@ const machine = createMachine('wait', {
       reduce((ev, ctx) => ({ ...ctx, first: ev.target.value }))
     ),
     transition('last', 'wait',
-      reduce((ev, ctx) => ({ ...ctx, first: ev.target.value }))
+      reduce((ev, ctx) => ({ ...ctx, last: ev.target.value }))
     )
   ),
   input: state(
@@ -19,7 +19,7 @@ const firstInput = document.querySelector('[name="first"]');
 const lastInput = document.querySelector('[name="last"]');
 
 const service = interpret(machine, () => {
-  const { first = '', last = '' } = service.machine.context;
+  const { first = '', last = '' } = service.context;
   name.textContent = `${first} ${last}`;
 });
 

@@ -2,6 +2,10 @@ function valueEnumerable(value) {
   return { enumerable: true, value };
 }
 
+function valueEnumerableWritable(value) {
+  return { enumerable: true, writable: true, value };
+}
+
 const actionType = {};
 export function action(fn) {
   return Object.create(actionType, {
@@ -9,14 +13,8 @@ export function action(fn) {
   });
 }
 
-function applyReducer(fn) {
-  return function(...args) {
-    this.context = fn.apply(this, args);
-  }
-}
-
 export function reduce(fn) {
-  return action(applyReducer(fn));
+  return action(fn);
 }
 
 const assignType = {};
@@ -32,7 +30,6 @@ function filter(Type, arr) {
 }
 
 export function transition(from, to, ...args) {
-  debugger;
   let actions = filter(actionType, args);
   return { from, to, actions };
 }
@@ -65,13 +62,17 @@ export function createMachine(current, states) {
   });
 }
 
-export function send(machine, event) {
+export function send(service, event) {
   let eventName = event.type || event;
+  let { machine, context } = service;
   let { value: state } = machine.state;
   
   if(eventName in state.transitions) {
     let { to, actions } = state.transitions[eventName];
-    actions.forEach(a => a.fn.call(machine, event, machine.context));
+    service.context = actions.reduce(
+      (ctx, a) => a.fn.call(service, event, ctx),
+      service.context
+    );
     let original = machine.original || machine;
     return Object.create(original, {
       current: { enumerable: true, value: to },
@@ -84,19 +85,14 @@ export function send(machine, event) {
 
 const service = {
   send(event) {
-    this.machine = send(this.machine, event);
+    this.machine = send(this, event);
     this.onChange();
   }
 };
 export function interpret(machine, onChange) {
   let s = Object.create(service, {
-    machine: {
-      enumerable: true,
-      writable: true,
-      value: Object.create(machine, {
-        context: valueEnumerable(machine.context())
-      })
-    },
+    machine: valueEnumerableWritable(machine),
+    context: valueEnumerableWritable(machine.context()),
     onChange: valueEnumerable(onChange)
   });
   s.send = s.send.bind(s);
