@@ -37,3 +37,7 @@ button {
   border: 1px solid tomato;
   background: transparent;
 }
+
+button[disabled] {
+  border-color: rgb(255,99,71, 0.5);
+}
