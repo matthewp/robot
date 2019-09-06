@@ -20,8 +20,8 @@ const machine = createMachine({
   loaded: state()
 }, context);
 
-const service = interpret(machine, () => {
-  console.log('state changed');
+const service = interpret(machine, service => {
+  console.log('New state', service.machine.current);
 });
 
 const usersNode = document.querySelector('#users');
