@@ -9,7 +9,7 @@ async function loadUsers() {
     { id: 1, name: 'Wilbur' },
     { id: 2, name: 'Matthew' },
     { id: 3, name: 'Anne' }
-  ]
+  ];
 }
 
 const machine = createMachine({
@@ -20,4 +20,10 @@ const machine = createMachine({
   loaded: state()
 }, context);
 
+const service = interpret(machine, () => {
+  console.log('state changed');
+});
+
 const usersNode = document.querySelector('#users');
+const loadBtn = document.querySelector('#load');
+loadBtn.onclick = () => service.send('fetch');

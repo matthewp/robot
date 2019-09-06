@@ -30,15 +30,6 @@ export let reduce = fnType.bind(reduceType);
 let guardType = {};
 export let guard = fnType.bind(guardType);
 
-let invokeType = {};
-export function invoke(fn, from, to) {
-  return Object.create(invokeType, {
-    fn: valueEnumerable(fn),
-    from: valueEnumerable(from),
-    to: valueEnumerable(to)
-  });
-}
-
 function filter(Type, arr) {
   return arr.filter(value => Type.isPrototypeOf(value));
 }
@@ -53,6 +44,14 @@ export function state(...transitions) {
   return {
     transitions: Object.fromEntries(transitions.map(t => [t.from, t]))
   };
+}
+
+let invokeType = {};
+export function invoke(fn, done, error) {
+  return Object.create(invokeType, {
+    fn: valueEnumerable(fn),
+    transitions: valueEnumerable([transition('done', done), transition('error', error)])
+  });
 }
 
 let machine = {
@@ -94,11 +93,22 @@ export function send(service, event) {
   return machine;
 }
 
+function run(service, invoker) {
+  
+}
+
 
 let service = {
   send(event) {
     this.machine = send(this, event);
+    let state = this.machine.state.value;
+    
+    // TODO detect change
     this.onChange(this);
+    
+    if(invokeType.isPrototypeOf(state)) {
+      run(this, state);
+    }
   }
 };
 export function interpret(machine, onChange) {
