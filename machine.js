@@ -51,10 +51,10 @@ export function state(...transitions) {
 }
 
 let invokeType = {};
-export function invoke(fn, done, error) {
+export function invoke(fn, ...transitions) {
   return Object.create(invokeType, {
     fn: valueEnumerable(fn),
-    transitions: valueEnumerable(transitionsToObject([transition('done', done), transition('error', error)]))
+    transitions: valueEnumerable(transitionsToObject(transitions))
   });
 }
 

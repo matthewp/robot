@@ -4,7 +4,10 @@ const context = () => ({
   users: []
 });
 
+const wait = ms => ({ then(resolve) { setTimeout(resolve, ms) } });
+
 async function loadUsers() {
+  await wait(2000);
   return [
     { id: 1, name: 'Wilbur' },
     { id: 2, name: 'Matthew' },
@@ -16,12 +19,26 @@ const machine = createMachine({
   idle: state(
     transition('fetch', 'loading')
   ),
-  loading: invoke(loadUsers, 'loaded'),
+  loading: invoke(loadUsers,
+    transition('done', 'loaded',
+      reduce((ev, ctx) => ({ ...ctx, users: ev.data }))
+    )
+  ),
   loaded: state()
 }, context);
 
 const service = interpret(machine, service => {
-  console.log('New state', service.machine.current);
+  let state = service.machine.current;
+  switch(state) {
+    case 'loaded': {
+      let { users } = service.context;
+      usersNode.innerHTML = `
+        ${users.map(user => `
+          <li id="user-${user.id}">${user.name}</li>
+        `).join('')}
+      `;
+    }
+  }
 });
 
 const usersNode = document.querySelector('#users');
