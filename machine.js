@@ -31,10 +31,12 @@ let guardType = {};
 export let guard = fnType.bind(guardType);
 
 let invokeType = {};
-export function invoke(fn) {
+export function invoke(fn, from, to) {
   return Object.create(invokeType, {
-    fn: valueEnumerable(fn)
-  })
+    fn: valueEnumerable(fn),
+    from: valueEnumerable(from),
+    to: valueEnumerable(to)
+  });
 }
 
 function filter(Type, arr) {

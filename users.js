@@ -16,9 +16,8 @@ const machine = createMachine({
   idle: state(
     transition('fetch', 'loading')
   ),
-  loading: state(
-    invoke()
-  )
+  loading: invoke(loadUsers, 'loaded'),
+  loaded: state()
 }, context);
 
 const usersNode = document.querySelector('#users');
