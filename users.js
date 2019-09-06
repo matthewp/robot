@@ -31,6 +31,7 @@ const service = interpret(machine, service => {
   let state = service.machine.current;
   switch(state) {
     case 'loading': {
+      loadBtn.textContent = 'Loading';
       usersNode.innerHTML = `<span class="loading">Loading</span>`;
       break;
     }
