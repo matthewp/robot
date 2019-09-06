@@ -8,6 +8,19 @@
     
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css">
+    <style>
+      #users {
+        margin-top: 1.5rem;
+      }
+      #users ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+      .loading {
+        font-style: italic;
+        font-weight: 600;
+      }
+    </style>
     
     <!-- import the webpage's javascript file -->
     <script src="/users.js" type="module"></script>
@@ -19,7 +32,7 @@
         <button id="load" type="button">
           Load users
         </button>
-        <ul id="users"></ul>
+        <div id="users"></div>
       </div>
     </main>
 
