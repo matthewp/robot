@@ -30,12 +30,11 @@ export let reduce = fnType.bind(reduceType);
 let guardType = {};
 export let guard = fnType.bind(guardType);
 
-let assignType = {};
-export function assign(key, fn) {
-  return Object.create(assignType, {
-    key: valueEnumerable(key),
+let invokeType = {};
+export function invoke(fn) {
+  return Object.create(invokeType, {
     fn: valueEnumerable(fn)
-  });
+  })
 }
 
 function filter(Type, arr) {

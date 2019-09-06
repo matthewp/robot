@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Hello!</title>
+    <title>Counter</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css">
+    
+    <!-- import the webpage's javascript file -->
+    <script src="/counter.js" type="module"></script>
   </head>  
   <body>
-    <h1>Machine examples</h1>
-
+    <h1>Users</h1>
     <main>
-      <a href="./stoplight.html">Stop light</a>
-      <a href="./fullname.html">Full name</a>
-      <a href="./counter.html">Counter</a>
-      <a href="./users.html">Users</a>
+      <div>
+        <button type="button">
+          Load users
+        </button>
+        <ul id="users"></ul>
+      </div>
     </main>
 
 
