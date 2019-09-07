@@ -12,8 +12,6 @@ let machine = createMachine({
   )
 });
 
-debugger;
-
 const light = document.querySelector('#light');
 const btn = document.querySelector('button');
 btn.onclick = change;
