@@ -1,5 +1,5 @@
 import { h, html, Component, render } from './preact.js';
-import { createMachine, state } from './machine.js';
+import { createMachine, guard, immediate, state, transition } from './machine.js';
 
 /*
   context ${{ login: '', password: '' }}
@@ -32,13 +32,18 @@ const context = () => ({ login: '', password: '' });
 
 const machine = createMachine({
   form: state(
-  
+    transition('login', 'input'),
+    transition('password', 'input'),
+    transition('submit', 'validate')
   ),
   input: state(
   
   ),
   validate: state(
-  
+    immediate('form',
+      guard((ctx) => false)
+    ),
+    immediate('form')
   ),
   complete: state()
 }, context);

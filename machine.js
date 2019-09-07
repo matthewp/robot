@@ -8,6 +8,7 @@ function valueEnumerableWritable(value) {
 
 let truthy = () => true;
 let empty = () => ({});
+let create = (a, b) => Object.freeze(Object.create(a, b));
 
 function stack(fns) {
   return fns.reduce((par, fn) => {
@@ -18,7 +19,7 @@ function stack(fns) {
 }
 
 function fnType(fn) {
-  return Object.create(this, { fn: valueEnumerable(fn) });
+  return create(this, { fn: valueEnumerable(fn) });
 }
 
 let actionType = {};
@@ -50,9 +51,14 @@ export function state(...transitions) {
   };
 }
 
+// TODO fill this out
+export function immediate(to, ...args) {
+  return { to };
+}
+
 let invokeType = {};
 export function invoke(fn, ...transitions) {
-  return Object.create(invokeType, {
+  return create(invokeType, {
     fn: valueEnumerable(fn),
     transitions: valueEnumerable(transitionsToObject(transitions))
   });
@@ -68,7 +74,7 @@ let machine = {
 };
 export function createMachine(states, contextFn) {
   let current = Object.keys(states)[0];
-  return Object.create(machine, {
+  return create(machine, {
     context: valueEnumerable(contextFn || empty),
     current: valueEnumerable(current),
     states: valueEnumerable(states)
@@ -87,7 +93,7 @@ export function send(service, event) {
       service.context = reducers.call(service, event, context);
       
       let original = machine.original || machine;
-      let newMachine = Object.create(original, {
+      let newMachine = create(original, {
         current: valueEnumerable(to),
         original: { value: original }
       });
