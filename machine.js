@@ -41,13 +41,18 @@ export function transition(from, to, ...args) {
   return { from, to, guards, reducers };
 }
 
-function transitionsToObject(transitions) {
-  return Object.fromEntries(transitions.map(t => [t.from, t]));
+function transitionsToMap(transitions) {
+  let m = new Map();
+  for(let t of transitions) {
+    if(!m.has(t.from)) m.set(t.from, []);
+    m.get(t.from).push(t);
+  }
+  return m;
 }
 
 export function state(...transitions) {
   return {
-    transitions: transitionsToObject(transitions)
+    transitions: transitionsToMap(transitions)
   };
 }
 
@@ -60,7 +65,7 @@ let invokeType = {};
 export function invoke(fn, ...transitions) {
   return create(invokeType, {
     fn: valueEnumerable(fn),
-    transitions: valueEnumerable(transitionsToObject(transitions))
+    transitions: valueEnumerable(transitionsToMap(transitions))
   });
 }
 
@@ -86,23 +91,23 @@ export function send(service, event) {
   let { machine, context } = service;
   let { value: state } = machine.state;
   
-  if(eventName in state.transitions) {
-    let { to, guards, reducers } = state.transitions[eventName];
-    
-    if(guards(context)) {
-      service.context = reducers.call(service, event, context);
-      
-      let original = machine.original || machine;
-      let newMachine = create(original, {
-        current: valueEnumerable(to),
-        original: { value: original }
-      });
-      
-      let state = newMachine.state.value;
-      if(invokeType.isPrototypeOf(state)) {
-        run(service, state, event);
+  if(state.transitions.has(eventName)) {
+    for(let { to, guards, reducers } of state.transitions.get(eventName)) {  
+      if(guards(context)) {
+        service.context = reducers.call(service, event, context);
+
+        let original = machine.original || machine;
+        let newMachine = create(original, {
+          current: valueEnumerable(to),
+          original: { value: original }
+        });
+
+        let state = newMachine.state.value;
+        if(invokeType.isPrototypeOf(state)) {
+          run(service, state, event);
+        }
+        return newMachine;
       }
-      return newMachine;
     }
   }
   
