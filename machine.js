@@ -56,15 +56,15 @@ export function transition(from, to, ...args) {
 const immediateType = {};
 export function immediate(to, ...args) {
   let [guards, reducers] = extractActions(args);
-  return create(transitionType, {
+  return create(immediateType, {
     to: valueEnumerable(to),
     guards: valueEnumerable(guards),
     reducers: valueEnumerable(reducers)
   });
 }
 
-function enterImmediate() {
-  debugger;
+function enterImmediate(machine, service, event) {
+  return transitionTo(service, event, this.immediates);
 }
 
 function transitionsToMap(transitions) {
@@ -83,7 +83,6 @@ export function state(...args) {
   let desc = {
     transitions: valueEnumerable(transitionsToMap(transitions))
   };
-  debugger;
   if(immediates.length) {
     desc.immediates = valueEnumerable(immediates);
     desc.enter = valueEnumerable(enterImmediate);
@@ -116,32 +115,37 @@ export function createMachine(states, contextFn) {
   });
 }
 
-export function send(service, event) {
-  let eventName = event.type || event;
+function transitionTo(service, fromEvent, candidates) {
   let { machine, context } = service;
-  let { value: state } = machine.state;
-  
-  if(state.transitions.has(eventName)) {
-    for(let { to, guards, reducers } of state.transitions.get(eventName)) {  
-      if(guards(context)) {
-        service.context = reducers.call(service, event, context);
+  for(let { to, guards, reducers } of candidates) {  
+    if(guards(context)) {
+      service.context = reducers.call(service, fromEvent, context);
 
-        let original = machine.original || machine;
-        let newMachine = create(original, {
-          current: valueEnumerable(to),
-          original: { value: original }
-        });
+      let original = machine.original || machine;
+      let newMachine = create(original, {
+        current: valueEnumerable(to),
+        original: { value: original }
+      });
 
-        let state = newMachine.state.value;
-        if(invokeType.isPrototypeOf(state)) {
-          run(service, state, event);
-        } else {
-          return state.enter(newMachine);
-        }
+      let state = newMachine.state.value;
+      if(invokeType.isPrototypeOf(state)) {
+        run(service, state, event);
+        return newMachine;
+      } else {
+        return state.enter(newMachine, service, fromEvent);
       }
     }
   }
+}
+
+export function send(service, event) {
+  let eventName = event.type || event;
+  let { machine } = service;
+  let { value: state } = machine.state;
   
+  if(state.transitions.has(eventName)) {
+    return transitionTo(service, event, state.transitions.get(eventName)) || machine;
+  }
   return machine;
 }
 
