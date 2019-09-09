@@ -1,0 +1,20 @@
+{
+  "name": "@matthewp/robot",
+  "version": "1.0.0",
+  "description": "A small Finite State Machine library",
+  "main": "machine.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/robot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/robot/issues"
+  },
+  "homepage": "https://github.com/matthewp/robot#readme"
+}
