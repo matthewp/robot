@@ -9,14 +9,15 @@ function valueEnumerableWritable(value) {
 let truthy = () => true;
 let empty = () => ({});
 let identity = a => a;
+let identity2 = (a, b) => b;
 let create = (a, b) => Object.freeze(Object.create(a, b));
 
-function stack(fns) {
+function stack(fns, def) {
   return fns.reduce((par, fn) => {
     return function(...args) {
       return fn.apply(this, args);
     };
-  }, truthy);
+  }, def);
 }
 
 function fnType(fn) {
@@ -37,8 +38,8 @@ function filter(Type, arr) {
 }
 
 function extractActions(args) {
-  let guards = stack(filter(guardType, args).map(t => t.fn));
-  let reducers = stack(filter(reduceType, args).map(t => t.fn));
+  let guards = stack(filter(guardType, args).map(t => t.fn), truthy);
+  let reducers = stack(filter(reduceType, args).map(t => t.fn), identity2);
   return [guards, reducers];
 }
 
@@ -144,7 +145,6 @@ export function send(service, event) {
   let { value: state } = machine.state;
   
   if(state.transitions.has(eventName)) {
-    debugger;
     return transitionTo(service, event, state.transitions.get(eventName)) || machine;
   }
   return machine;

@@ -32,14 +32,23 @@ function fromEvent(send, type) {
   return event => send({ type, event });
 }
 
-function canSubmit() {
-  return false;
+function canSubmit(ctx) {
+  return !!(ctx.login && ctx.password);
 }
 
-function updateSubmissionError(ctx) {
+function updateSubmissionError(ev, ctx) {
   return {
-    ...ctx
+    ...ctx,
+    error: 'Missing fields'
   };
+}
+
+function hasError(ctx) {
+  return !!ctx.error;
+}
+
+function clearError(ev, ctx) {
+  return { ...ctx, error: '' };
 }
 
 function setLogin({ event }, ctx) {
@@ -66,8 +75,10 @@ const machine = createMachine({
   ),
   input: state(
     immediate('form',
-      
-    )
+      guard(hasError),
+      reduce(clearError)
+    ),
+    immediate('form')
   ),
   validate: state(
     immediate('complete',
@@ -96,24 +107,35 @@ class App extends Component {
   
   render() {
     let { service, send } = this.state;
-    let { login } = service.context;
+    let { login, error } = service.context;
+    let { current: state } = service.machine;
     
     
     return html`
-      <form>
-        <label>
-          Login
-          <input type="text" name="login" onInput=${fromEvent(send, 'login')} />
-        </label>
-        <label>
-          Password
-          <input type="text" name="password" onInput=${fromEvent(send, 'password')} />
-        </label>
+      <div>
+        ${state === 'complete' ? html`
+        <p>Thank you for logging in <strong>${login}</strong>!</p>
+        `: html`
+        <form>
+          <label>
+            Login
+            <input type="text" name="login" onInput=${fromEvent(send, 'login')} />
+          </label>
+          <label>
+            Password
+            <input type="text" name="password" onInput=${fromEvent(send, 'password')} />
+          </label>
+          <button type="button" onClick=${fromEvent(send, 'submit')}>Submit</button>
 
-        <p>
-          Hello <strong>${login}</strong>
-        </p>
-      </form>
+          ${error ? html`
+            <p>
+              <strong>Error</strong>: ${error}
+            </p>
+          ` : ''}
+        </form>
+        `}
+      </div>
+
     `;
   }
 }
