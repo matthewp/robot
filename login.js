@@ -1,5 +1,5 @@
 import { h, html, Component, render } from './preact.js';
-import { createMachine, guard, immediate, state, transition } from './machine.js';
+import { createMachine, guard, immediate, reduce, state, transition } from './machine.js';
 
 /*
   context ${{ login: '', password: '' }}
@@ -28,6 +28,20 @@ import { createMachine, guard, immediate, state, transition } from './machine.js
 
 */
 
+function fromEvent(send, type) {
+  return event => ({ type, event });
+}
+
+function canSubmit() {
+  return false;
+}
+
+function updateSubmissionError(ctx) {
+  return {
+    ...ctx
+  };
+}
+
 const context = () => ({ login: '', password: '' });
 
 const machine = createMachine({
@@ -37,21 +51,29 @@ const machine = createMachine({
     transition('submit', 'validate')
   ),
   input: state(
-  
+    immediate('form')
   ),
   validate: state(
-    immediate('form',
-      guard((ctx) => false)
+    immediate('complete',
+      guard(canSubmit)
     ),
-    immediate('form')
+    immediate('form',
+      reduce(updateSubmissionError)
+    )
   ),
   complete: state()
 }, context);
 
 class App extends Component {
   render() {
+    let { send } = this.state;
+    
+    
     return html`
-      <div>Hello world</div>
+      <form>
+        <label for="login">Login</label>
+        <input type="text" name="login" onInput=${fromEvent(send, 'login')} />
+      </form>
     `;
   }
 }

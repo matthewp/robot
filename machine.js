@@ -35,10 +35,21 @@ function filter(Type, arr) {
   return arr.filter(value => Type.isPrototypeOf(value));
 }
 
-export function transition(from, to, ...args) {
+const transitionType = {};
+
+function baseTransition(from, to, ...args) {
   let reducers = stack(filter(reduceType, args).map(t => t.fn));
   let guards = stack(filter(guardType, args).map(t => t.fn));
-  return { from, to, guards, reducers };
+  {
+    to: valueEnumerable(to),
+    guards: valueEnumerable(guards),
+    reducers: valueEnumerable(reducers)
+  }
+  return create(transitionType, );
+}
+
+export function transition(from, to, ...args) {
+
 }
 
 function transitionsToMap(transitions) {
@@ -50,15 +61,14 @@ function transitionsToMap(transitions) {
   return m;
 }
 
+export function immediate(to, ...args) {
+  return { to };
+}
+
 export function state(...transitions) {
   return {
     transitions: transitionsToMap(transitions)
   };
-}
-
-// TODO fill this out
-export function immediate(to, ...args) {
-  return { to };
 }
 
 let invokeType = {};
