@@ -42,16 +42,32 @@ function updateSubmissionError(ctx) {
   };
 }
 
+function setLogin({ event }, ctx) {
+  return {
+    ...ctx,
+    login: event.target.value
+  };
+}
+
+function setPassword({ event }, ctx) {
+  return {
+    ...ctx,
+    password: event.target.value
+  };
+}
+
 const context = () => ({ login: '', password: '' });
 
 const machine = createMachine({
   form: state(
-    transition('login', 'input'),
-    transition('password', 'input'),
+    transition('login', 'input', reduce(setLogin)),
+    transition('password', 'input', reduce(setPassword)),
     transition('submit', 'validate')
   ),
   input: state(
-    immediate('form')
+    immediate('form',
+      
+    )
   ),
   validate: state(
     immediate('complete',
@@ -79,13 +95,24 @@ class App extends Component {
     }
   
   render() {
-    let { send } = this.state;
+    let { service, send } = this.state;
+    let { login } = service.context;
     
     
     return html`
       <form>
-        <label for="login">Login</label>
-        <input type="text" name="login" onInput=${fromEvent(send, 'login')} />
+        <label>
+          Login
+          <input type="text" name="login" onInput=${fromEvent(send, 'login')} />
+        </label>
+        <label>
+          Password
+          <input type="text" name="password" onInput=${fromEvent(send, 'password')} />
+        </label>
+
+        <p>
+          Hello <strong>${login}</strong>
+        </p>
       </form>
     `;
   }

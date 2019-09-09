@@ -144,6 +144,7 @@ export function send(service, event) {
   let { value: state } = machine.state;
   
   if(state.transitions.has(eventName)) {
+    debugger;
     return transitionTo(service, event, state.transitions.get(eventName)) || machine;
   }
   return machine;
