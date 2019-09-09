@@ -8,6 +8,7 @@ function valueEnumerableWritable(value) {
 
 let truthy = () => true;
 let empty = () => ({});
+let identity = a => a;
 let create = (a, b) => Object.freeze(Object.create(a, b));
 
 function stack(fns) {
@@ -35,17 +36,36 @@ function filter(Type, arr) {
   return arr.filter(value => Type.isPrototypeOf(value));
 }
 
-const transitionType = {};
-function baseTransition(type, from, to, ...args) {
-  let reducers = stack(filter(reduceType, args).map(t => t.fn));
+function extractActions(args) {
   let guards = stack(filter(guardType, args).map(t => t.fn));
-  return { from, to, guards, reducers };
+  let reducers = stack(filter(reduceType, args).map(t => t.fn));
+  return [guards, reducers];
 }
 
-export const transition = baseTransition.bind(null, transitionType);
+const transitionType = {};
+export function transition(from, to, ...args) {
+  let [guards, reducers] = extractActions(args);
+  return create(transitionType, {
+    from: valueEnumerable(from),
+    to: valueEnumerable(to),
+    guards: valueEnumerable(guards),
+    reducers: valueEnumerable(reducers)
+  });
+}
 
-const immediateType = create(transitionType);
-export const immediate = baseTransition.bind(null, immediateType, false);
+const immediateType = {};
+export function immediate(to, ...args) {
+  let [guards, reducers] = extractActions(args);
+  return create(transitionType, {
+    to: valueEnumerable(to),
+    guards: valueEnumerable(guards),
+    reducers: valueEnumerable(reducers)
+  });
+}
+
+function enterImmediate() {
+  debugger;
+}
 
 function transitionsToMap(transitions) {
   let m = new Map();
@@ -56,11 +76,19 @@ function transitionsToMap(transitions) {
   return m;
 }
 
-const stateType = { enter() {} };
-export function state(...transitions) {
-  return {
-    transitions: transitionsToMap(transitions)
+const stateType = { enter: identity };
+export function state(...args) {
+  let transitions = filter(transitionType, args);
+  let immediates = filter(immediateType, args);
+  let desc = {
+    transitions: valueEnumerable(transitionsToMap(transitions))
   };
+  debugger;
+  if(immediates.length) {
+    desc.immediates = valueEnumerable(immediates);
+    desc.enter = valueEnumerable(enterImmediate);
+  }
+  return create(stateType, desc);
 }
 
 let invokeType = {};
@@ -107,8 +135,9 @@ export function send(service, event) {
         let state = newMachine.state.value;
         if(invokeType.isPrototypeOf(state)) {
           run(service, state, event);
+        } else {
+          return state.enter(newMachine);
         }
-        return newMachine;
       }
     }
   }
