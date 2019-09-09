@@ -91,7 +91,14 @@ export function state(...args) {
   return create(stateType, desc);
 }
 
-let invokeType = {};
+let invokeType = {
+  enter(machine, service, event) {
+    this.fn.call(service, service.context, event)
+      .then(data => service.send({ type: 'done', data }))
+      .catch(error => service.send({ type: 'error', error }));
+    return machine;
+  }
+};
 export function invoke(fn, ...transitions) {
   return create(invokeType, {
     fn: valueEnumerable(fn),
@@ -129,17 +136,12 @@ function transitionTo(service, fromEvent, candidates) {
       });
 
       let state = newMachine.state.value;
-      if(invokeType.isPrototypeOf(state)) {
-        run(service, state, event);
-        return newMachine;
-      } else {
-        return state.enter(newMachine, service, fromEvent);
-      }
+      return state.enter(newMachine, service, fromEvent);
     }
   }
 }
 
-export function send(service, event) {
+function send(service, event) {
   let eventName = event.type || event;
   let { machine } = service;
   let { value: state } = machine.state;
@@ -149,13 +151,6 @@ export function send(service, event) {
   }
   return machine;
 }
-
-function run(service, invoker, event) {
-  invoker.fn.call(service, service.context, event)
-    .then(data => service.send({ type: 'done', data }))
-    .catch(error => service.send({ type: 'error', error }));
-}
-
 
 let service = {
   send(event) {
@@ -172,5 +167,6 @@ export function interpret(machine, onChange) {
     onChange: valueEnumerable(onChange)
   });
   s.send = s.send.bind(s);
+  s.machine = s.machine.state.value.enter(s.machine, s, {});
   return s;
 }
