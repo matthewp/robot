@@ -1,6 +1,6 @@
 {
   "name": "@matthewp/robot",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A small Finite State Machine library",
   "main": "machine.js",
   "module": "machine.js",
@@ -9,7 +9,8 @@
     "machine.js"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "http-server -p 1965",
+    "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/matthewp/robot/issues"
   },
-  "homepage": "https://github.com/matthewp/robot#readme"
+  "homepage": "https://github.com/matthewp/robot#readme",
+  "devDependencies": {
+    "http-server": "^0.11.1",
+    "node-qunit-puppeteer": "^1.0.13"
+  }
 }
