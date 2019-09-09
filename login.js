@@ -1,5 +1,5 @@
 import { h, html, Component, render } from './preact.js';
-import { createMachine, guard, immediate, reduce, state, transition } from './machine.js';
+import { createMachine, guard, immediate, interpret, reduce, state, transition } from './machine.js';
 
 /*
   context ${{ login: '', password: '' }}
@@ -29,7 +29,7 @@ import { createMachine, guard, immediate, reduce, state, transition } from './ma
 */
 
 function fromEvent(send, type) {
-  return event => ({ type, event });
+  return event => send({ type, event });
 }
 
 function canSubmit() {
@@ -65,6 +65,19 @@ const machine = createMachine({
 }, context);
 
 class App extends Component {
+    constructor(...args) {
+      super(...args);
+      
+      let service = interpret(machine, service => {
+        this.setState({ send: service.send, service });
+      });
+      
+      this.state = {
+        send: service.send,
+        service
+      };
+    }
+  
   render() {
     let { send } = this.state;
     

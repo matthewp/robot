@@ -36,21 +36,16 @@ function filter(Type, arr) {
 }
 
 const transitionType = {};
-
-function baseTransition(from, to, ...args) {
+function baseTransition(type, from, to, ...args) {
   let reducers = stack(filter(reduceType, args).map(t => t.fn));
   let guards = stack(filter(guardType, args).map(t => t.fn));
-  {
-    to: valueEnumerable(to),
-    guards: valueEnumerable(guards),
-    reducers: valueEnumerable(reducers)
-  }
-  return create(transitionType, );
+  return { from, to, guards, reducers };
 }
 
-export function transition(from, to, ...args) {
+export const transition = baseTransition.bind(null, transitionType);
 
-}
+const immediateType = create(transitionType);
+export const immediate = baseTransition.bind(null, immediateType, false);
 
 function transitionsToMap(transitions) {
   let m = new Map();
@@ -61,10 +56,7 @@ function transitionsToMap(transitions) {
   return m;
 }
 
-export function immediate(to, ...args) {
-  return { to };
-}
-
+const stateType = { enter() {} };
 export function state(...transitions) {
   return {
     transitions: transitionsToMap(transitions)
