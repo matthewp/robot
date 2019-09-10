@@ -62,7 +62,8 @@ body > nav > ul a {
 .container {
   margin-left: auto;
   margin-right: auto;
-  width: 980px;
+  max-width: 66rem;
+  padding: 0 1.3125rem;
 }
 
 .content {
@@ -182,39 +183,4 @@ body > footer a {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-  .container {
-    max-width: 544px;
-  }
-} 
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  .container {
-    max-width: 544px;
-  }
-} 
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
-} 
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-  .container {
-    max-width: 1012px;
-  }
-} 
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-  .container-xl {
-    max-width: 1280px;
-  }
 }
