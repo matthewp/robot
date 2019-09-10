@@ -14,7 +14,7 @@ title: Lucy
 <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
 <link rel="manifest" href="images/site.webmanifest">
 
-<body class="home">
+<body class="api">
 
 <header class="content container">
   <h1>🤖 Robot</h1>
@@ -23,7 +23,8 @@ title: Lucy
 
 <nav class="container">
   <ul>
-    {%- for post in collections.api -%}
+    <li><a href="./">Home</a></li>
+    {%- for post in collections.page -%}
       <li{% if page.url == post.url %} class="active"{% endif %}>
         {% if page.url == post.url %}
           {% if post.data.shortTitle %}
@@ -47,9 +48,9 @@ title: Lucy
 </nav>
 
 <main>
-  <div class="content container">
+  <article class="content container">
     {{ content | safe }}
-  </div>
+  </article>
 </main>
 
 <footer>

@@ -69,39 +69,82 @@ body > nav > ul a {
   font-size: 16px;
 }
 
-.home .content h1 {
+body > .content h1 {
   font-size: 2.5em;
   border-bottom: none;
   margin-bottom: 0;
 }
 
-.home .content h2 {
+body > .content h2 {
   margin-top: 0;
   font-weight: 400;
   font-size: 1.2rem;
 }
 
-.content h1, .content h2 {
+.content .toc,
+.content .toc ul {
+  padding-left: 25px;
+}
+
+.content h1 {
+  font-size: 2em;
+}
+
+.content h2 {
+  font-size: 1.5em;
+}
+
+.content h3 {
+  font-size: 1.25em;
+}
+
+.content h4 {
+  font-size: 1em;
+}
+
+.content h1, .content h2, .content h3, .content h4 {
   border-bottom: 1px solid #eaecef;
   padding-bottom: .3em;
   margin-bottom: 16px;
   margin-top: 24px;
 }
 
+.content h1, .content h2, .content h3, .content h4, .content h5 {
+  font-weight: 500;
+}
+
 .content h1[id] .heading-anchor, 
 .content h2[id] .heading-anchor,
-.content h3[id] .heading-anchor {
-  margin-left: -25px;
+.content h3[id] .heading-anchor,
+.content h4[id] .heading-anchor {
   color: var(--black-color);
   visibility: hidden;
+}
+
+.content h1[id] .heading-anchor {
+  margin-left: -25px;
+}
+
+.content h2[id] .heading-anchor {
+  margin-left: -20px;
+}
+
+.content h3[id] .heading-anchor {
+  margin-left: -17px;
+}
+
+.content h4[id] .heading-anchor {
+  margin-left: -15px;
 }
 
 .content h1[id]:hover .heading-anchor,
 .content h2[id]:hover .heading-anchor,
 .content h3[id]:hover .heading-anchor,
+.content h4[id]:hover .heading-anchor,
 .content h1[id] .heading-anchor:hover,
 .content h2[id] .heading-anchor:hover,
-.content h3[id] .heading-anchor:hover  {
+.content h3[id] .heading-anchor:hover,
+.content h4[id] .heading-anchor:hover  {
   visibility: visible;
 }
 
