@@ -81,8 +81,8 @@ body > .content h2 {
   font-size: 1.2rem;
 }
 
-.content .toc,
-.content .toc ul {
+.content ul,
+.content ul {
   padding-left: 25px;
 }
 

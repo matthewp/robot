@@ -1,5 +1,5 @@
 ---
-layout: index.njk
+layout: page.njk
 title: Robot
 ---
 
