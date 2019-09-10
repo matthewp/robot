@@ -1,4 +1,4 @@
-# @matthewp/robot
+# 🤖 @matthewp/robot
 
 A small Finite State Machine library.
 
