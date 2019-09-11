@@ -1,5 +1,11 @@
+---
+layout: api.njk
+title: transition
+tags: api
+permalink: api/transition.html
+---
 
-
+# transition
 
 A __transition__ is used to move from one state to another. Transitions are triggered by *events*, the first argument to the `transition` function. The second argument is the *destination state*.
 
@@ -21,14 +27,6 @@ const machine = createMachine({
 ```
 
 And similarly when used with an [invoke](#invoke) state:
----
-layout: api.njk
-title: transition
-tags: api
-permalink: api/transition.html
----
-
-# transition
 
 ```js
 import { createMachine, invoke, state, transition } from '@matthewp/robot';
