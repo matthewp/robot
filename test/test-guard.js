@@ -16,4 +16,19 @@ QUnit.module('Guards', hooks => {
     service.send('ping');
     assert.equal(service.machine.current, 'two');
   });
+
+  QUnit.test('If there are multiple guards, any returning false prevents a transition', assert => {
+    let machine = createMachine({
+      one: state(
+        transition('ping', 'two',
+          guard(() => false),
+          guard(() => true)
+        )
+      ),
+      two: state()
+    });
+    let service = interpret(machine, service => {});
+    service.send('ping');
+    assert.equal(service.machine.current, 'one');
+  });
 });
