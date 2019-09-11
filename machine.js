@@ -10,12 +10,14 @@ let truthy = () => true;
 let empty = () => ({});
 let identity = a => a;
 let identity2 = (a, b) => b;
+let callBoth = (par, fn, self, args) => par.apply(self, args) && fn.apply(self, args);
+let callForward = (par, fn, self, [a, b]) => fn.call(self, a, par.call(self, a, b));
 let create = (a, b) => Object.freeze(Object.create(a, b));
 
-function stack(fns, def) {
+function stack(fns, def, caller) {
   return fns.reduce((par, fn) => {
     return function(...args) {
-      return fn.apply(this, args);
+      return caller(par, fn, this, args);
     };
   }, def);
 }
@@ -38,8 +40,8 @@ function filter(Type, arr) {
 }
 
 function extractActions(args) {
-  let guards = stack(filter(guardType, args).map(t => t.fn), truthy);
-  let reducers = stack(filter(reduceType, args).map(t => t.fn), identity2);
+  let guards = stack(filter(guardType, args).map(t => t.fn), truthy, callBoth);
+  let reducers = stack(filter(reduceType, args).map(t => t.fn), identity2, callForward);
   return [guards, reducers];
 }
 
