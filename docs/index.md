@@ -1,6 +1,8 @@
 ---
 layout: page.njk
 title: Robot
+shortTitle: Home
+tags: page
 ---
 
 With __Robot__ you can build [finite state machines](https://brilliant.org/wiki/finite-state-machines/) in a simple and flexible way. Robot emphasizes:

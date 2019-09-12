@@ -18,6 +18,9 @@ module.exports = function(eleventyConfig) {
   }));
   
   eleventyConfig.addFilter('relUrl', (url, pageUrl) => {
+    if(pageUrl.endsWith('.html')) {
+      pageUrl = path.dirname(pageUrl);
+    }
     let rel = path.relative(pageUrl, url);
     if(rel[0] !== '.') rel = './' + rel;
     return rel;
