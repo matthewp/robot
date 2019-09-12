@@ -6,6 +6,7 @@ function valueEnumerableWritable(value) {
   return { enumerable: true, writable: true, value };
 }
 
+export let d = {};
 let truthy = () => true;
 let empty = () => ({});
 let identity = a => a;
@@ -130,6 +131,7 @@ let machine = {
   }
 };
 export function createMachine(states, contextFn) {
+  if(d._create) d._create(states);
   let current = Object.keys(states)[0];
   return create(machine, {
     context: valueEnumerable(contextFn || empty),
