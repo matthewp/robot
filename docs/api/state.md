@@ -13,7 +13,7 @@ __Table of Contents__
 The `state` export is a function that returns a state object. A state can take [transitions](./transition.html), [immediates](./immediate.html) as arguments.
 
 ```js
-import { createMachine, state, transition } from '@matthewp/robot';
+import { createMachine, state, transition } from 'robot3';
 
 const machine = createMachine({
   idle: state(
@@ -35,7 +35,7 @@ A state with no [transitions](./transition.html) or [immediates](./immediate.htm
 You might find it convenient to have a `final` function anyways. You can achieve this by aliasing `state` to final like so:
 
 ```js
-import { createMachine, state, state as final } from '@matthewp/robot';
+import { createMachine, state, state as final } from 'robot3';
 
 const machine = createMachine({
   pending: state(

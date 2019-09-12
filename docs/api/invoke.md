@@ -18,7 +18,7 @@ __Table of Contents__
 When the invoker resolves the [service](./interpret.html) will send the `done` event. The arguments to `invoke` can be any of the same things as [state](./state.html), but will mostly be [transitions](./transition.html).
 
 ```js
-import { createMachine, immediate, invoke, reduce, state, transition } from '@matthewp/robot';
+import { createMachine, immediate, invoke, reduce, state, transition } from 'robot3';
 
 async function loadUsers() {
   return [ { id: 1, name: 'Wilbur' } ];
@@ -45,7 +45,7 @@ const machine = createMachine({
 Robot will wait for another Promise-returning function to complete before firing the `done` event. Not that it must be a *function*, not a promise itself. So if you have an existing promise you can wrap a function around it like so:
 
 ```js
-import { creatMachine, invoke, state, transition } from '@matthewp/robot';
+import { creatMachine, invoke, state, transition } from 'robot3';
 import loadStuff from './important-stuff.js';
 
 const promise = loadStuff();
@@ -65,7 +65,7 @@ Robot can also invoke other __machines__. This can be a useful way to separate c
 When [interpreting](./interpret.html) a machine and a child machine is invoked, the [onChange callback](./interpret.html#onchange) is invoked with the child service like so:
 
 ```js
-import { createMachine, invoke, reduce, state, state as final, transition } from '@matthewp/robot';
+import { createMachine, invoke, reduce, state, state as final, transition } from 'robot3';
 
 const inputMachine = createMachine({
   idle: state(
@@ -121,7 +121,7 @@ The event includes a `data` property that contains the data from the resolved Pr
 Use a [reducer](./reduce.html) to capture the `data` and store the result on the [machine context](./createMachine#context).
 
 ```js
-import { createMachine, invoke, reduce, state, transition } from '@matthewp/robot';
+import { createMachine, invoke, reduce, state, transition } from 'robot3';
 
 const machine = createMachine({
   start: invoke(loadTodos,
@@ -149,7 +149,7 @@ The event includes an `error` property which is the [Error](https://developer.mo
 Use [reducers](./reduce.html) to save the error to your machine context, if you wish to present the error to the user.
 
 ```js
-import { createMachine, invoke, reduce, state, transition } from '@matthewp/robot';
+import { createMachine, invoke, reduce, state, transition } from 'robot3';
 
 const loadTodos = () => Promise.reject("Sorry but you can't do that");
 
