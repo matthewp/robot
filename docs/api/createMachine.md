@@ -15,7 +15,7 @@ __Table of Contents__
 This is a common example that provides 2 states and a [context](#context)
 
 ```js
-import { createMachine, state } from '@matthewp/robot';
+import { createMachine, state } from 'robot3';
 
 const context = () => ({
   first: 'Wilbur',

@@ -12,7 +12,7 @@ __reduce__ takes a reducer function for changing the [context](#createMachine) o
 In this example are implementing a login form that sets the `login` and `password` properties on the context.
 
 ```js
-import { createMachine, reduce, state, transition } from '@matthewp/robot';
+import { createMachine, reduce, state, transition } from 'robot3';
 
 const machine = createMachine({
   idle: state(

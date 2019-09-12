@@ -1,11 +1,12 @@
 {
-  "name": "@matthewp/robot",
+  "name": "robot3",
   "version": "0.1.0",
-  "description": "A small Finite State Machine library",
+  "description": "A function, immutable Finite State Machine library",
   "main": "machine.js",
   "module": "machine.js",
   "type": "module",
   "files": [
+    "debug.js",
     "machine.js"
   ],
   "scripts": {
@@ -16,7 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/matthewp/robot.git"
   },
-  "keywords": [],
+  "keywords": ["Finite State Machine"],
   "author": "Matthew Phillips <matthew@matthewphillips.info>",
   "license": "BSD-2-Clause",
   "bugs": {

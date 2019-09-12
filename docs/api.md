@@ -24,20 +24,20 @@ __Table of Contents__
 
 Robot does not verify the correct of the state machines you create by default. This is for bundle size purposes; in production you wouldn't want your machines to throw, and this code takes up valuable space.
 
-Instead debugging messages are provided by the __debug module__, `@matthewp/robot/debug`. Simply import the module anywhere before you call `createMachine`.
+Instead debugging messages are provided by the __debug module__, `robot3/debug`. Simply import the module anywhere before you call `createMachine`.
 
 A common pattern is to have a `dev.js` that imports the debug module and your main. This way the `dev.js` is not included in your production build.
 
 __dev.js__
 
 ```js
-import '@matthewp/robot/debug';
+import 'robot3/debug';
 import './main.js';
 ```
 
 Or if you're using web modules then include a script tag before your main:
 
 ```html
-<script type="module" src="https://unpkg.com/@matthewp/robot/debug"></script>
+<script type="module" src="https://unpkg.com/robot3/debug"></script>
 <script type="module" src="./main.js"></script>
 ```

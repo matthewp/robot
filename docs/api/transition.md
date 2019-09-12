@@ -14,7 +14,7 @@ Optionally you can add [guards](#guard) and [reducers](#reduce) to transitions. 
 Transitions are *always* a child of either [state](#state) or [invoke](#invoke) types. Here's a typical transition from one state to another:
 
 ```js
-import { createMachine, state, transition } from '@matthewp/robot';
+import { createMachine, state, transition } from 'robot3';
 
 const machine = createMachine({
   sleep: state(
@@ -29,7 +29,7 @@ const machine = createMachine({
 And similarly when used with an [invoke](#invoke) state:
 
 ```js
-import { createMachine, invoke, state, transition } from '@matthewp/robot';
+import { createMachine, invoke, state, transition } from 'robot3';
 import { loadUsers } from './api.js';
 
 const machine = createMachine({
@@ -46,7 +46,7 @@ const machine = createMachine({
 There can be __multiple transitions__ for the same event, in which case the first will be chosen if its [guards](#guard) pass:
 
 ```js
-import { createMachine, guard, state, transition } from '@matthewp/robot';
+import { createMachine, guard, state, transition } from 'robot3';
 
 const machine = createMachine({
   shopping: state(

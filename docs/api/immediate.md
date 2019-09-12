@@ -10,7 +10,7 @@ permalink: api/immediate.html
 An __immediate__ is a type of transition that occurs immediate; it doesn't wait for an event to proceed. This is a state that immediate proceeds to the next:
 
 ```js
-import { createMachine, reduce, state, transition } from '@matthewp/robot';
+import { createMachine, reduce, state, transition } from 'robot3';
 
 const machine = createMachine({
   breakfast: state(
@@ -23,7 +23,7 @@ const machine = createMachine({
 Typically an immediate is used in conjunction with a [guard](./guard.html) or [reducer](./reduce.html). A common pattern is to have an intermediate state that uses immediates and guards to determine which next state should be proceeded to. I use this pattern often with *validation*:
 
 ```js
-import { createMachine, reduce, state, transition } from '@matthewp/robot';
+import { createMachine, reduce, state, transition } from 'robot3';
 
 const machine = createMachine({
   idle: state(

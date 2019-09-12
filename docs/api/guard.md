@@ -10,7 +10,7 @@ permalink: api/guard.html
 A __guard__ is a method that determines if a transition can proceed. Returning `true` allows the transition to occur, returning `false` prevents it from doing so and leaves the state in its current place.
 
 ```js
-import { createMachine, guard, state, transition } from '@matthewp/robot';
+import { createMachine, guard, state, transition } from 'robot3';
 
 // Only allow submission of a login and password is entered.
 function canSubmit(ctx) {

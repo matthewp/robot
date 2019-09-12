@@ -13,7 +13,7 @@ __Table of Contents__
 The __interpret__ function takes a [machine](./createMachine.html) and creates a `service` that can send events into the machine, changing its states. A service *does not* mutate a machine, but rather creates derived machines with the current state set.
 
 ```js
-import { createMachine, interpret, state, transition } from '@matthewp/robot';
+import { createMachine, interpret, state, transition } from 'robot3';
 
 const machine = createMachine({
   asleep: state(

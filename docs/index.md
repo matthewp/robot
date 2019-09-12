@@ -14,7 +14,7 @@ With __Robot__ you can build [finite state machines](https://brilliant.org/wiki/
 Here's the classic stoplight example state machine using Robot:
 
 ```js
-import { createMachine, interpret, state, transition } from '@matthewp/robot';
+import { createMachine, interpret, state, transition } from 'robot3';
 
 let machine = createMachine({
   red: state(
