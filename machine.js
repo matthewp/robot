@@ -45,7 +45,7 @@ function extractActions(args) {
   return [guards, reducers];
 }
 
-const transitionType = {};
+let transitionType = {};
 export function transition(from, to, ...args) {
   let [guards, reducers] = extractActions(args);
   return create(transitionType, {
@@ -56,7 +56,7 @@ export function transition(from, to, ...args) {
   });
 }
 
-const immediateType = {};
+let immediateType = {};
 export function immediate(to, ...args) {
   let [guards, reducers] = extractActions(args);
   return create(immediateType, {
@@ -79,11 +79,12 @@ function transitionsToMap(transitions) {
   return m;
 }
 
-const stateType = { enter: identity };
+let stateType = { enter: identity };
 export function state(...args) {
   let transitions = filter(transitionType, args);
   let immediates = filter(immediateType, args);
   let desc = {
+    final: valueEnumerable(args.length === 0),
     transitions: valueEnumerable(transitionsToMap(transitions))
   };
   if(immediates.length) {
@@ -101,9 +102,21 @@ let invokeType = {
     return machine;
   }
 };
+function machineToPromise(machine) {
+  return function() {
+    return new Promise((resolve, reject) => {
+      this.child = interpret(machine, s => {
+        this.onChange(s);
+        if(s.machine.state.value.final) {
+          resolve(s.context);
+        }
+      });
+    });
+  };
+}
 export function invoke(fn, ...transitions) {
   return create(invokeType, {
-    fn: valueEnumerable(fn),
+    fn: valueEnumerable(machine.isPrototypeOf(fn) ? machineToPromise(fn) : fn),
     transitions: valueEnumerable(transitionsToMap(transitions))
   });
 }
