@@ -7,7 +7,10 @@ permalink: api/invoke.html
 
 # invoke
 
-A special type of [state](./state.html) that immediately invokes a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)-returning function.
+__Table of Contents__
+@[toc]
+
+A special type of [state](./state.html) that immediately invokes a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)-returning function or another [machine](./createMachine.html).
 
 __Table of Contents__
 @[toc]
@@ -35,6 +38,65 @@ const machine = createMachine({
   ),
   error: state()
 })
+```
+
+## Promises
+
+Robot will wait for another Promise-returning function to complete before firing the `done` event. Not that it must be a *function*, not a promise itself. So if you have an existing promise you can wrap a function around it like so:
+
+```js
+import { creatMachine, invoke, state, transition } from '@matthewp/robot';
+import loadStuff from './important-stuff.js';
+
+const promise = loadStuff();
+
+const machine = createMachine({
+  loading: invoke(() => promise,
+    transition('done', 'next')
+  ),
+  next: state()
+})
+```
+
+## Machines
+
+Robot can also invoke other __machines__. This can be a useful way to separate concerns. Child machines can be invoked to do tasks not within the scope of the parent machine.
+
+When [interpreting](./interpret.html) a machine and a child machine is invoked, the [onChange callback](./interpret.html#onchange) is invoked with the child service like so:
+
+```js
+import { createMachine, invoke, reduce, state, state as final, transition } from '@matthewp/robot';
+
+const inputMachine = createMachine({
+  idle: state(
+    transition('input', 'validate')
+  ),
+  validate: state(
+    immediate('finished')
+  ),
+  finished: final()
+});
+
+const wizardMachine = createMachine({
+  step1: invoke(inputMachine,
+    transition('done', 'step2',
+      reduce((ev, ctx) => ({ ...ctx, childContext: ev.data }))
+    )
+  ),
+  step2: state() // Machine another machine here?
+});
+
+let service = interpret(wizardMachine, innerService => {
+  if(service !== innerService) {
+    // This must be the `inputMachine` service.
+  }
+});
+```
+
+Additionally the parent service will have a `child` property which is the child service. You can send it events the same way as you would any service:
+
+```js
+service.child.send('input');
 ```
 
 ## Events
