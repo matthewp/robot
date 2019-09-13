@@ -13,7 +13,7 @@ title: Lucy
 <link rel="icon" type="image/png" sizes="16x16" href="{{ '/images/favicon-16x16.png' | relUrl(page.url) }}">
 <link rel="manifest" href="{{ '/images/site.webmanifest' | relUrl(page.url) }}">
 
-<body class="home">
+<body{% if id %} id="{{ id }}"{% endif %} class="home">
 
 <header class="content container">
   <h1>🤖 Robot</h1>

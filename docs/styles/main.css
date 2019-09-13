@@ -184,3 +184,28 @@ body > footer a {
   justify-content: center;
   align-items: center;
 }
+
+#home #robot {
+  display: none;
+}
+
+#home #robot + ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 40px 0;
+}
+
+#home #robot + ul li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+/* Theme: https://www.schemecolor.com/metal-robot-color-scheme.php */
+#home #robot + ul a {
+  padding: 10px 19px;
+  background: #A8A9AD;
+  color: white;
+  box-shadow: #2A3439 0px 2px 0px;
+}
