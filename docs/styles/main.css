@@ -190,11 +190,15 @@ body > footer a {
 }
 
 #home #robot + ul {
-  display: flex;
+  display: grid;
   justify-content: center;
   list-style-type: none;
   padding: 0;
   margin: 40px 0;
+}
+
+#home #robot + ul li:first-of-type {
+  margin-bottom: .5rem;
 }
 
 #home #robot + ul li {
@@ -204,8 +208,18 @@ body > footer a {
 
 /* Theme: https://www.schemecolor.com/metal-robot-color-scheme.php */
 #home #robot + ul a {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
   padding: 10px 19px;
   background: #A8A9AD;
   color: white;
   box-shadow: #2A3439 0px 2px 0px;
 }
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  #home #robot + ul {
+    display: flex;
+  }
+} 
