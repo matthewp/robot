@@ -154,8 +154,8 @@ body > .content h2 {
   text-decoration: none;
 }
 
-.content pre {
-  font-size: 85%;
+.content pre code[class*="language-"] {
+  font-size: 80%;
 }
 
 .content code:not([class*="language-"]) {
@@ -219,6 +219,10 @@ body > footer a {
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+  .content pre code[class*="language-"] {
+    font-size: 100%;
+  }
+
   #home #robot + ul {
     display: flex;
   }
