@@ -217,6 +217,13 @@ body > footer a {
   box-shadow: #2A3439 0px 2px 0px;
 }
 
+#why-finite-state-machines + p + p + p img,
+#why-finite-state-machines + p + p + p + p + p img {
+  border: 1px solid #838996;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .content pre code[class*="language-"] {
@@ -226,4 +233,15 @@ body > footer a {
   #home #robot + ul {
     display: flex;
   }
-} 
+
+  #why-finite-state-machines + p + p + p,
+  #why-finite-state-machines + p + p + p + p + p {
+    display: flex;
+    justify-content: center;
+  }
+
+  #why-finite-state-machines + p + p + p img,
+  #why-finite-state-machines + p + p + p + p + p img {
+    width: 75%;
+  }
+}
