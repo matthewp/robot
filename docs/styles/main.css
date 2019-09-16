@@ -222,6 +222,7 @@ body > footer a {
   border: 1px solid #838996;
   border-radius: 5px;
   padding: 1rem;
+  max-width: 100%;
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
