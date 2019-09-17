@@ -185,6 +185,10 @@ body > footer a {
   align-items: center;
 }
 
+.content .api-signature:not([class*="language-"]) {
+  font-size: 130%;
+}
+
 #home #robot {
   display: none;
 }

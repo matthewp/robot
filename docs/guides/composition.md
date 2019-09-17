@@ -1,8 +1,8 @@
 ---
 layout: page.njk
 title: Composition
-tags: page
-permalink: composition.html
+tags: guide
+permalink: guides/composition.html
 ---
 
 One of the goals of Robot is to make Finite State Machines more composable. In other implementations you create a machine by constructing a large [options object](https://www.codereadability.com/what-are-javascript-options-objects/) with all of the machine's states, transitions, etc. This makes it a bit harder to reuse useful parts of the machine.
