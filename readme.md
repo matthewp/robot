@@ -21,7 +21,7 @@ const service = interpret(machine, () => {
 });
 ```
 
-## [📚 Documentation](https://thisrobot.life/)
+## 📚 [Documentation](https://thisrobot.life/)
 
 * Please star [the repository](https://github.com/matthewp/robot) on GitHub.
 * [File an issue](https://github.com/matthewp/robot/issues) if you find a bug. Or better yet...
