@@ -10,6 +10,8 @@
     "machine.js"
   ],
   "scripts": {
+    "minify": "terser machine.js -o machine.min.js",
+    "bundlesize": "npm run minify && bundlesize --config bundlesize.json",
     "server": "http-server -p 1965",
     "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000"
   },
@@ -17,7 +19,9 @@
     "type": "git",
     "url": "git+https://github.com/matthewp/robot.git"
   },
-  "keywords": ["Finite State Machine"],
+  "keywords": [
+    "Finite State Machine"
+  ],
   "author": "Matthew Phillips <matthew@matthewphillips.info>",
   "license": "BSD-2-Clause",
   "bugs": {
@@ -27,9 +31,11 @@
   "devDependencies": {
     "@11ty/eleventy": "^0.9.0",
     "@11ty/eleventy-plugin-syntaxhighlight": "^2.0.3",
+    "bundlesize": "^0.18.0",
     "http-server": "^0.11.1",
     "markdown-it": "^9.1.0",
     "markdown-it-toc-and-anchor": "^4.2.0",
-    "node-qunit-puppeteer": "^1.0.13"
+    "node-qunit-puppeteer": "^1.0.13",
+    "terser": "^4.3.1"
   }
 }
