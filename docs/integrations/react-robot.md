@@ -1,22 +1,22 @@
 ---
 layout: page.njk
-title: haunted-robot
+title: react-robot
 tags: integrations
-permalink: integrations/haunted-robot.html
+permalink: integrations/react-robot.html
 ---
 
-# haunted-robot
+# react-robot
 
 __Table of Contents__
 @[toc]
 
-The __haunted-robot__ package provides the `useMachine` hook for use with [Haunted](https://github.com/matthewp/haunted/pull/136).
+The __react-robot__ package provides the `useMachine` [hook](https://reactjs.org/docs/hooks-intro.html) for use with [React](https://reactjs.org/).
 
-```js
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { createMachine, state, transition } from 'robot3';
-import { component } from 'haunted';
-import { html } from 'lit-html';
-import { useMachine } from 'haunted-robot';
+import { useMachine } from 'react-robot';
 
 const machine = createMachine({
   off: state(
@@ -30,29 +30,31 @@ const machine = createMachine({
 function App() {
   const [current, send] = useMachine(machine);
 
-  return html`
-    <div>State: {current.name}</div>
-    <button @click=${() => send('toggle')}>
-      Toggle
-    </button>
-  `;
+  return (
+    <>
+      <div>State: {current.name}</div>
+      <button onClick={() => send('toggle')}>
+        Toggle
+      </button>
+    </>
+  );
 }
 
-customElements.define('my-app', component(App));
+ReactDOM.render(<App />, document.querySelector('#app'));
 ```
 
 ## Installation
 
-Available as `haunted-robot` on [npm](https://www.npmjs.com/package/haunted-robot):
+Available as `react-robot` on [npm](https://www.npmjs.com/package/react-robot):
 
 ```bash
-npm install haunted-robot --save
+npm install react-robot --save
 ```
 
 Or through [Yarn](https://yarnpkg.com):
 
 ```bash
-yarn add haunted-robot
+yarn add react-robot
 ```
 
 ## API
@@ -89,11 +91,11 @@ The `send` property is used to send events into the state machine:
 ```js
 const [current, send] = useMachine(machine);
 
-return html`
-  <button @click=${() => send('toggle')}>
+return (
+  <button onClick={() => send('toggle')}>
     Toggle
   </button>
-`;
+);
 ```
 
 ## License
