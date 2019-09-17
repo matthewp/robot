@@ -27,7 +27,7 @@ const machine = createMachine(
 This, and many form fields like it, follow a similar pattern:
 
 1. Listen for an event that is named the same as the property, `first` and `last` in this case.
-1. Run a [reducer](./api/reduce.html) to save the value to the [machine context](./api/createMachine.html#context).
+1. Run a [reducer](../api/reduce.html) to save the value to the [machine context](../api/createMachine.html#context).
 1. Return to the original state, `form`, to wait for the next event.
 
 We can improve this by creating a generic `field` function like so:
@@ -92,7 +92,7 @@ export const field = (prop, state, ...args) => (
 export const formField = (prop, ...args) => field(prop, 'form', ...args);
 ```
 
-And use a [guard](./api/guard.html) in our usage:
+And use a [guard](../api/guard.html) in our usage:
 
 ```js
 import { createMachine, guard, state } from 'robot3';
