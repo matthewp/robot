@@ -23,6 +23,7 @@ jobs:
       run: |
         yarn
         npm run server &
+        npm run bundlesize
         npm test
       env:
         CI: true
