@@ -3,11 +3,11 @@ import { state, transition, createMachine, guard, interpret, reduce } from './ma
 const machine = createMachine({
   idle: state(
     transition('inc', 'idle',
-      reduce((e, {count}) => ({ count: count + 1 })),
+      reduce(({count}) => ({ count: count + 1 })),
       guard(({count}) => count < 10)
     ),
     transition('dec', 'idle',
-      reduce((e, {count}) => ({ count: count - 1 })),
+      reduce(({count}) => ({ count: count - 1 })),
       guard(({count}) => count > 0)
     )
   )

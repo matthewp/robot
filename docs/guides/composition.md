@@ -15,10 +15,10 @@ import { createMachine, state, reduce, transition } from 'robot3';
 const machine = createMachine(
   form: state(
     transition('first', 'form',
-      reduce((ev, ctx) => ({ ...ctx, first: ev.event.target.value }))
+      reduce((ctx, ev) => ({ ...ctx, first: ev.event.target.value }))
     ),
     transition('last', 'form',
-      reduce((ev, ctx) => ({ ...ctx, first: ev.event.target.value }))
+      reduce((ctx, ev) => ({ ...ctx, first: ev.event.target.value }))
     )
   )
 );
@@ -37,7 +37,7 @@ import { createMachine, state, reduce, transition } from 'robot3';
 
 const field = (prop, state) => (
   transition(prop, state,
-    reduce((ev, ctx) => ({ ...ctx, [prop]: ev.event.target.value }))
+    reduce((ctx, ev) => ({ ...ctx, [prop]: ev.event.target.value }))
   )
 );
 
@@ -58,7 +58,7 @@ __transitions.js__
 ```js
 export const field = (prop, state) => (
   transition(prop, state,
-    reduce((ev, ctx) => ({ ...ctx, [prop]: ev.event.target.value }))
+    reduce((ctx, ev) => ({ ...ctx, [prop]: ev.event.target.value }))
   )
 );
 
@@ -84,7 +84,7 @@ You might find that you need a *slight* modification to how one of the transitio
 ```js
 export const field = (prop, state, ...args) => (
   transition(prop, state,
-    reduce((ev, ctx) => ({ ...ctx, [prop]: ev.event.target.value })),
+    reduce((ctx, ev) => ({ ...ctx, [prop]: ev.event.target.value })),
     ...args
   )
 );

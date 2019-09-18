@@ -1,7 +1,7 @@
 import { guard, state, transition, createMachine, interpret, reduce } from './machine.js';
 
-const setFirst = (ev, ctx) => ({ ...ctx, first: ev.target.value });
-const setLast = (ev, ctx) => ({ ...ctx, last: ev.target.value });
+const setFirst = (ctx, ev) => ({ ...ctx, first: ev.target.value });
+const setLast = (ctx, ev) => ({ ...ctx, last: ev.target.value });
 const nothingEntered = ({ first, last }) => !first && !last;
 const somethingEntered = (ctx) => !nothingEntered(ctx);
 

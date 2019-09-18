@@ -9,7 +9,7 @@ function canSubmit(ctx) {
   return !!(ctx.login && ctx.password);
 }
 
-function updateSubmissionError(ev, ctx) {
+function updateSubmissionError(ctx) {
   return {
     ...ctx,
     error: 'Missing fields'
@@ -20,18 +20,18 @@ function hasError(ctx) {
   return !!ctx.error;
 }
 
-function clearError(ev, ctx) {
+function clearError(ctx) {
   return { ...ctx, error: '' };
 }
 
-function setLogin({ event }, ctx) {
+function setLogin(ctx, { event }) {
   return {
     ...ctx,
     login: event.target.value
   };
 }
 
-function setPassword({ event }, ctx) {
+function setPassword(ctx, { event }) {
   return {
     ...ctx,
     password: event.target.value

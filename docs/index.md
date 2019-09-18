@@ -94,7 +94,7 @@ const machine = createMachine({
   ),
   loading: invoke(loadUsers,
     transition('done', 'loaded',
-      reduce((ev, ctx) => ({ ...ctx, users: ev.data }))
+      reduce((ctx, ev) => ({ ...ctx, users: ev.data }))
     )
   ),
   loaded: state()
@@ -199,12 +199,12 @@ const machine = createMachine({
   preview: state(
     transition('edit', 'editMode'
       // Save the current title as oldTitle so we can reset later.
-      reduce((ev, ctx) => ({ ...ctx, oldTitle: ctx.title }))
+      reduce(ctx => ({ ...ctx, oldTitle: ctx.title }))
     )
   ),
   editMode: state(
     transition('input', 'editMode'
-      reduce((ev, ctx) => ({ ...ctx, title: ev.target.value }))
+      reduce((ctx, ev) => ({ ...ctx, title: ev.target.value }))
     ),
     transition('cancel', 'cancel'),
     transition('save', 'validate')
@@ -212,7 +212,7 @@ const machine = createMachine({
   cancel: state(
     immediate('preview',
       // Reset the title back to oldTitle
-      reduce((ev, ctx) => ({ ...ctx, title: ctx.oldTitle })
+      reduce(ctx => ({ ...ctx, title: ctx.oldTitle })
     )
   ),
   validate: state(

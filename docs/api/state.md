@@ -22,7 +22,7 @@ const machine = createMachine({
 
   input: state(
     immediate('idle',
-      reduce((ev, ctx) => ({ ...ctx, first: ev.target.value }))
+      reduce((ctx, ev) => ({ ...ctx, first: ev.target.value }))
     )
   )
 });

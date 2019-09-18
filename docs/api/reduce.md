@@ -17,10 +17,10 @@ import { createMachine, reduce, state, transition } from 'robot3';
 const machine = createMachine({
   idle: state(
     transition('login', 'idle',
-      reduce((ev, ctx) => ({ ...ctx, login: ev.target.value }))
+      reduce((ctx, ev) => ({ ...ctx, login: ev.target.value }))
     ),
     transition('password', 'idle',
-      reduce((ev, ctx) => ({ ...ctx, password: ev.target.value }))
+      reduce((ctx, ev) => ({ ...ctx, password: ev.target.value }))
     ),
     transition('submit', 'complete')
   ),
