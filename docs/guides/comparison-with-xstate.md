@@ -99,7 +99,7 @@ import { createMachine, reduce, state, transition } from 'robot3';
 const machine = createMachine({
   idle: state(
     transition('inc', 'idle',
-      reduce((ev, ctx) => ({ ...ctx, count: ctx.count + 1 }))
+      reduce(ctx => ({ ...ctx, count: ctx.count + 1 }))
     )
   )
 });

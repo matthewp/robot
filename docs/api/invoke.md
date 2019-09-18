@@ -30,10 +30,10 @@ const machine = createMachine({
   ),
   loading: invoke(loadUsers,
     transition('done', 'idle',
-      reduce((ev, ctx) => ({ ...ctx, user: ev.data }))
+      reduce((ctx, ev) => ({ ...ctx, user: ev.data }))
     ),
     transition('error', 'error',
-      reduce((ev, ctx) => ({ ...ctx, error: ev.error }))
+      reduce((ctx, ev) => ({ ...ctx, error: ev.error }))
     )
   ),
   error: state()
@@ -80,7 +80,7 @@ const inputMachine = createMachine({
 const wizardMachine = createMachine({
   step1: invoke(inputMachine,
     transition('done', 'step2',
-      reduce((ev, ctx) => ({ ...ctx, childContext: ev.data }))
+      reduce((ctx, ev) => ({ ...ctx, childContext: ev.data }))
     )
   ),
   step2: state() // Machine another machine here?
@@ -126,7 +126,7 @@ import { createMachine, invoke, reduce, state, transition } from 'robot3';
 const machine = createMachine({
   start: invoke(loadTodos,
     transition('done', 'loaded',
-      reduce((ev, ctx) => ({ ...ctx, todo: ev.data }))
+      reduce((ctx, ev) => ({ ...ctx, todo: ev.data }))
     )
   ),
   loaded: state()
@@ -156,7 +156,7 @@ const loadTodos = () => Promise.reject("Sorry but you can't do that");
 const machine = createMachine({
   start: invoke(loadTodos,
     transition('error', 'error',
-      reduce((ev, ctx) => ({ ...ctx, error: ev.error }))
+      reduce((ctx, ev) => ({ ...ctx, error: ev.error }))
     )
   ),
   error: state()

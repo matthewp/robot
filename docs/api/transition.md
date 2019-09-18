@@ -38,7 +38,7 @@ const machine = createMachine({
   )
   loading: invoke(loadUsers,
     transition('done', 'show',
-      reduce((ev, ctx) => ({ ...ctx, users: ev.data })))
+      reduce((ctx, ev) => ({ ...ctx, users: ev.data })))
   )
 }, () => ({ users: [] }));
 ```

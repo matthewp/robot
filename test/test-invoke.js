@@ -8,7 +8,7 @@ QUnit.module('Invoke', hooks => {
       one: state(transition('click', 'two')),
       two: invoke(() => Promise.resolve(13),
         transition('done', 'three',
-          reduce((ev, ctx) => ({ ...ctx, age: ev.data }))
+          reduce((ctx, ev) => ({ ...ctx, age: ev.data }))
         )
       ),
       three: state()
@@ -26,7 +26,7 @@ QUnit.module('Invoke', hooks => {
       one: state(transition('click', 'two')),
       two: invoke(() => Promise.reject(new Error('oh no')),
         transition('error', 'three',
-          reduce((ev, ctx) => ({ ...ctx, error: ev.error }))
+          reduce((ctx, ev) => ({ ...ctx, error: ev.error }))
         )
       ),
       three: state()
@@ -41,7 +41,7 @@ QUnit.module('Invoke', hooks => {
   QUnit.test('The initial state can be an invoke', async assert => {
     let machine = createMachine({
       one: invoke(() => Promise.resolve(2),
-        transition('done', 'two', reduce((ev, ctx) => ({...ctx, age: ev.data})))
+        transition('done', 'two', reduce((ctx, ev) => ({...ctx, age: ev.data})))
       ),
       two: state()
     }, () => ({ age: 0 }));

@@ -21,7 +21,7 @@ const machine = createMachine({
   ),
   loading: invoke(loadUsers,
     transition('done', 'loaded',
-      reduce((ev, ctx) => ({ ...ctx, users: ev.data }))
+      reduce((ctx, ev) => ({ ...ctx, users: ev.data }))
     )
   ),
   loaded: state()

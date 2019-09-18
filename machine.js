@@ -10,9 +10,8 @@ export let d = {};
 let truthy = () => true;
 let empty = () => ({});
 let identity = a => a;
-let identity2 = (a, b) => b;
 let callBoth = (par, fn, self, args) => par.apply(self, args) && fn.apply(self, args);
-let callForward = (par, fn, self, [a, b]) => fn.call(self, a, par.call(self, a, b));
+let callForward = (par, fn, self, [a, b]) => fn.call(self, par.call(self, a, b), b);
 let create = (a, b) => Object.freeze(Object.create(a, b));
 
 function stack(fns, def, caller) {
@@ -27,9 +26,6 @@ function fnType(fn) {
   return create(this, { fn: valueEnumerable(fn) });
 }
 
-let actionType = {};
-export let action = fnType.bind(actionType);
-
 let reduceType = {};
 export let reduce = fnType.bind(reduceType);
 
@@ -42,7 +38,7 @@ function filter(Type, arr) {
 
 function extractActions(args) {
   let guards = stack(filter(guardType, args).map(t => t.fn), truthy, callBoth);
-  let reducers = stack(filter(reduceType, args).map(t => t.fn), identity2, callForward);
+  let reducers = stack(filter(reduceType, args).map(t => t.fn), identity, callForward);
   return [guards, reducers];
 }
 
@@ -105,7 +101,7 @@ let invokeType = {
 };
 function machineToPromise(machine) {
   return function() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.child = interpret(machine, s => {
         this.onChange(s);
         if(s.machine.state.value.final) {
@@ -130,11 +126,11 @@ let machine = {
     };
   }
 };
-export function createMachine(states, contextFn) {
+export function createMachine(states, contextFn = empty) {
   if(d._create) d._create(states);
   let current = Object.keys(states)[0];
   return create(machine, {
-    context: valueEnumerable(contextFn || empty),
+    context: valueEnumerable(contextFn),
     current: valueEnumerable(current),
     states: valueEnumerable(states)
   });
@@ -144,7 +140,7 @@ function transitionTo(service, fromEvent, candidates) {
   let { machine, context } = service;
   for(let { to, guards, reducers } of candidates) {  
     if(guards(context)) {
-      service.context = reducers.call(service, fromEvent, context);
+      service.context = reducers.call(service, context, fromEvent);
 
       let original = machine.original || machine;
       let newMachine = create(original, {
@@ -177,6 +173,7 @@ let service = {
     this.onChange(this);
   }
 };
+
 export function interpret(machine, onChange) {
   let s = Object.create(service, {
     machine: valueEnumerableWritable(machine),
@@ -186,4 +183,4 @@ export function interpret(machine, onChange) {
   s.send = s.send.bind(s);
   s.machine = s.machine.state.value.enter(s.machine, s, {});
   return s;
-}
+} 
