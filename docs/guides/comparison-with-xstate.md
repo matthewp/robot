@@ -264,6 +264,7 @@ Robot includes the following integrations with view libraries:
 * [React](../integrations/react-robot.html)
 * [Preact](../integrations/preact-robot.html)
 * [Haunted](../integrations/haunted-robot.html)
+* [LitElement](../integrations/lit-robot.html)
 
 XState has the following:
 
