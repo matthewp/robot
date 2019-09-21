@@ -126,6 +126,30 @@ render() {
 }
 ```
 
+## Setting the element on context
+
+Some times you might want to perform side-effects on the element instance within a state machine. The best way to do that is to have the element on the context object. The context function receives an event that contains an `element` property. Use that to establish your initial context:
+
+```js
+import { createMachine, state } from 'robot3';
+import { Robot } from 'lit-robot';
+import { LitElement } from 'lit-element';
+
+const context = ev => ({
+  element: ev.element
+});
+
+const machine = createMachine({
+  idle: state()
+}, context);
+
+class MyApp extends Robot(LitElement) {
+  static machine = machine;
+}
+
+customElements.define('my-app', MyApp);
+```
+
 ## License
 
 [BSD 2-Clause](https://opensource.org/licenses/BSD-2-Clause)
