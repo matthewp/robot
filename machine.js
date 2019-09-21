@@ -174,10 +174,10 @@ let service = {
   }
 };
 
-export function interpret(machine, onChange) {
+export function interpret(machine, onChange, event) {
   let s = Object.create(service, {
     machine: valueEnumerableWritable(machine),
-    context: valueEnumerableWritable(machine.context()),
+    context: valueEnumerableWritable(machine.context(event)),
     onChange: valueEnumerable(onChange)
   });
   s.send = s.send.bind(s);
