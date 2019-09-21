@@ -1,4 +1,4 @@
-import { createMachine, interpret, invoke, reduce, state, state as final, transition } from '../machine.js';
+import { createMachine, immediate, interpret, invoke, reduce, state, state as final, transition } from '../machine.js';
 
 QUnit.module('Invoke', hooks => {
   QUnit.module('Promise');
@@ -90,5 +90,50 @@ QUnit.module('Invoke', hooks => {
     service.child.send('go');
     await Promise.resolve();
     assert.equal(c, 3, 'there were 3 transitions');
+  });
+
+  QUnit.test('Child machines receive events from their parents', async assert => {
+    const action = fn =>
+    reduce((ctx, ev) => {
+      fn(ctx, ev);
+      return ctx;
+    });
+  
+    const wait = ms => () => new Promise(resolve => setTimeout(resolve, ms));
+  
+    const child = createMachine({
+      init: state(
+        immediate('waiting',
+          action(ctx => {
+            ctx.stuff.push(1);
+          })
+        )
+      ),
+      waiting: invoke(
+        wait(50),
+        transition('done', 'fin',
+          action(ctx => {
+            ctx.stuff.push(2);
+          })
+        )
+      ),
+      fin: state()
+    }, ctx => ctx);
+  
+    const machine = createMachine(
+      {
+        idle: state(transition("next", "child")),
+        child: invoke(child, transition("done", "end")),
+        end: state()
+      },
+      () => ({ stuff: [] })
+    );
+
+    let service = interpret(machine, () => {});
+    service.send('next');
+
+    await wait(50)();
+
+    assert.deepEqual(service.context.stuff, [1, 2]);
   });
 });

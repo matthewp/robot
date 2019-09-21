@@ -100,14 +100,14 @@ let invokeType = {
   }
 };
 function machineToPromise(machine) {
-  return function() {
+  return function(ctx, ev) {
     return new Promise(resolve => {
       this.child = interpret(machine, s => {
         this.onChange(s);
         if(s.machine.state.value.final) {
           resolve(s.context);
         }
-      });
+      }, ctx, ev);
     });
   };
 }
@@ -174,13 +174,13 @@ let service = {
   }
 };
 
-export function interpret(machine, onChange, event) {
+export function interpret(machine, onChange, initialContext, event) {
   let s = Object.create(service, {
     machine: valueEnumerableWritable(machine),
-    context: valueEnumerableWritable(machine.context(event)),
+    context: valueEnumerableWritable(machine.context(initialContext)),
     onChange: valueEnumerable(onChange)
   });
   s.send = s.send.bind(s);
-  s.machine = s.machine.state.value.enter(s.machine, s, {});
+  s.machine = s.machine.state.value.enter(s.machine, s, event);
   return s;
 } 
