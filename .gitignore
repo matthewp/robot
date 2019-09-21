@@ -2,3 +2,4 @@ node_modules/
 _site/
 .DS_Store
 machine.min.js
+dist/
