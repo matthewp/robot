@@ -120,7 +120,7 @@ function App() {
 
       ): ()}
 
-      <button onClick={()} disabled={disableButton}>
+      <button onClick={() => send('fetch')} disabled={disableButton}>
         Load users
       </button>
     </>
