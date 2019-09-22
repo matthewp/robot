@@ -197,13 +197,13 @@ import { createMachine, guard, immediate, invoke, state, transition } from 'robo
 
 const machine = createMachine({
   preview: state(
-    transition('edit', 'editMode'
+    transition('edit', 'editMode',
       // Save the current title as oldTitle so we can reset later.
       reduce(ctx => ({ ...ctx, oldTitle: ctx.title }))
     )
   ),
   editMode: state(
-    transition('input', 'editMode'
+    transition('input', 'editMode',
       reduce((ctx, ev) => ({ ...ctx, title: ev.target.value }))
     ),
     transition('cancel', 'cancel'),
