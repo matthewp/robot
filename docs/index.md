@@ -62,7 +62,7 @@ Robot emphasizes:
 Install the `robot3` package via [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com):
 
 ```bash
-npm install robot3 --dev
+npm install robot3
 ```
 
 ```bash
