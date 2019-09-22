@@ -89,9 +89,7 @@ let service = interpret(currentMachine, () => {
 
 ## Updating context
 
-In XState the context object is updated through a special [assign](https://xstate.js.org/docs/guides/context.html#updating-context-with-assign) operator. It takes an object with key names and an updater function.
-
-Originally I implemented assign in Robot. But due to familiarity with reducers from [Redux](https://redux.js.org/) and elsewhere it seemed limiting to have `assign` which updates only 1 specific key. Reducers work just as well, and are more flexible.
+In Robot the context is updated using [reduce](../api/reduce.html), which is similar to how state is managed in [Redux](https://redux.js.org/).
 
 ```js
 import { createMachine, reduce, state, transition } from 'robot3';
@@ -103,6 +101,12 @@ const machine = createMachine({
     )
   )
 });
+```
+
+In XState the context object is updated through a special [assign](https://xstate.js.org/docs/guides/context.html#updating-context-with-assign) operator. It can work like reduce, but also can take a key to update only 1 value on the context, leaving the others alone.
+
+```js
+assign({ count: (ctx, ev) => ctx.count + 1 })
 ```
 
 ## Parallel states
@@ -256,6 +260,16 @@ const machine = createMachine({
   red: light('green', 2000)
 })
 ```
+
+## Visualization
+
+XState comes with a [visualizer tool](https://xstate.js.org/viz/) that gives a visual representation of the state machine, and allows you to step through various states and see what the intermediate states look like. Some find this to be a useful way to get the big picture of how the state machine operates. Robot does not have a visualization tool at this time.
+
+## Spec Conformity
+
+XState conforms to the [SCXML](https://www.w3.org/TR/scxml/) specification. Conforming to a standard has the advantage that it is theoretically possible to import and export the XML so that a single machine can be used in multiple languages.
+
+Robot does not conform to the SCXML spec, but rather is inspired by many of the features it includes. I don't believe that reusing machines across languages is very compelling and am focused on the use-cases within web applications.
 
 ## Integrations
 
