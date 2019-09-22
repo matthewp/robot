@@ -15,7 +15,8 @@
     "bundlesize": "npm run minify && bundlesize --config bundlesize.json",
     "server": "http-server -p 1965",
     "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
-    "build": "rollup -d dist -f cjs machine.js debug.js"
+    "build": "rollup -d dist -f cjs machine.js debug.js",
+    "preversion": "npm run build"
   },
   "repository": {
     "type": "git",
