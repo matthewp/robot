@@ -2,10 +2,11 @@
   "name": "robot3",
   "version": "0.2.2",
   "description": "A function, immutable Finite State Machine library",
-  "main": "machine.js",
+  "main": "dist/machine.js",
   "module": "machine.js",
   "type": "module",
   "files": [
+    "dist/",
     "debug.js",
     "machine.js"
   ],
@@ -13,7 +14,9 @@
     "minify": "terser machine.js -o machine.min.js",
     "bundlesize": "npm run minify && bundlesize --config bundlesize.json",
     "server": "http-server -p 1965",
-    "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000"
+    "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
+    "build": "rollup -d dist -f cjs machine.js debug.js",
+    "preversion": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -36,6 +39,7 @@
     "markdown-it": "^9.1.0",
     "markdown-it-toc-and-anchor": "^4.2.0",
     "node-qunit-puppeteer": "^1.0.13",
+    "rollup": "^1.21.4",
     "terser": "^4.3.1"
   }
 }
