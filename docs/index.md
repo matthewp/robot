@@ -193,7 +193,7 @@ function resetState() {
 Robot is a Finite State Machine library meant to be simple, functional, and fun. With Robot you might represent this title component like so:
 
 ```js
-import { createMachine, guard, immediate, invoke, state, transition } from 'robot3';
+import { createMachine, guard, immediate, invoke, state, transition, reduce } from 'robot3';
 
 const machine = createMachine({
   preview: state(
@@ -221,8 +221,8 @@ const machine = createMachine({
     immediate('save', guard(titleIsValid)),
     immediate('editMode')
   )
-  save: invoke(saveTitle
-    transition('done', 'preview')
+  save: invoke(saveTitle,
+    transition('done', 'preview'),
     transition('error', 'error')
   ),
   error: state(
