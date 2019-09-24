@@ -136,4 +136,34 @@ QUnit.module('Invoke', hooks => {
 
     assert.deepEqual(service.context.stuff, [1, 2]);
   });
+
+  QUnit.test('matches() matches the state', async assert => {
+    const child = createMachine({
+      alpha: state(
+        transition('next', 'beta')
+      ),
+      beta: state()
+    });
+    const parent = createMachine({
+      one: state(
+        transition('next', 'two')
+      ),
+      two: invoke(child,
+        transition('done', 'three')
+      ),
+      three: state()
+    });
+
+    let service = interpret(parent, () => {});
+    assert.equal(service.matches('one'), true, 'is the first state');
+    assert.equal(service.matches('two.alpha'), false, 'not in the child state');
+
+    service.send('next');
+    assert.equal(service.matches('two'), true, 'is in the two state');
+    assert.equal(service.matches('two.alpha'), true, 'in the alpha state');
+
+    service.child.send('next');
+    //await Promise.resolve();
+    assert.equal(service.matches('three'), true, 'In the last state');
+  });
 });
