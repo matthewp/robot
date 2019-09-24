@@ -99,21 +99,23 @@ let invokeType = {
     return machine;
   }
 };
-function machineToPromise(machine) {
-  return function(ctx, ev) {
-    return new Promise(resolve => {
+const machineToThen = machine => function(ctx, ev) {
+  return {
+    then: resolve => {
       this.child = interpret(machine, s => {
         this.onChange(s);
         if(s.machine.state.value.final) {
+          delete this.child;
           resolve(s.context);
         }
       }, ctx, ev);
-    });
+      return { catch: identity };
+    }
   };
-}
+};
 export function invoke(fn, ...transitions) {
   return create(invokeType, {
-    fn: valueEnumerable(machine.isPrototypeOf(fn) ? machineToPromise(fn) : fn),
+    fn: valueEnumerable(machine.isPrototypeOf(fn) ? machineToThen(fn) : fn),
     transitions: valueEnumerable(transitionsToMap(transitions))
   });
 }

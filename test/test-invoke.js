@@ -88,7 +88,6 @@ QUnit.module('Invoke', hooks => {
     });
     service.send('go');
     service.child.send('go');
-    await Promise.resolve();
     assert.equal(c, 3, 'there were 3 transitions');
   });
 
@@ -135,5 +134,26 @@ QUnit.module('Invoke', hooks => {
     await wait(50)();
 
     assert.deepEqual(service.context.stuff, [1, 2]);
+  });
+
+  QUnit.test('Service does not have a child when not in an invoked state', assert => {
+    const child = createMachine({
+      nestedOne: state(
+        transition('next', 'nestedTwo')
+      ),
+      nestedTwo: state()
+    });
+    const parent = createMachine({
+      one: invoke(child,
+        transition('done', 'two')
+      ),
+      two: state()
+    });
+
+    let service = interpret(parent, () => {});
+    assert.ok(service.child, 'there is a child service');
+
+    service.child.send('next');
+    assert.notOk(service.child, 'No longer a child');
   });
 });
