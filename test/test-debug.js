@@ -27,3 +27,14 @@ QUnit.test('Does not error for transitions to states when state does exist', ass
     assert.ok(false, 'Should not have errored');
   }
 });
+
+QUnit.test('Errors if an invalid initial state is provided', assert => {
+  try {
+    createMachine('oops', {
+      one: state()
+    });
+    assert.ok(false, 'should have failed');
+  } catch(e) {
+    assert.ok(true, 'it errored');
+  }
+});

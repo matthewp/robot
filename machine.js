@@ -128,9 +128,14 @@ let machine = {
     };
   }
 };
-export function createMachine(states, contextFn = empty) {
-  if(d._create) d._create(states);
-  let current = Object.keys(states)[0];
+
+export function createMachine(current, states, contextFn = empty) {
+  if(typeof current !== 'string') {
+    contextFn = states || empty;
+    states = current;
+    current = Object.keys(states)[0];
+  }
+  if(d._create) d._create(current, states);
   return create(machine, {
     context: valueEnumerable(contextFn),
     current: valueEnumerable(current),
