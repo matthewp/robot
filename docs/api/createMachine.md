@@ -29,6 +29,26 @@ const machine = createMachine({
 }, context);
 ```
 
+## [initial]
+
+Optionally can provide the initial state as the first argument. If no initial state is provided then the first state listed will be the initial state.
+
+```js
+const toggleMachine = initial => createMachine(initial, {
+  active: state(
+    transition('toggle', 'inactive')
+  ),
+  inactive: state(
+    transition('toggle', 'active')
+  )
+});
+
+const myMachine = toggleMachine('inactive');
+const service = interpret(myMachine, () => {});
+
+console.log(service.machine.current, 'inactive');
+```
+
 ## states
 
 An object of states, where each key is a state name, and the values are one of [state](./state.html) or [invoke](./invoke.html).

@@ -32,4 +32,23 @@ QUnit.module('States', hooks => {
 
     assert.equal(service.context.foo, 'bar', 'works!');
   });
+
+  QUnit.test('First argument sets the initial state', assert => {
+    let machine = createMachine('two', {
+      one: state(transition('next', 'two')),
+      two: state(transition('next', 'three')),
+      three: state()
+    });
+
+    let service = interpret(machine, () => {});
+    assert.equal(service.machine.current, 'two', 'in the initial state');
+
+    machine = createMachine('two', {
+      one: state(transition('next', 'two')),
+      two: state(),
+    });
+    service = interpret(machine, () => {});
+    assert.equal(service.machine.current, 'two', 'in the initial state');
+    assert.equal(service.machine.state.value.final, true, 'in the final state');
+  });
 });
