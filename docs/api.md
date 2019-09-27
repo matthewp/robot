@@ -16,6 +16,7 @@ __Table of Contents__
     * [transition](./api/transition.html)
       * [guard](./api/guard.html)
       * [reduce](./api/reduce.html)
+      * [action](./api/action.html)
     * [immediate](./api/immediate.html)
   * [invoke](./api/invoke.html)
 * [interpret](./api/interpret.html)

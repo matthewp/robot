@@ -28,6 +28,7 @@ function fnType(fn) {
 
 let reduceType = {};
 export let reduce = fnType.bind(reduceType);
+export let action = fn => reduce((ctx, ev) => { fn(ctx, ev); return ctx; });
 
 let guardType = {};
 export let guard = fnType.bind(guardType);
@@ -36,16 +37,10 @@ function filter(Type, arr) {
   return arr.filter(value => Type.isPrototypeOf(value));
 }
 
-function extractActions(args) {
+function makeTransition(from, to, ...args) {
   let guards = stack(filter(guardType, args).map(t => t.fn), truthy, callBoth);
   let reducers = stack(filter(reduceType, args).map(t => t.fn), identity, callForward);
-  return [guards, reducers];
-}
-
-let transitionType = {};
-export function transition(from, to, ...args) {
-  let [guards, reducers] = extractActions(args);
-  return create(transitionType, {
+  return create(this, {
     from: valueEnumerable(from),
     to: valueEnumerable(to),
     guards: valueEnumerable(guards),
@@ -53,15 +48,10 @@ export function transition(from, to, ...args) {
   });
 }
 
+let transitionType = {};
 let immediateType = {};
-export function immediate(to, ...args) {
-  let [guards, reducers] = extractActions(args);
-  return create(immediateType, {
-    to: valueEnumerable(to),
-    guards: valueEnumerable(guards),
-    reducers: valueEnumerable(reducers)
-  });
-}
+export let transition = makeTransition.bind(transitionType);
+export let immediate = makeTransition.bind(immediateType, null);
 
 function enterImmediate(machine, service, event) {
   return transitionTo(service, event, this.immediates);
