@@ -136,7 +136,7 @@ export function createMachine(current, states, contextFn = empty) {
 function transitionTo(service, fromEvent, candidates) {
   let { machine, context } = service;
   for(let { to, guards, reducers } of candidates) {  
-    if(guards(context)) {
+    if(guards(context, fromEvent)) {
       service.context = reducers.call(service, context, fromEvent);
 
       let original = machine.original || machine;
@@ -174,7 +174,7 @@ let service = {
 export function interpret(machine, onChange, initialContext, event) {
   let s = Object.create(service, {
     machine: valueEnumerableWritable(machine),
-    context: valueEnumerableWritable(machine.context(initialContext)),
+    context: valueEnumerableWritable(machine.context(initialContext, event)),
     onChange: valueEnumerable(onChange)
   });
   s.send = s.send.bind(s);
