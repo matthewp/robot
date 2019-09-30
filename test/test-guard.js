@@ -31,4 +31,20 @@ QUnit.module('Guards', hooks => {
     service.send('ping');
     assert.equal(service.machine.current, 'one');
   });
+
+  QUnit.test('Guards are passed the event', assert => {
+    let machine = createMachine({
+      one: state(
+        transition('ping', 'two',
+          guard((ctx, ev) => ev.canProceed)
+        )
+      ),
+      two: state()
+    });
+    let service = interpret(machine, () => {});
+    service.send({ type: 'ping' });
+    assert.equal(service.machine.current, 'one', 'still in the initial state');
+    service.send({ type: 'ping', canProceed: true });
+    assert.equal(service.machine.current, 'two', 'now moved');
+  });
 });

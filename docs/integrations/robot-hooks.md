@@ -15,10 +15,10 @@ __Example__
 
 ```js
 import { createMachine, state, transition } from 'robot3';
-import { component, useMemo, useState, html } from 'haunted';
+import { component, useEffect, useState, html } from 'haunted';
 import { createUseMachine } from 'robot-hooks';
 
-const useMachine = createUseMachine(useMemo, useState);
+const useMachine = createUseMachine(useEffect, useState);
 
 const machine = createMachine({
   idle: state(
@@ -62,9 +62,9 @@ At present the __robot-hooks__ library has one export, `createUseMachine`.
 
 ## createUseMachine
 
-__signature__: `createUseMachine(useMemo, useState)`.
+__signature__: `createUseMachine(useEffect, useState)`.
 
-The `createUseMachine` function creates a `useMachine` hook. It expects 2 hooks from the parent hooks implementation; [useMemo](https://reactjs.org/docs/hooks-reference.html#usememo) and [useState](https://reactjs.org/docs/hooks-reference.html#usestate). This will work with any hooks library that supports these functions.
+The `createUseMachine` function creates a `useMachine` hook. It expects 2 hooks from the parent hooks implementation; [useEffect](https://reactjs.org/docs/hooks-reference.html#useeffect) and [useState](https://reactjs.org/docs/hooks-reference.html#usestate). This will work with any hooks library that supports these functions.
 
 ### useMachine
 

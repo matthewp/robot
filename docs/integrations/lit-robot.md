@@ -128,10 +128,12 @@ render() {
 
 ## Setting the element on context
 
-Some times you might want to perform side-effects on the element instance within a state machine. The best way to do that is to have the element on the context object. The context function receives an event that contains an `element` property. Use that to establish your initial context:
+Some times you might want to perform side-effects on the element instance within a state machine. The best way to do that is to have the element on the context object. The context function receives an event that contains an `element` property. Use that to establish your initial context.
+
+Once the element is on your context you can use [actions](../api/action.html) to perform side-effects.
 
 ```js
-import { createMachine, state } from 'robot3';
+import { createMachine, action, state, transition } from 'robot3';
 import { Robot } from 'lit-robot';
 import { LitElement } from 'lit-element';
 
@@ -140,7 +142,13 @@ const context = ev => ({
 });
 
 const machine = createMachine({
-  idle: state()
+  idle: state(
+    transition('next-page',
+      action((ctx, ev) => {
+        ctx.element.setAttribute('page', ev.page);
+      })
+    )
+  )
 }, context);
 
 class MyApp extends Robot(LitElement) {
