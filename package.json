@@ -8,7 +8,8 @@
   "files": [
     "dist/",
     "debug.js",
-    "machine.js"
+    "machine.js",
+    "index.d.ts"
   ],
   "scripts": {
     "minify": "terser machine.js -o machine.min.js",
