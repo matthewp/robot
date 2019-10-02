@@ -78,9 +78,23 @@ declare module 'robot3' {
    */
   export function action<C>(actionFunction?: ActionFunction<C>): Action<C>
 
+  /**
+   * The `interpret` function takes a machine and creates a service that can send events into the machine, changing its states.
+   * A service does not mutate a machine, but rather creates derived machines with the current state set.
+   *
+   * @param machine The state `machine`, created with *createMachine* to create a new service for.
+   * @param onChange A callback that is called when the machine completes a transition. Even if the transition results in returning to the same state, the `onChange` callback is still called.
+   * @param event The `event` can be any object. It is passed to the context function
+   */
+  export function interpret<M extends Machine, E>(
+    machine: M,
+    onChange?: InterpretOnChangeFunction<typeof machine>,
+    event?: { [K in keyof E]: any }
+  ): Service<typeof machine>
+
   /* General Types */
 
-  export type ContextFunction<T> = (context: T) => T
+  export type ContextFunction<T> = (event: unknown) => T
 
   export type GuardFunction<T> = (context: T) => boolean
 
@@ -88,7 +102,11 @@ declare module 'robot3' {
 
   export type ReduceFunction<T> = (context: T, event: unknown) => T
 
-  export type Machine<S, C, K> = {
+  export type InterpretOnChangeFunction<T extends Machine> = (service: Service<T>) => void
+
+  export type SendFunction<T = string> = (event: T) => void
+
+  export type Machine<S = {}, C = {}, K = string> = {
     context: C
     current: K
     states: S
@@ -118,6 +136,13 @@ declare module 'robot3' {
     to: string
     guards: any[]
     reducers: any[]
+  }
+
+  export interface Service<M extends Machine> {
+    machine: Pick<M, 'current'>
+    context: M['context']
+    onChange: InterpretOnChangeFunction<M>
+    send: SendFunction
   }
 
   export type Immediate = Transition
