@@ -92,6 +92,8 @@ declare module 'robot3' {
     event?: { [K in keyof E]: any }
   ): Service<typeof machine>
 
+  export function invoke(...args: any[]): any
+
   /* General Types */
 
   export type ContextFunction<T> = (event: unknown) => T
@@ -102,7 +104,9 @@ declare module 'robot3' {
 
   export type ReduceFunction<T> = (context: T, event: unknown) => T
 
-  export type InterpretOnChangeFunction<T extends Machine> = (service: Service<T>) => void
+  export type InterpretOnChangeFunction<T extends Machine> = (
+    service: Service<T>
+  ) => void
 
   export type SendFunction<T = string> = (event: T) => void
 
@@ -127,7 +131,7 @@ declare module 'robot3' {
   export interface MachineState {
     final: boolean
     transitions: Map<string, Transition>
-    immediates?: Map<string, Transition>
+    immediates?: Map<string, Immediate>
     enter?: any
   }
 
