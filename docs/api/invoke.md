@@ -12,9 +12,6 @@ __Table of Contents__
 
 A special type of [state](./state.html) that immediately invokes a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)-returning function or another [machine](./createMachine.html).
 
-__Table of Contents__
-@[toc]
-
 When the invoker resolves the [service](./interpret.html) will send the `done` event. The arguments to `invoke` can be any of the same things as [state](./state.html), but will mostly be [transitions](./transition.html).
 
 ```js
@@ -118,7 +115,7 @@ The event includes a `data` property that contains the data from the resolved Pr
 }
 ```
 
-Use a [reducer](./reduce.html) to capture the `data` and store the result on the [machine context](./createMachine#context).
+Use a [reducer](./reduce.html) to capture the `data` and store the result on the [machine context](./createMachine.html#context).
 
 ```js
 import { createMachine, invoke, reduce, state, transition } from 'robot3';

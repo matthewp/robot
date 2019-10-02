@@ -7,7 +7,7 @@ permalink: api/reduce.html
 
 # reduce
 
-__reduce__ takes a reducer function for changing the [context](#createMachine) of the machine. A common use case is to set values coming from form fields.
+__reduce__ takes a reducer function for changing the [context](./createMachine.html#context) of the machine. A common use case is to set values coming from form fields.
 
 In this example are implementing a login form that sets the `login` and `password` properties on the context.
 
