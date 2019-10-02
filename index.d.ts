@@ -7,11 +7,11 @@ declare module 'robot3' {
    * @param states - An object of states, where each key is a state name, and the values are one of *state* or *invoke*.
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
-  export function createMachine<C>(
+  export function createMachine<S, C>(
     initial: string,
-    states: { [key: string]: MachineState },
+    states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
-  ): Machine<typeof states, C>
+  ): Machine<typeof states, C, keyof typeof states>
   /**
    * The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name.
    * The value is usually *state* but might also be *invoke*.
@@ -19,10 +19,10 @@ declare module 'robot3' {
    * @param states - An object of states, where each key is a state name, and the values are one of *state* or *invoke*.
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
-  export function createMachine<C>(
-    states: { [key: string]: any },
+  export function createMachine<S, C>(
+    states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
-  ): Machine<typeof states, C>
+  ): Machine<typeof states, C, keyof typeof states>
 
   /**
    * The `state` function returns a state object. A state can take transitions and immediates as arguments.
@@ -88,9 +88,9 @@ declare module 'robot3' {
 
   export type ReduceFunction<T> = (context: T, event: unknown) => T
 
-  export type Machine<S, C> = {
+  export type Machine<S, C, K> = {
     context: C
-    current: string
+    current: K
     states: S
   }
 
