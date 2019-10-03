@@ -40,7 +40,7 @@ These are the arguments to `interpret`:
 
 ### machine
 
-The state machine, created with [createMachine](./machine.html) to create a new service for.
+The state machine, created with [createMachine](./createMachine.html) to create a new service for.
 
 ### onChange
 
@@ -50,7 +50,7 @@ The `onChange` function is called back with the `service`.
 
 ### event
 
-The third argument `event`, can be any object. It is passed to the [context function](./createMachine#context) like so:
+The third argument `event`, can be any object. It is passed to the [context function](./createMachine.html#context) like so:
 
 ```js
 const context = event => ({
@@ -90,4 +90,4 @@ service.send('wake');
 
 #### context
 
-The `context` for the service is an object that results from the [context function](./createMachine.html) when creating the machine, as well as any [reducers](./reduce.html) that have run as a result of state changes.
+The `context` for the service is an object that results from the [context function](./createMachine.html#context) when creating the machine, as well as any [reducers](./reduce.html) that have run as a result of state changes.
