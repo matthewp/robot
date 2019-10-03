@@ -7,11 +7,11 @@ declare module 'robot3' {
    * @param states - An object of states, where each key is a state name, and the values are one of *state* or *invoke*.
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
-  export function createMachine<C>(
+  export function createMachine<S, C>(
     initial: string,
-    states: { [key: string]: MachineState },
+    states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
-  ): Machine<typeof states, C>
+  ): Machine<typeof states, C, keyof typeof states>
   /**
    * The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name.
    * The value is usually *state* but might also be *invoke*.
@@ -19,10 +19,10 @@ declare module 'robot3' {
    * @param states - An object of states, where each key is a state name, and the values are one of *state* or *invoke*.
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
-  export function createMachine<C>(
-    states: { [key: string]: any },
+  export function createMachine<S, C>(
+    states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
-  ): Machine<typeof states, C>
+  ): Machine<typeof states, C, keyof typeof states>
 
   /**
    * The `state` function returns a state object. A state can take transitions and immediates as arguments.
@@ -78,9 +78,25 @@ declare module 'robot3' {
    */
   export function action<C>(actionFunction?: ActionFunction<C>): Action<C>
 
+  /**
+   * The `interpret` function takes a machine and creates a service that can send events into the machine, changing its states.
+   * A service does not mutate a machine, but rather creates derived machines with the current state set.
+   *
+   * @param machine The state `machine`, created with *createMachine* to create a new service for.
+   * @param onChange A callback that is called when the machine completes a transition. Even if the transition results in returning to the same state, the `onChange` callback is still called.
+   * @param event The `event` can be any object. It is passed to the context function
+   */
+  export function interpret<M extends Machine, E>(
+    machine: M,
+    onChange?: InterpretOnChangeFunction<typeof machine>,
+    event?: { [K in keyof E]: any }
+  ): Service<typeof machine>
+
+  export function invoke(...args: any[]): any
+
   /* General Types */
 
-  export type ContextFunction<T> = (context: T) => T
+  export type ContextFunction<T> = (event: unknown) => T
 
   export type GuardFunction<T> = (context: T) => boolean
 
@@ -88,9 +104,15 @@ declare module 'robot3' {
 
   export type ReduceFunction<T> = (context: T, event: unknown) => T
 
-  export type Machine<S, C> = {
+  export type InterpretOnChangeFunction<T extends Machine> = (
+    service: Service<T>
+  ) => void
+
+  export type SendFunction<T = string> = (event: T) => void
+
+  export type Machine<S = {}, C = {}, K = string> = {
     context: C
-    current: string
+    current: K
     states: S
   }
 
@@ -109,7 +131,7 @@ declare module 'robot3' {
   export interface MachineState {
     final: boolean
     transitions: Map<string, Transition>
-    immediates?: Map<string, Transition>
+    immediates?: Map<string, Immediate>
     enter?: any
   }
 
@@ -118,6 +140,13 @@ declare module 'robot3' {
     to: string
     guards: any[]
     reducers: any[]
+  }
+
+  export interface Service<M extends Machine> {
+    machine: Pick<M, 'current'>
+    context: M['context']
+    onChange: InterpretOnChangeFunction<M>
+    send: SendFunction
   }
 
   export type Immediate = Transition
