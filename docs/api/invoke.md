@@ -39,7 +39,7 @@ const machine = createMachine({
 
 ## Promises
 
-Robot will wait for another Promise-returning function to complete before firing the `done` event. Not that it must be a *function*, not a promise itself. So if you have an existing promise you can wrap a function around it like so:
+Robot will wait for another Promise-returning function to complete before firing the `done` event. Notice that it must be a *function*, not a promise itself. So if you have an existing promise you can wrap a function around it like so:
 
 ```js
 import { creatMachine, invoke, state, transition } from 'robot3';
