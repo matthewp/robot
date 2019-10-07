@@ -137,8 +137,8 @@ import { createMachine, action, state, transition } from 'robot3';
 import { Robot } from 'lit-robot';
 import { LitElement } from 'lit-element';
 
-const context = ev => ({
-  element: ev.element
+const context = initialContext => ({
+  element: initialContext.element
 });
 
 const machine = createMachine({
