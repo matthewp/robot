@@ -58,11 +58,12 @@ yarn add preact-robot
 
 ## API
 
-<code class="api-signature">useMachine(machine)</code>
+<code class="api-signature">useMachine(machine, initialContext)</code>
 
 Includes the __arguments__:
 
 * `machine`: A Robot [state machine](../api/createMachine.html).
+* `initialContext`: An object that will be passed to the [context function](../api/createMachine.html#context).
 
 __Returns__ the following as an array:
 

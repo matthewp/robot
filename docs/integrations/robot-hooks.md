@@ -68,7 +68,9 @@ The `createUseMachine` function creates a `useMachine` hook. It expects 2 hooks 
 
 ### useMachine
 
-The `useMachine` hook takes a [state machine](../api/createMachine.html) and returns a `current` object that represents the current state, and a [send](../api/interpret.html#send) function.
+__signature__: `useMachine(machine, initialContext)`.
+
+The `useMachine` hook takes a [state machine](../api/createMachine.html) (and optionally an initial context object) and returns a `current` object that represents the current state, and a [send](../api/interpret.html#send) function.
 
 The `send` function is the same as documented [here](../api/interpret.html#send); it sends events into the machine.
 
@@ -78,7 +80,8 @@ The `send` function is the same as documented [here](../api/interpret.html#send)
 * __context__: The service's context object, which contains values derived via [reducers](../api/reduce.html).
 
 ```js
-const context = () => ({
+const context = initialContext => ({
+  ...initialContext
   page: 23
 });
 
@@ -92,7 +95,7 @@ const machine = createMachine({
 // ... later
 
 function App() {
-  const [current, send] = useMachine(machine);
+  const [current, send] = useMachine(machine, { foo: 'bar' });
   const { page } = current.context;
 
   console.log(current.name); // "one"
