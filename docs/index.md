@@ -149,7 +149,7 @@ let editMode = false;
 let title = '';
 ```
 
-When the __Edit__ button is clicked you would toggle the `editMode` varaible to `true`. When __Save__ or __Cancel__ are clicked, toggle it back to `false`. 
+When the __Edit__ button is clicked you would toggle the `editMode` variable to `true`. When __Save__ or __Cancel__ are clicked, toggle it back to `false`. 
 
 But *oops*, we're missing something here. When you click __Save__ it should keep the changed title and save that via an API call. When you click __Cancel__ it should forget your changes and restore the previous title.
 
