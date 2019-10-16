@@ -18,7 +18,7 @@ const machine = createMachine(
       reduce((ctx, ev) => ({ ...ctx, first: ev.event.target.value }))
     ),
     transition('last', 'form',
-      reduce((ctx, ev) => ({ ...ctx, first: ev.event.target.value }))
+      reduce((ctx, ev) => ({ ...ctx, last: ev.event.target.value }))
     )
   )
 );
