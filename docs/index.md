@@ -1,6 +1,6 @@
 ---
 layout: page.njk
-title: Robot
+title: Robot - a fast 1kB functional library for creating Finite State Machines
 id: home
 shortTitle: Home
 tags: page
