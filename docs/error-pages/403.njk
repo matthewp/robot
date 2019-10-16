@@ -1,0 +1,91 @@
+---
+title: Oops
+permalink: /error-pages/403.html
+---
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oops!</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+}
+
+html {
+  display: grid;
+}
+
+body {
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
+  color: #484848;
+  display: grid;
+  justify-self: center;
+  padding: 0 24px;
+  -webkit-font-smoothing: antialiased;
+  margin-top: 5rem;
+}
+
+header {
+  text-align: center;
+}
+
+h1 {
+  font-size: 100px;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+}
+
+h2 {
+  font-weight: normal;
+  font-size: 32px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.url {
+  color: tomato;
+  white-space: nowrap;
+}
+
+@media screen and (min-width: 30em) {
+  body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  header {
+    grid-column: 2;
+    word-break: break-word;
+    text-align: left;
+  }
+
+  h1 {
+    font-size: 140px;
+  }
+
+  figure {
+    grid-row: 1;
+  }
+}
+</style>
+
+
+<header>
+  <h1>Oops!</h1>
+  <h2>We can't seem to find the page you're looking for.</h2>
+  <p>Did you mean to enter <span class="url"></span>?</p>
+  <script>
+    document.querySelector('.url').textContent = location.pathname;
+  </script>
+</header>
+
+<figure>
+  <img src="/images/sad-robot.jpg" alt="A sad robot looking up" />
+</figure>
