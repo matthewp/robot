@@ -212,7 +212,7 @@ const machine = createMachine({
   cancel: state(
     immediate('preview',
       // Reset the title back to oldTitle
-      reduce(ctx => ({ ...ctx, title: ctx.oldTitle })
+      reduce(ctx => ({ ...ctx, title: ctx.oldTitle }))
     )
   ),
   validate: state(
@@ -220,7 +220,7 @@ const machine = createMachine({
     // to the save state, otherwise go back to editMode
     immediate('save', guard(titleIsValid)),
     immediate('editMode')
-  )
+  ),
   save: invoke(saveTitle,
     transition('done', 'preview'),
     transition('error', 'error')
