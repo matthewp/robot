@@ -12,15 +12,13 @@ An example of a nested state machine is a crosswalk light. You give the ✋ when
 In Robot nested state machines are represented as separate [machines](../api/createMachine.html) with [invoke](../api/invoke.html) used to enter the child machine.
 
 ```js
-import { createMachine, invoke, state, transition } from 'robot3';
+import { createMachine, invoke, state, transition, state as final } from 'robot3';
 
 const stopwalk = createMachine({
   walk: state(
     transition('toggle', 'dontWalk')
   ),
-  dontWalk: state(
-    transition('toggle', 'walk')
-  )
+  dontWalk: final()
 });
 
 const stoplight = createMachine({
@@ -47,7 +45,20 @@ console.log(service.machine.current); // yellow
 service.send('next');
 console.log(service.machine.current); // red
 
-let child = service.send;
+let child = service.child;
+console.log(child.machine.current); // walk
+
+child.send('toggle');
+console.log(child.machine.current); // dontWalk
+console.log(service.machine.current); // green
+
+service.send('next');
+console.log(service.machine.current); // yellow
+
+service.send('next');
+console.log(service.machine.current); // red
+
+child = service.child;
 console.log(child.machine.current); // walk
 
 child.send('toggle');
@@ -76,9 +87,7 @@ const stoplight = createMachine({
     walk: state(
       transition('toggle', 'dontWalk')
     ),
-    dontWalk: state(
-      transition('toggle', 'walk')
-    )
+    dontWalk: final()
   })
 });
 ```
