@@ -12,7 +12,7 @@ When using Robot you'll notice how easy it is to break up reusable parts. This i
 ```js
 import { createMachine, state, reduce, transition } from 'robot3';
 
-const machine = createMachine(
+const machine = createMachine({
   form: state(
     transition('first', 'form',
       reduce((ctx, ev) => ({ ...ctx, first: ev.event.target.value }))
@@ -21,7 +21,7 @@ const machine = createMachine(
       reduce((ctx, ev) => ({ ...ctx, last: ev.event.target.value }))
     )
   )
-);
+});
 ```
 
 This, and many form fields like it, follow a similar pattern:
@@ -43,12 +43,12 @@ const field = (prop, state) => (
 
 const formField = (prop) => field(prop, 'form');
 
-const machine = createMachine(
+const machine = createMachine({
   form: state(
     formField('first'),
     formField('last')
   )
-);
+});
 ```
 
 Since this is such a common pattern you might want to move these types of reusable transitions to their own module:
@@ -71,12 +71,12 @@ Making your machine codes much more succinct:
 import { createMachine, state } from 'robot3';
 import { formField } from './transitions.js';
 
-const machine = createMachine(
+const machine = createMachine({
   form: state(
     formField('first'),
     formField('last')
   )
-);
+});
 ```
 
 You might find that you need a *slight* modification to how one of the transitions works. For example, we want to put a limit to `first` at only 10 characters. We can change our `field` transition to take additional arguments:
@@ -98,14 +98,14 @@ And use a [guard](../api/guard.html) in our usage:
 import { createMachine, guard, state } from 'robot3';
 import { formField } from './transitions.js';
 
-const machine = createMachine(
+const machine = createMachine({
   form: state(
     formField('first',
       guard((ctx) => ctx.first.length <= 10)
     ),
     formField('last')
   )
-);
+});
 ```
 
 I'm hopeful common useable patterns like the above will make their way to [npm](https://www.npmjs.com/) and an ecosystem emerges.

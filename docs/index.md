@@ -54,7 +54,7 @@ function Counter() {
 Robot emphasizes:
 
 * __Size__: at just *{{ meta.size }}* you get a big bang for your buck.
-* __Composability__: Robot's API are built using *functions*, not a declative options object. This makes it easy to use [functional composition](./guides/composition.html) to perform common tasks with little code.
+* __Composability__: Robot's API is built using *functions*, not a declarative options object. This makes it easy to use [functional composition](./guides/composition.html) to perform common tasks with little code.
 * __Understandability__: Instead of conforming to an XML specification created decades ago, Robot takes the best ideas from both academia and real-world usage of finite state machines. This makes state machines easy to read and understand, as there is only one way to do most common tasks.
 
 # Getting Started
@@ -69,7 +69,7 @@ npm install robot3
 yarn add robot3
 ```
 
-This demo shows how to use a Robot to create a loading state machine, including using the state to declarative render different UI based on the state of the machine.
+This demo shows how to use a Robot to create a loading state machine, including using the state to declaratively render different UI based on the state of the machine.
 
 ```js
 import { createMachine, invoke, reduce, state, transition } from 'robot3';
@@ -111,7 +111,7 @@ function App() {
       {state === 'loading' ? (
         <div>Loading users...</div>
       ) : state === 'loaded' ? (
-        
+
         <ul>
           {users.map(user => {
             <li id={`user-${user.id}`}>{user.name}</li>
@@ -132,7 +132,7 @@ render(<App />, document.getElementById('app'));
 
 # Why Finite State Machines
 
-With Finite State Machines the term __state__ might not mean what you think. In the frontend we tend to think of state to mean *all* of the variables that control the UI. When we say __state__ in Finite State Machines we mean a higher-level sort of state.
+With Finite State Machines the term __state__ might not mean what you think. In the frontend we tend to think of state to mean *all* of the variables that control the UI. When we say __state__ in Finite State Machines, we mean a higher-level sort of state.
 
 For example, on the GitHub issue page, the issue titles can be edited by the issue creator and repo maintainers. Initially a title is displayed like this:
 
@@ -149,11 +149,11 @@ let editMode = false;
 let title = '';
 ```
 
-When the __Edit__ button is clicked you would toggle the `editMode` variable to `true`. When __Save__ or __Cancel__ are clicked, toggle it back to `false`. 
+When the __Edit__ button is clicked you would toggle the `editMode` variable to `true`. When __Save__ or __Cancel__ are clicked, toggle it back to `false`.
 
 But *oops*, we're missing something here. When you click __Save__ it should keep the changed title and save that via an API call. When you click __Cancel__ it should forget your changes and restore the previous title.
 
-So we have some new states we've discovered, the __cancel__ state and the __save__ state. You might not think of these as states, but rather just some code that you run on events. Think of what happens when you click Save; it makes an external request to a server. That request could fail for a number of reasons. Or you might want to display a loading indicator while the save is taking place. This is definitely a state! Cancel, while more simple and immediate, is also a state, as it at least requires some logic to tell the application that the inputed new title can be ignored.
+So we have some new states we've discovered, the __cancel__ state and the __save__ state. You might not think of these as states, but rather just some code that you run on events. Think of what happens when you click Save; it makes an external request to a server. That request could fail for a number of reasons. Or you might want to display a loading indicator while the save is taking place. This is definitely a state! __Cancel__, while more simple and immediate, is also a state, as it at least requires some logic to tell the application that the newly inputted title can be ignored.
 
 You can imagine this component having more states as well. What should happen if the user blanks out the input and then clicks save? You can't have an empty title. It seems that this component should have some sort of __validation__ state as well. So we've identified at least 6 states:
 
@@ -173,7 +173,7 @@ let validating = false;
 let saveHadError = false;
 ```
 
-And then toggle these booleans in response to the appropriate event. We've all written code this way. You can pull it off, but why do so when you don't have to? Take, for example, what happens when new requirements are added, resulting in yet another new state of this component. You would need to add another boolean, and change all of your code to toggle the boolean as needed. 
+And then toggle these booleans in response to the appropriate event. We've all written code this way. You can pull it off, but why do so when you don't have to? Take, for example, what happens when new requirements are added, resulting in yet another new state of this component. You would need to add another boolean, and change all of your code to toggle the boolean as needed.
 
 In recent years there has been a revolution in [declarative programming](https://en.wikipedia.org/wiki/Declarative_programming) in the front-end. We use tools such as [React](https://reactjs.org/) to represent our UI as a function of state. This is great, but we still write imperative code to manage our state like this:
 
