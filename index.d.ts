@@ -8,7 +8,7 @@ declare module 'robot3' {
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
   export function createMachine<S, C>(
-    initial: string,
+    initial: keyof S,
     states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
   ): Machine<typeof states, C, keyof typeof states>
