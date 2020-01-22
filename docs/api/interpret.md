@@ -88,6 +88,21 @@ The `send` function is used to send events into the machine:
 service.send('wake');
 ```
 
+It is also possible to pass along some data by sending an object. The only required property is `type` which is the transition name.
+
+```js
+service.send({ type: 'inputChanged', value: 'some text' })
+```
+
+The data will be available in transitions and usable by `guard` and `reduce`
+
+```js
+transition('inputChanged', 'editing',
+  guard((ctx, event) => event.value !== "the impossible value"),
+  reduce((ctx, event) => ({ ...ctx, value: event.value })),
+)
+```
+
 #### context
 
 The `context` for the service is an object that results from the [context function](./createMachine.html#context) when creating the machine, as well as any [reducers](./reduce.html) that have run as a result of state changes.
