@@ -1,7 +1,7 @@
 import { d } from './machine.js';
 
-function unknownState(state) {
-  throw new Error(`Cannot transition to unknown state: ${state}`);
+function unknownState(from, state) {
+  throw new Error(`Cannot transition from ${from} to unknown state: ${state}`);
 }
 
 d._create = function(current, states) {
@@ -13,7 +13,7 @@ d._create = function(current, states) {
     for(let [, candidates] of state.transitions) {
       for(let {to} of candidates) {
         if(!(to in states)) {
-          unknownState(to);
+          unknownState(p, to);
         }
       }
     }
