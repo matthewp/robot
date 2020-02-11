@@ -114,6 +114,10 @@ declare module 'robot3' {
     context: C
     current: K
     states: S
+    state: {
+      name: K
+      value: MachineState
+    }
   }
 
   export type Action<C> = {
@@ -130,8 +134,8 @@ declare module 'robot3' {
 
   export interface MachineState {
     final: boolean
-    transitions: Map<string, Transition>
-    immediates?: Map<string, Immediate>
+    transitions: Map<string, Transition[]>
+    immediates?: Map<string, Immediate[]>
     enter?: any
   }
 
@@ -143,7 +147,7 @@ declare module 'robot3' {
   }
 
   export interface Service<M extends Machine> {
-    machine: Pick<M, 'current'>
+    machine: M
     context: M['context']
     onChange: InterpretOnChangeFunction<M>
     send: SendFunction
