@@ -108,7 +108,8 @@ declare module 'robot3' {
     service: Service<T>
   ) => void
 
-  export type SendFunction<T = string> = (event: T) => void
+  export type SendEvent = string | { type: string; [key: string]: any }
+  export type SendFunction<T = SendEvent> = (event: T) => void
 
   export type Machine<S = {}, C = {}, K = string> = {
     context: C
