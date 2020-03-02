@@ -89,6 +89,7 @@ declare module 'robot3' {
   export function interpret<M extends Machine, E>(
     machine: M,
     onChange?: InterpretOnChangeFunction<typeof machine>,
+    initialContext?: M['context'],
     event?: { [K in keyof E]: any }
   ): Service<typeof machine>
 
@@ -96,7 +97,7 @@ declare module 'robot3' {
 
   /* General Types */
 
-  export type ContextFunction<T> = (event: unknown) => T
+  export type ContextFunction<T> = (context: T, event: unknown) => T
 
   export type GuardFunction<T> = (context: T, event: unknown) => boolean
 
