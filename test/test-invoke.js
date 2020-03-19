@@ -78,7 +78,7 @@ QUnit.module('Invoke', hooks => {
           assert.equal(service.machine.current, 'two');
           break;
         case 1:
-          assert.notEqual(thisService, service, 'second time a different service');
+          assert.notEqual(thisService.machine.states, service.machine.states, 'second time a different service');
           break;
         case 2:
           assert.equal(service.machine.current, 'three', 'now in three state');
@@ -151,9 +151,69 @@ QUnit.module('Invoke', hooks => {
     });
 
     let service = interpret(parent, () => {});
-    assert.ok(service.child, 'there is a child service');
+    assert.ok(!!service.child, 'there is a child service');
 
     service.child.send('next');
-    assert.notOk(service.child, 'No longer a child');
+    assert.notOk(!!service.child, 'No longer a child');
+  });
+
+  QUnit.test('Nested child machines resolve "done" in correctly', async assert => {
+    assert.expect(11);
+    let grandChild = createMachine({
+      grandChildStart: state(
+        transition('go', 'grandChildDone'),
+      ),
+      grandChildDone: final(),
+    });
+    let child = createMachine({
+      childStart: state(
+        transition('go', 'grandChild')
+      ),
+      grandChild: invoke(grandChild, transition('done', 'childIdle')),
+      childIdle: state(transition('go', 'childDone')),
+      childDone: final(),
+    });
+    let root = createMachine({
+      rootStart: state(
+        transition('go', 'child')
+      ),
+      child: invoke(child,
+        transition('done', 'rootDone')
+      ),
+      rootDone: final()
+    });
+    let c = 0;
+    let service = interpret(root, thisService => {
+      switch(c) {
+        case 0:
+          assert.equal(service.machine.current, 'child');
+          break;
+        case 1:
+          assert.notEqual(thisService.machine.states, service.machine.states, 'second time a different service');
+          assert.equal(service.child.machine.current, 'grandChild');
+          assert.equal(service.child.child.machine.current, 'grandChildStart');
+          break;
+        case 2:
+          assert.equal(service.child.machine.current, 'grandChild');
+          assert.equal(service.child.child.machine.current, 'grandChildDone');
+          break;
+        case 3:
+          assert.equal(service.child.machine.current, 'childIdle');
+          assert.equal(service.machine.current, 'child', 'now in child state');
+          break;
+        case 4:
+          assert.equal(service.child.machine.current, 'childDone');
+          break;
+        case 5:
+          assert.equal(service.machine.current, 'rootDone', 'now in rootDone state');
+          break;
+      }
+      c++;
+    });
+    service.send('go');
+    service.child.send('go');
+    service.child.child.send('go');
+    service.child.send('go');
+    assert.equal(c, 6, 'there were 6 transitions');
   });
 });

@@ -95,10 +95,11 @@ const machineToThen = machine => function(ctx, ev) {
       this.child = interpret(machine, s => {
         this.onChange(s);
         if(s.machine.state.value.final) {
+          if (s.parent && Object.is(s.parent.machine, this.child.machine)) return;
           delete this.child;
           resolve(s.context);
         }
-      }, ctx, ev);
+      }, ctx, ev, this);
       return { catch: identity };
     }
   };
@@ -171,11 +172,12 @@ let service = {
   }
 };
 
-export function interpret(machine, onChange, initialContext, event) {
+export function interpret(machine, onChange, initialContext, event, parent) {
   let s = Object.create(service, {
     machine: valueEnumerableWritable(machine),
     context: valueEnumerableWritable(machine.context(initialContext, event)),
-    onChange: valueEnumerable(onChange)
+    onChange: valueEnumerable(onChange),
+    parent: valueEnumerable(parent || false)
   });
   s.send = s.send.bind(s);
   s.machine = s.machine.state.value.enter(s.machine, s, event);
