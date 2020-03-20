@@ -93,9 +93,8 @@ const machineToThen = machine => function(ctx, ev) {
   return {
     then: resolve => {
       this.child = interpret(machine, s => {
-        if(this.child !== s) this.onChange(s);
-        else this.onChange(this);
-        if(s.machine.state.value.final) {
+        this.onChange(s);
+        if (this.child && this.child.machine.state.value.final && s.machine.state.value.final) {
           delete this.child;
           resolve(s.context);
         }
