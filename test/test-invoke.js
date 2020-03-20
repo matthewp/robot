@@ -156,4 +156,94 @@ QUnit.module('Invoke', hooks => {
     service.child.send('next');
     assert.notOk(service.child, 'No longer a child');
   });
+
+  QUnit.test('Multi level nested machines resolve in correct order', async assert => {
+    assert.expect(18);
+
+    const four = createMachine({
+      init: state(
+        transition('START', 'start'),
+      ),
+      start: state(
+        transition('DONE', 'done'),
+      ),
+      done: state(),
+    })
+
+    const three = createMachine({
+      init: state(
+        transition('START', 'start'),
+      ),
+      start: invoke(four,
+        transition('done', 'done'),
+      ),
+      done: state(),
+    })
+
+    const two = createMachine({
+      init: state(
+        transition('START', 'start'),
+      ),
+      start: invoke(three,
+        transition('done', 'done'),
+      ),
+      done: state(),
+    })
+
+    const one = createMachine({
+      init: state(
+        transition('START', 'start'),
+      ),
+      start: invoke(two,
+        transition('done', 'done'),
+      ),
+      done: state(),
+    })
+
+    let c = 0;
+    let service = interpret(one, thisService => {
+      switch (c) {
+        case 0:
+          assert.equal(service.machine.current, 'start', 'initial state');
+          break;
+        case 1:
+          assert.notEqual(thisService.machine.states, service.machine.states, 'second time a different service');
+          assert.ok(service.child, 'has child');
+          assert.equal(service.child.machine.current, 'start');
+          break;
+        case 2:
+          assert.ok(service.child.child, 'has grand child');
+          assert.equal(service.child.machine.current, 'start');
+          assert.equal(service.child.child.machine.current, 'start');
+          break;
+        case 3:
+          assert.ok(service.child.child.child, 'has grand grand child');
+          assert.equal(service.child.child.machine.current, 'start');
+          assert.equal(service.child.child.child.machine.current, 'start');
+          break;
+        case 4:
+          assert.equal(service.child.child.child.machine.current, 'done');
+          break;
+        case 5:
+          assert.equal(service.child.child.machine.current, 'done');
+          assert.equal(service.child.child.child, undefined, 'child is removed when resolved');
+          break;
+        case 6:
+          assert.equal(service.child.machine.current, 'done');
+          assert.equal(service.child.child, undefined, 'child is removed when resolved');
+          break;
+        case 7:
+          assert.equal(service.machine.current, 'done');
+          assert.equal(service.child, undefined, 'child is removed when resolved');
+          break;
+      }
+      c++;
+    });
+    service.send('START') // machine one
+    service.child.send('START') // machine two
+    service.child.child.send('START') // machine tree
+    service.child.child.child.send('START') // machine four
+    service.child.child.child.send('DONE') // machine four
+    assert.equal(c, 8, 'there were 6 transitions');
+  });
 });
