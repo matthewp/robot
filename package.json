@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/matthewp/robot#readme",
   "devDependencies": {
-    "@11ty/eleventy": "^0.10.0",
+    "@11ty/eleventy": "^0.11.0-beta.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^2.0.3",
     "bundlesize": "^0.18.0",
     "http-server": "^0.11.1",
