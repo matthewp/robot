@@ -33,4 +33,20 @@ QUnit.module('Immediate', hooks => {
     service.send('next');
     assert.equal(service.machine.current, 'three');
   });
+
+  QUnit.test('Can immediately transitions past 2 states', assert => {
+    let machine = createMachine({
+      one: state(
+        immediate('two')
+      ),
+      two: state(
+        immediate('three')
+      ),
+      three: state()
+    });
+
+    let service = interpret(machine, () => {});
+    assert.equal(service.machine.current, 'three', 'transitioned to 3');
+    assert.ok(service.machine.state.value.final, 'in the final state');
+  });
 });

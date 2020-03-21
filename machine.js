@@ -99,6 +99,14 @@ const machineToThen = machine => function(ctx, ev) {
           resolve(s.context);
         }
       }, ctx, ev);
+
+      if(this.child.machine.state.value.final) {
+        let s = this.child;
+        delete this.child;
+
+        resolve(s.context);
+      }
+      
       return { catch: identity };
     }
   };

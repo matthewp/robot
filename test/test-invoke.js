@@ -246,4 +246,33 @@ QUnit.module('Invoke', hooks => {
     service.child.child.child.send('DONE') // machine four
     assert.equal(c, 8, 'there were 6 transitions');
   });
+
+  QUnit.test('Invoking a machine that immediately finishes', async assert => {
+    assert.expect(1);
+
+    const child = createMachine({
+      nestedOne: state(
+        immediate('nestedTwo')
+      ),
+      nestedTwo: final()
+    });
+
+    const parent = createMachine({
+      one: state(
+        transition('next', 'two')
+      ),
+      two: invoke(child,
+        transition('done', 'three')
+      ),
+      three: final()
+    });
+
+    let service = interpret(parent, s => {
+      // TODO not totally sure if this is correct, but I think it should
+      // hit this only once and be equal to three
+      assert.equal(s.machine.current, 'three');
+    });
+
+    service.send('next');
+  });
 });
