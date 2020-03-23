@@ -57,10 +57,10 @@ QUnit.module('Invoke', hooks => {
   QUnit.test('Can invoke a child machine', async assert => {
     assert.expect(4);
     let one = createMachine({
-      one: state(
-        transition('go', 'two')
+      nestedOne: state(
+        transition('go', 'nestedTwo')
       ),
-      two: final()
+      nestedTwo: final()
     });
     let two = createMachine({
       one: state(
