@@ -81,17 +81,16 @@ export function state(...args) {
   return create(stateType, desc);
 }
 
-let invokeType = {};
-let invokePromiseType = create(invokeType, {
-  enter: valueEnumerable(function(machine, service, event) {
+let invokePromiseType = {
+  enter(machine, service, event) {
     this.fn.call(service, service.context, event)
       .then(data => service.send({ type: 'done', data }))
       .catch(error => service.send({ type: 'error', error }));
     return machine;
-  })
-});
-let invokeMachineType = create(invokeType, {
-  enter: valueEnumerable(function(machine, service, event) {
+  }
+};
+let invokeMachineType = {
+  enter(machine, service, event) {
     service.child = interpret(this.machine, s => {
       service.onChange(s);
       if(service.child == s && s.machine.state.value.final) {
@@ -105,9 +104,8 @@ let invokeMachineType = create(invokeType, {
       return transitionTo(service, machine, { type: 'done', data }, this.transitions.get('done'));
     }
     return machine;
-  })
-})
-
+  }
+};
 export function invoke(fn, ...transitions) {
   let t = valueEnumerable(transitionsToMap(transitions));
   return machine.isPrototypeOf(fn) ?
