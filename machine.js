@@ -54,7 +54,7 @@ export let transition = makeTransition.bind(transitionType);
 export let immediate = makeTransition.bind(immediateType, null);
 
 function enterImmediate(machine, service, event) {
-  return transitionTo(service, event, this.immediates) || machine;
+  return transitionTo(service, machine, event, this.immediates) || machine;
 }
 
 function transitionsToMap(transitions) {
@@ -81,7 +81,7 @@ export function state(...args) {
   return create(stateType, desc);
 }
 
-let invokeType = {
+let invokePromiseType = {
   enter(machine, service, event) {
     this.fn.call(service, service.context, event)
       .then(data => service.send({ type: 'done', data }))
@@ -89,25 +89,34 @@ let invokeType = {
     return machine;
   }
 };
-const machineToThen = machine => function(ctx, ev) {
-  return {
-    then: resolve => {
-      this.child = interpret(machine, s => {
-        this.onChange(s);
-        if(this.child == s && s.machine.state.value.final) {
-          delete this.child;
-          resolve(s.context);
-        }
-      }, ctx, ev);
-      return { catch: identity };
+let invokeMachineType = {
+  enter(machine, service, event) {
+    service.child = interpret(this.machine, s => {
+      service.onChange(s);
+      if(service.child == s && s.machine.state.value.final) {
+        delete service.child;
+        service.send({ type: 'done', data: s.context });
+      }
+    }, service.context, event);
+    if(service.child.machine.state.value.final) {
+      let data = service.child.context;
+      delete service.child;
+      return transitionTo(service, machine, { type: 'done', data }, this.transitions.get('done'));
     }
-  };
+    return machine;
+  }
 };
 export function invoke(fn, ...transitions) {
-  return create(invokeType, {
-    fn: valueEnumerable(machine.isPrototypeOf(fn) ? machineToThen(fn) : fn),
-    transitions: valueEnumerable(transitionsToMap(transitions))
-  });
+  let t = valueEnumerable(transitionsToMap(transitions));
+  return machine.isPrototypeOf(fn) ?
+    create(invokeMachineType, {
+      machine: valueEnumerable(fn),
+      transitions: t
+    }) :
+    create(invokePromiseType, {
+      fn: valueEnumerable(machine.isPrototypeOf(fn) ? machineToThen(fn) : fn),
+      transitions: t
+    });
 }
 
 let machine = {
@@ -133,8 +142,8 @@ export function createMachine(current, states, contextFn = empty) {
   });
 }
 
-function transitionTo(service, fromEvent, candidates) {
-  let { machine, context } = service;
+function transitionTo(service, machine, fromEvent, candidates) {
+  let { context } = service;
   for(let { to, guards, reducers } of candidates) {  
     if(guards(context, fromEvent)) {
       service.context = reducers.call(service, context, fromEvent);
@@ -157,7 +166,7 @@ function send(service, event) {
   let { value: state } = machine.state;
   
   if(state.transitions.has(eventName)) {
-    return transitionTo(service, event, state.transitions.get(eventName)) || machine;
+    return transitionTo(service, machine, event, state.transitions.get(eventName)) || machine;
   }
   return machine;
 }

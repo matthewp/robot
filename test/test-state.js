@@ -1,4 +1,4 @@
-import { createMachine, interpret, invoke, state, transition } from '../machine.js';
+import { createMachine, interpret, invoke, reduce, state, transition } from '../machine.js';
 
 QUnit.module('States', hooks => {
   QUnit.test('Basic state change', assert => {
@@ -60,10 +60,18 @@ QUnit.module('States', hooks => {
       start: state(
         transition('next', 'next')
       ),
-      next: invoke(child)
+      next: invoke(child,
+        transition('done', 'end',
+          reduce((ctx, ev) => ({
+            ...ctx,
+            ...ev.data
+          }))
+        )
+      ),
+      end: state()
     });
     let service = interpret(parent, () => {});
     service.send({ type: 'next', count: 14 });
-    assert.equal(service.child.context.count, 14, 'event sent through');
+    assert.equal(service.context.count, 14, 'event sent through');
   });
 });

@@ -21,7 +21,7 @@ jobs:
       uses: ianwalter/puppeteer@v2.0.0
     - name: npm install, build, and test
       run: |
-        yarn
+        npm ci
         npm run server &
         npm run bundlesize
         npm test
