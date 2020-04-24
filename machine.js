@@ -114,7 +114,7 @@ export function invoke(fn, ...transitions) {
       transitions: t
     }) :
     create(invokePromiseType, {
-      fn: valueEnumerable(machine.isPrototypeOf(fn) ? machineToThen(fn) : fn),
+      fn: valueEnumerable(fn),
       transitions: t
     });
 }
