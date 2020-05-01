@@ -1,0 +1,40 @@
+{
+  "name": "preact-robot",
+  "version": "0.2.1",
+  "description": "Preact hooks for Robot finite state machines",
+  "main": "machine.js",
+  "module": "machine.js",
+  "type": "module",
+  "scripts": {
+    "server": "http-server -p 1965",
+    "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000"
+  },
+  "files": [
+    "machine.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/preact-robot.git"
+  },
+  "keywords": [
+    "React",
+    "Finite state machine"
+  ],
+  "author": "Matthew Phillips <matthew@matthewphillips.info>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/preact-robot/issues"
+  },
+  "homepage": "https://thisrobot.life/integrations/preact-robot.html",
+  "peerDependencies": {
+    "preact": "^10.0.0-rc.3",
+    "robot3": "^0.2.3"
+  },
+  "dependencies": {
+    "robot-hooks": "^0.3.1"
+  },
+  "devDependencies": {
+    "preact": "^10.0.0-rc.3",
+    "robot3": "^0.2.3"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "react-robot",
+  "version": "0.2.1",
+  "description": "React hooks for Robot finite state machines",
+  "main": "machine.js",
+  "module": "machine.js",
+  "type": "module",
+  "scripts": {
+    "server": "http-server -p 1965",
+    "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000"
+  },
+  "files": [
+    "machine.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/react-robot.git"
+  },
+  "keywords": [
+    "React",
+    "Finite state machine"
+  ],
+  "author": "Matthew Phillips <matthew@matthewphillips.info>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/react-robot/issues"
+  },
+  "homepage": "https://thisrobot.life/integrations/react-robot.html",
+  "peerDependencies": {
+    "react": "^16.9.0",
+    "robot3": "^0.2.3"
+  },
+  "dependencies": {
+    "robot-hooks": "^0.3.1"
+  },
+  "devDependencies": {
+    "robot3": "^0.2.3"
+  }
+}

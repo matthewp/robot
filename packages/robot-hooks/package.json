@@ -1,0 +1,32 @@
+{
+  "name": "robot-hooks",
+  "version": "0.3.2",
+  "description": "Hooks for use with Robot finite state machines",
+  "main": "machine.js",
+  "module": "machine.js",
+  "type": "module",
+  "files": [
+    "machine.js"
+  ],
+  "scripts": {
+    "server": "http-server -p 1965",
+    "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/robot-hooks.git"
+  },
+  "keywords": [],
+  "author": "Matthew Phillips <matthew@matthewphillips.info>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/robot-hooks/issues"
+  },
+  "homepage": "https://thisrobot.life/integrations/robot-hooks.html",
+  "peerDependencies": {
+    "robot3": "^0.2.3"
+  },
+  "devDependencies": {
+    "robot3": "0.2.3"
+  }
+}

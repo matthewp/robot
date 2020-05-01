@@ -1,0 +1,39 @@
+{
+  "name": "robot3",
+  "version": "0.2.16",
+  "description": "A function, immutable Finite State Machine library",
+  "main": "dist/machine.js",
+  "module": "machine.js",
+  "type": "module",
+  "files": [
+    "dist/",
+    "debug.js",
+    "machine.js",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "minify": "terser machine.js -o machine.min.js",
+    "bundlesize": "npm run minify && bundlesize --config bundlesize.json",
+    "test": "node-qunit-puppeteer http://localhost:1965/packages/robot/test/test.html 10000",
+    "build": "rollup -d dist -f cjs machine.js debug.js",
+    "preversion": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/robot.git"
+  },
+  "keywords": [
+    "Finite State Machine"
+  ],
+  "author": "Matthew Phillips <matthew@matthewphillips.info>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/robot/issues"
+  },
+  "homepage": "https://thisrobot.life",
+  "devDependencies": {
+    "bundlesize": "^0.18.0",
+    "rollup": "^1.21.4",
+    "terser": "^4.3.1"
+  }
+}
