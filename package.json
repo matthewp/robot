@@ -4,7 +4,6 @@
   "description": "A function, immutable Finite State Machine library",
   "main": "dist/machine.js",
   "module": "machine.js",
-  "type": "module",
   "files": [
     "dist/",
     "debug.js",
