@@ -38,10 +38,10 @@ declare module 'robot3' {
    * @param state - The name of the destination state.
    * @param args - Any extra argument will be evaluated to check if they are one of Reducer, Guard or Action.
    */
-  export function transition<C>(
+  export function transition<C, E>(
     event: string,
     state: string,
-    ...args: (Reducer<C> | Guard<C> | Action<C>)[]
+    ...args: (Reducer<C, E> | Guard<C, E> | Action<C, E>)[]
   ): Transition
 
   /**
@@ -51,32 +51,32 @@ declare module 'robot3' {
    * @param state - The name of the destination state.
    * @param args - Any extra argument will be evaluated to check if they are a Reducer or a Guard.
    */
-  export function immediate<C>(
+  export function immediate<C, E>(
     state: string,
-    ...args: (Reducer<C> | Guard<C>)[]
+    ...args: (Reducer<C, E> | Guard<C, E>)[]
   ): Transition
 
   /**
    * A `guard` is a method that determines if a transition can proceed.
    * Returning true allows the transition to occur, returning false prevents it from doing so and leaves the state in its current place.
    *
-   * @param guardFunction A Function that can receive *context* and will return true or false.
+   * @param guardFunction A Function that can receive *context* and *event* and will return true or false.
    */
-  export function guard<C>(guardFunction?: GuardFunction<C>): Guard<C>
+  export function guard<C, E>(guardFunction?: GuardFunction<C, E>): Guard<C, E>
 
   /**
    * A `reduce` takes a reducer function for changing the context of the machine. A common use case is to set values coming from form fields.
    *
    * @param reduceFunction A Function that can receive *context* and *event* and will return the context.
    */
-  export function reduce<C>(reduceFunction?: ReduceFunction<C>): Reducer<C>
+  export function reduce<C, E>(reduceFunction?: ReduceFunction<C, E>): Reducer<C, E>
 
   /**
    * An `action` function takes a function that will be run during a transition. The primary purpose of using action is to perform side-effects.
    *
-   * @param actionFunction A Function that can receive *context*, returned values are discarded.
+   * @param actionFunction A Function that can receive *context* and *event*. Returned values are discarded.
    */
-  export function action<C>(actionFunction?: ActionFunction<C>): Action<C>
+  export function action<C, E>(actionFunction?: ActionFunction<C, E>): Action<C, E>
 
   /**
    * The `interpret` function takes a machine and creates a service that can send events into the machine, changing its states.
@@ -97,13 +97,13 @@ declare module 'robot3' {
 
   /* General Types */
 
-  export type ContextFunction<T> = (context: T, event: unknown) => T
+  export type ContextFunction<T> = (initialContext: T) => any
 
-  export type GuardFunction<T> = (context: T, event: unknown) => boolean
+  export type GuardFunction<C, E> = (context: C, event: E) => boolean
 
-  export type ActionFunction<T> = (context: T, event: unknown) => boolean
+  export type ActionFunction<C, E> = (context: C, event: E) => void
 
-  export type ReduceFunction<T> = (context: T, event: unknown) => T
+  export type ReduceFunction<C, E> = (context: C, event: E) => C
 
   export type InterpretOnChangeFunction<T extends Machine> = (
     service: Service<T>
@@ -122,16 +122,16 @@ declare module 'robot3' {
     }
   }
 
-  export type Action<C> = {
-    fn: (context: C) => void
+  export type Action<C, E> = {
+    fn: ActionFunction<C, E>
   }
 
-  export type Reducer<C> = {
-    fn: (context: C, event: unknown) => C
+  export type Reducer<C, E> = {
+    fn: ReduceFunction<C, E>
   }
 
-  export type Guard<C> = {
-    fn: (context: C) => boolean
+  export type Guard<C, E> = {
+    fn: GuardFunction<C, E>
   }
 
   export interface MachineState {
