@@ -101,7 +101,7 @@ declare module 'robot3' {
 
   export type GuardFunction<C, E> = (context: C, event: E) => boolean
 
-  export type ActionFunction<C, E> = (context: C, event: E) => void
+  export type ActionFunction<C, E> = (context: C, event: E) => unknown
 
   export type ReduceFunction<C, E> = (context: C, event: E) => C
 
