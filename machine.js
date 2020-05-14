@@ -119,6 +119,10 @@ export function invoke(fn, ...transitions) {
     });
 }
 
+export let nested = (to, states) => invoke(createMachine(states, identity),
+  transition('done', to)
+);
+
 let machine = {
   get state() {
     return {
@@ -172,6 +176,14 @@ function send(service, event) {
 }
 
 let service = {
+  matches(query) {
+    let states = query.split('.'), matched = false, service = this;
+    do {
+      matched = !!service && states.shift() === service.machine.current;
+      service = service.child;
+    } while(matched && states.length);
+    return matched;
+  },
   send(event) {
     this.machine = send(this, event);
     
