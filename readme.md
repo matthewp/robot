@@ -1,4 +1,12 @@
-# 🤖 Robot
+# Robot
+
+<p align="center">
+  <img 
+    alt="The Robot logo, with green background."
+    src="https://github.com/matthewp/robot-logo/raw/master/logo/robot-green.png"
+    width="40%"
+  />
+</p>
 
 A small functional and immutable Finite State Machine library. Using state machines for your components brings the declarative programming approach to application state.
 
