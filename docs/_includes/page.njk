@@ -1,5 +1,5 @@
 ---
-title: Lucy
+title: Robot
 ---
 <!doctype html>
 <html lang="en">
@@ -15,10 +15,7 @@ title: Lucy
 
 <body{% if id %} id="{{ id }}"{% endif %} class="home">
 
-<header class="content container">
-  <h1>🤖 Robot</h1>
-  <h2>Fast <strong>{{ meta.size }}</strong> functional library for creating Finite State Machines</h2>
-</header>
+{% include 'header.njk' %}
 
 <nav class="container">
   <ul>
@@ -51,8 +48,4 @@ title: Lucy
   </div>
 </main>
 
-<footer class="container">
-  <div class="footer-content">
-    <p>Made with 🔧 by <a href="https://twitter.com/matthewcp">@matthewcp</a></p>
-  </div>
-</footer>
+{% include 'footer.njk' %}
