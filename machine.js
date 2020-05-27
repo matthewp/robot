@@ -26,6 +26,10 @@ function fnType(fn) {
   return create(this, { fn: valueEnumerable(fn) });
 }
 
+function dataType(data) {
+  return create(this, { data: valueEnumerable(data) });
+}
+
 let reduceType = {};
 export let reduce = fnType.bind(reduceType);
 export let action = fn => reduce((ctx, ev) => !!~fn(ctx, ev) && ctx);
@@ -81,41 +85,49 @@ export function state(...args) {
   return create(stateType, desc);
 }
 
+let optionsType = {};
+export let options = dataType.bind(optionsType);
+
 let invokePromiseType = {
   enter(machine, service, event) {
+    const { success='done', failure='error' } = this.options;
     this.fn.call(service, service.context, event)
-      .then(data => service.send({ type: 'done', data }))
-      .catch(error => service.send({ type: 'error', error }));
+      .then(data => service.send({ type: success, data }))
+      .catch(error => service.send({ type: failure, error }));
     return machine;
   }
 };
 let invokeMachineType = {
   enter(machine, service, event) {
+    const { success='done' } = this.options;
     service.child = interpret(this.machine, s => {
       service.onChange(s);
       if(service.child == s && s.machine.state.value.final) {
         delete service.child;
-        service.send({ type: 'done', data: s.context });
+        service.send({ type: success, data: s.context });
       }
     }, service.context, event);
     if(service.child.machine.state.value.final) {
       let data = service.child.context;
       delete service.child;
-      return transitionTo(service, machine, { type: 'done', data }, this.transitions.get('done'));
+      return transitionTo(service, machine, { type: success, data }, this.transitions.get(success));
     }
     return machine;
   }
 };
-export function invoke(fn, ...transitions) {
-  let t = valueEnumerable(transitionsToMap(transitions));
+export function invoke(fn, ...args) {
+  let t = transitionsToMap(filter(transitionType, args));
+  let o = filter(optionsType, args).map(t => t.data).reduce(Object.assign, {});
   return machine.isPrototypeOf(fn) ?
     create(invokeMachineType, {
       machine: valueEnumerable(fn),
-      transitions: t
+      transitions: valueEnumerable(t),
+      options: valueEnumerable(o)
     }) :
     create(invokePromiseType, {
       fn: valueEnumerable(fn),
-      transitions: t
+      transitions: valueEnumerable(t),
+      options: valueEnumerable(o)
     });
 }
 
