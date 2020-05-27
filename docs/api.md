@@ -19,7 +19,7 @@ __Table of Contents__
       * [action](./api/action.html)
     * [immediate](./api/immediate.html)
   * [invoke](./api/invoke.html)
-    * [options](./api/options.html)
+    * [withEvents](./api/withEvents.html)
 * [interpret](./api/interpret.html)
 
 # Debugging
