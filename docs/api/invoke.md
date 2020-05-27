@@ -98,9 +98,9 @@ service.child.send('input');
 
 ## Events
 
-An `invoke` state will trigger one of the following events upon completion:
+An `invoke` state will trigger either a success or a failure event upon completion:
 
-### done
+### Success (`done`)
 
 When the Promise resolves successfully the `done` event is sent through the machine. Use a [transition](./transition.html) to capture this event and proceed as you might with any other event.
 
@@ -130,7 +130,23 @@ const machine = createMachine({
 }, () => ({ todos: [] }))
 ```
 
-### error
+The event name can be configured via the `success` key in [options](./options.html):
+
+```js
+import { createMachine, invoke, state, transition, options } from 'robot3';
+
+const machine = createMachine({
+  start: invoke(startTask,
+    options({ success: 'yay' }),
+    transition('yay', 'loaded',
+      reduce((ctx, ev) => ({ ...ctx, todo: ev.data }))
+    )
+  ),
+  loaded: state()
+}, () => ({ todos: [] }))
+```
+
+### Failure (`error`)
 
 The `error` event is sent through the machine in the case where the Promise rejects. Use this event to capture the error and move to an error state, so you can show your users an error message, retry, or handle errors some other way.
 
@@ -153,6 +169,22 @@ const loadTodos = () => Promise.reject("Sorry but you can't do that");
 const machine = createMachine({
   start: invoke(loadTodos,
     transition('error', 'error',
+      reduce((ctx, ev) => ({ ...ctx, error: ev.error }))
+    )
+  ),
+  error: state()
+})
+```
+
+The event name can be configured via the `failure` key in [options](./options.html):
+
+```js
+import { createMachine, invoke, state, transition, options } from 'robot3';
+
+const machine = createMachine({
+  start: invoke(loadTodos,
+    options({ failure: 'nay' }),
+    transition('nay', 'error',
       reduce((ctx, ev) => ({ ...ctx, error: ev.error }))
     )
   ),
