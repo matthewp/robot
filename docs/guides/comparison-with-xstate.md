@@ -229,7 +229,7 @@ XState supports [delayed transitions](https://xstate.js.org/docs/guides/delays.h
 ```js
 import { createMachine, invoke, state, transition } from 'robot3';
 
-const wait = ms => () => new Promise(resolve => setTimeout(ms, resolve));
+const wait = ms => () => new Promise(resolve => setTimeout(resolve, ms));
 
 const machine = createMachine({
   green: invoke(wait(1000),
@@ -249,7 +249,7 @@ Because of composition this can be shortened:
 ```js
 import { createMachine, invoke, state, transition } from 'robot3';
 
-const wait = ms => () => new Promise(resolve => setTimeout(ms, resolve));
+const wait = ms => () => new Promise(resolve => setTimeout(resolve, ms));
 const light = (next, ms) => invoke(wait(ms),
   transition('done', next)
 );
