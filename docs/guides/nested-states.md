@@ -1,11 +1,11 @@
 ---
 layout: page.njk
-title: Nested States (Hierarchial states)
+title: Nested States (Hierarchical states)
 tags: guide
 permalink: guides/nested-states.html
 ---
 
-Statecharts support [hierarchial states](https://statecharts.github.io/what-is-a-statechart.html) (or nested states) as a way to deal with the [state explosion](https://statecharts.github.io/state-machine-state-explosion.html) problem of traditional finite state machines.
+Statecharts support [hierarchical states](https://statecharts.github.io/what-is-a-statechart.html) (or nested states) as a way to deal with the [state explosion](https://statecharts.github.io/state-machine-state-explosion.html) problem of traditional finite state machines.
 
 An example of a nested state machine is a crosswalk light. You give the ✋ when the stoplight is __Yellow__ or __Green__. When the stoplight turns __Red__ the crosswalk toggles to 🚶‍♀️. The crosswalk light is a nested state machine of the parent stoplight.
 

@@ -13,7 +13,7 @@ XState and Robot share similarities that make them standout from other, more min
 
 * Extended state (context) makes it possible to keep non-state values within the machine.
 * Both can [invoke](https://www.w3.org/TR/scxml/#invoke) external functions as well as other state machines to perform subtasks.
-* Both support [guards](../api/guard.html) to prevent state transitions from occuring on condition.
+* Both support [guards](../api/guard.html) to prevent state transitions from occurring on condition.
 
 Below goes into more detail of the various tradeoffs each makes.
 
