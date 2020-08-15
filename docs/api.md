@@ -23,7 +23,7 @@ __Table of Contents__
 
 # Debugging
 
-Robot does not verify the correct of the state machines you create by default. This is for bundle size purposes; in production you wouldn't want your machines to throw, and this code takes up valuable space.
+Robot does not verify the correctness of the state machines you create by default. This is for bundle size purposes; in production you wouldn't want your machines to throw, and this code takes up valuable space.
 
 Instead debugging messages are provided by the __debug module__, `robot3/debug`. Simply import the module anywhere before you call `createMachine`.
 
