@@ -47,7 +47,7 @@ const toggleMachine = Machine({
 });
 ```
 
-Options objects are familiar APIs but have some downsides too. In the above you'll notice that some property keys, like `inactive`, `active`, and `TOGGLE` are domain specific information, whereas some other keys like `states`, `initial`, and `on` are options of the machine. This blending of your stuff with the library's stuff makes it a little harder to reader, especially as machines grow.
+Options objects are familiar APIs but have some downsides too. In the above you'll notice that some property keys, like `inactive`, `active`, and `TOGGLE` are domain specific information, whereas some other keys like `states`, `initial`, and `on` are options of the machine. This blending of your stuff with the library's stuff makes it a little harder to read, especially as machines grow.
 
 More importantly, options objects aren't particularly [composable](https://en.wikipedia.org/wiki/Function_composition). A fundamental design constraint of Robot is to aid with [composition](./composition.html). The above machine would be written as:
 
@@ -116,55 +116,29 @@ XState supports the Statecharts feature known as [parallel states](https://xstat
 An example would be a rich text editor with bold, italic, and underline states. In XState you would write that as:
 
 ```js
+const toggleStates = {
+  initial: 'inactive',
+  states: {
+    active: {
+      on: {
+        TOGGLE: 'inactive'
+      }
+    },
+    inactive: {
+      on: {
+        TOGGLE: 'active'
+      }
+    }
+  }
+};
+
 const editorMachine = Machine({
   type: 'parallel',
 
   states: {
-    bold: {
-      initial: 'inactive',
-      states: {
-        active: {
-          on: {
-            TOGGLE: 'inactive'
-          }
-        },
-        inactive: {
-          on: {
-            TOGGLE: 'active'
-          }
-        }
-      }
-    },
-    italic: {
-      initial: 'inactive',
-      states: {
-        active: {
-          on: {
-            TOGGLE: 'inactive'
-          }
-        },
-        inactive: {
-          on: {
-            TOGGLE: 'active'
-          }
-        }
-      }
-    },
-    underline: {
-      initial: 'inactive',
-      states: {
-        active: {
-          on: {
-            TOGGLE: 'inactive'
-          }
-        },
-        inactive: {
-          on: {
-            TOGGLE: 'active'
-          }
-        }
-      }
-    }
+    bold: toggleStates,
+    italic: toggleStates,
+    underline: toggleStates,
   }
 });
 ```
