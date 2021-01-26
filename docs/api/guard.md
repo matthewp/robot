@@ -12,7 +12,7 @@ A __guard__ is a method that determines if a transition can proceed. Returning `
 ```js
 import { createMachine, guard, state, transition } from 'robot3';
 
-// Only allow submission of a login and password is entered.
+// Only allow submission if a login and password is entered.
 function canSubmit(ctx) {
   return ctx.login && ctx.password;
 }

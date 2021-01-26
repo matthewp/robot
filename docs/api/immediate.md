@@ -7,7 +7,7 @@ permalink: api/immediate.html
 
 # immediate
 
-An __immediate__ is a type of transition that occurs immediate; it doesn't wait for an event to proceed. This is a state that immediate proceeds to the next:
+An __immediate__ is a type of transition that occurs immediately; it doesn't wait for an event to proceed. This is a state that immediately proceeds to the next:
 
 ```js
 import { createMachine, reduce, state, transition } from 'robot3';
