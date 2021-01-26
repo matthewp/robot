@@ -7,7 +7,7 @@ declare module 'robot3' {
    * @param states - An object of states, where each key is a state name, and the values are one of *state* or *invoke*.
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
-  export function createMachine<S, C>(
+  export function createMachine<S = {}, C = {}>(
     initial: keyof S,
     states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
@@ -19,7 +19,7 @@ declare module 'robot3' {
    * @param states - An object of states, where each key is a state name, and the values are one of *state* or *invoke*.
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
-  export function createMachine<S, C>(
+  export function createMachine<S = {}, C = {}>(
     states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
   ): Machine<typeof states, C, keyof typeof states>
@@ -93,11 +93,25 @@ declare module 'robot3' {
     event?: { [K in keyof E]: any }
   ): Service<typeof machine>
 
-  export function invoke(...args: any[]): any
+  /**
+   * The `invoke` is a special type of state that immediately invokes a Promise-returning function or another machine.
+   *
+   * @param fn - Promise-returning function
+   * @param args - Any argument needs to be of type Transition or Immediate.
+   */
+  export function invoke<C, T>(fn: (ctx: C) => Promise<T>, ...args: (Transition | Immediate)[]): MachineState
+  
+  /**
+   * The `invoke` is a special type of state that immediately invokes a Promise-returning function or another machine.
+   *
+   * @param machine - Machine
+   * @param args - Any argument needs to be of type Transition or Immediate.
+   */
+  export function invoke<M extends Machine>(machine: M, ...args: (Transition | Immediate)[]): MachineState
 
   /* General Types */
 
-  export type ContextFunction<T> = (initialContext: T) => any
+  export type ContextFunction<T> = (initialContext: T) => T
 
   export type GuardFunction<C, E> = (context: C, event: E) => boolean
 
