@@ -15,7 +15,7 @@
     "bundlesize": "npm run minify && bundlesize --config bundlesize.json",
     "server": "ws -p 1965",
     "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
-    "build": "rollup -d dist -f cjs machine.js debug.js",
+    "build": "tsc --moduleResolution node --module commonjs --target es5 --allowJs --outDir ./dist machine.js debug.js",
     "preversion": "npm run build"
   },
   "repository": {
@@ -39,7 +39,7 @@
     "markdown-it": "^9.1.0",
     "markdown-it-toc-and-anchor": "^4.2.0",
     "node-qunit-puppeteer": "^1.0.13",
-    "rollup": "^1.21.4",
-    "terser": "^4.3.1"
+    "terser": "^4.3.1",
+    "typescript": "^4.1.5"
   }
 }
