@@ -3,3 +3,11 @@ _site/
 .DS_Store
 machine.min.js
 dist/
+index.d.ts
+machine.js
+package-lock.json
+package.json
+test/test-invoke.js
+index.d.ts
+package-lock.json
+package.json
