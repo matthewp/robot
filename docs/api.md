@@ -42,3 +42,13 @@ Or if you're using web modules then include a script tag before your main:
 <script type="module" src="https://unpkg.com/robot3/debug"></script>
 <script type="module" src="./main.js"></script>
 ```
+
+The __debug module__ provides an helper function which logs state changes when entering a new state. This method can also be overwritten with an more advanced solution.
+
+```js
+import {d} from 'robot3';
+
+d._onEnter = function(machine, to, state, prevState, event) {
+ // compare states and log the differences
+}
+```
