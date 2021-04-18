@@ -126,6 +126,19 @@ declare module 'robot3' {
   export type SendEvent = string | { type: string; [key: string]: any }
   export type SendFunction<T = SendEvent> = (event: T) => void
 
+  /**
+   * This function is invoked before entering a new state and is bound to the debug
+   * object. It is usable to inspect or log changes.
+   *
+   * @param machine - Machine
+   * @param to - name of the target state
+   * @param state - current state
+   * @param prevState - previous state
+   * @param event - event provoking the state change
+   */
+  export type OnEnterFunction<M extends Machine> =
+    <C = M['state']>(machine: M, to: string, state: C, prevState: C, event?: SendEvent) => void
+
   export type Machine<S = {}, C = {}, K = string> = {
     context: C
     current: K
