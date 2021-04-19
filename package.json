@@ -1,6 +1,6 @@
 {
   "name": "robot3",
-  "version": "0.2.19",
+  "version": "0.2.20",
   "description": "A function, immutable Finite State Machine library",
   "main": "dist/machine.js",
   "module": "machine.js",
@@ -11,7 +11,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "minify": "terser machine.js -o machine.min.js",
+    "minify": "terser machine.js -m --module -o machine.min.js",
     "bundlesize": "npm run minify && bundlesize --config bundlesize.json",
     "server": "ws -p 1965",
     "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
