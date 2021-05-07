@@ -81,7 +81,7 @@ The `send` function is the same as documented [here](../api/interpret.html#send)
 
 ```js
 const context = initialContext => ({
-  ...initialContext
+  ...initialContext,
   page: 23
 });
 
