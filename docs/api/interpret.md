@@ -34,7 +34,7 @@ service.send('wake'); // Wake up!
 
 ## Arguments
 
-__signature__: `interpret(machine, onChange, event)`
+__signature__: `interpret(machine, onChange, initialContext)`
 
 These are the arguments to `interpret`:
 
@@ -48,26 +48,26 @@ A [callback](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function
 
 The `onChange` function is called back with the `service`.
 
-### event
+### initialContext
 
-The third argument `event`, can be any object. It is passed to the [context function](./createMachine.html#context) like so:
+The third argument `initialContext`, can be any object. It is passed to the [context function](./createMachine.html#context) like so:
 
 ```js
-const context = event => ({
-  foo: event.foo
+const context = initialContext => ({
+  foo: initialContext.foo
 });
 
 const machine = createMachine({
   idle: state()
 }, context);
 
-const event = {
+const initialContext = {
   foo: 'bar'
 };
 
-interpret(machine, service => {
+const service = interpret(machine, service => {
   // Do stuff when the service changes.
-}, event);
+}, initialContext);
 ```
 
 ## Service
