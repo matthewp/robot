@@ -1,4 +1,13 @@
 declare module 'robot3' {
+
+  /**
+   * The debugging object contains an _onEnter method, wich can be set to invoke
+   * this function on every transition.
+   */
+  export const d: {
+    _onEnter?: OnEnterFunction<Machine>
+  }
+
   /**
    * The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name.
    * The value is usually *state* but might also be *invoke*.
