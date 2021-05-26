@@ -43,7 +43,16 @@ Or if you're using web modules then include a script tag before your main:
 <script type="module" src="./main.js"></script>
 ```
 
-The __debug module__ provides an helper function which logs state changes when entering a new state. This method can also be overwritten with an more advanced solution.
+# Logging
+
+The __logging module__ `robot3/logging` provides a helper function which logs state changes when entering a new state. It can be used as the __debug module__ by importing it or including the script before the main. 
+
+```html
+<script type="module" src="https://unpkg.com/robot3/logging"></script>
+<script type="module" src="./main.js"></script>
+```
+
+This method can also be overwritten with a more advanced solution.
 
 ```js
 import {d} from 'robot3';
