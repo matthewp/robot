@@ -5,7 +5,7 @@ tags: integrations
 permalink: integrations/svelte-robot-factory.html
 ---
 
-# [svelte-robot-factory](https://github.com/matthewp/robot)
+# [svelte-robot-factory](https://github.com/kayodebristol/svelte-robot-factory)
 
 Table of Contents
 
