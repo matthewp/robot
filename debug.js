@@ -23,3 +23,7 @@ d._create = function(current, states) {
 d._send = function(eventName, currentStateName) {
   throw new Error(`No transitions for event ${eventName} from the current state [${currentStateName}]`);
 };
+
+d._invokePromiseType = function(error, currentStateName) {
+  console.error(`Error occurred while invoke Promise-type function, current state is: ${currentStateName}.`, error);
+}
