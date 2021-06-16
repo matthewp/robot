@@ -85,10 +85,7 @@ let invokePromiseType = {
   enter(machine, service, event) {
     this.fn.call(service, service.context, event)
       .then(data => service.send({ type: 'done', data }))
-      .catch(error => {
-        if(d._invokePromiseType) d._invokePromiseType(error, machine.state.name);
-        service.send({ type: 'error', error })
-      });
+      .catch(error => service.send({ type: 'error', error }));
     return machine;
   }
 };
