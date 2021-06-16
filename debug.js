@@ -19,3 +19,7 @@ d._create = function(current, states) {
     }
   }
 };
+
+d._send = function(eventName, currentStateName) {
+  throw new Error(`No transitions for event ${eventName} from the current state [${currentStateName}]`);
+};
