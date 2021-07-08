@@ -1,5 +1,7 @@
 import { d } from './machine.js';
 
+const invokePromiseType = Object.getPrototypeOf(invoke(Promise.resolve()));
+
 function unknownState(from, state) {
   throw new Error(`Cannot transition from ${from} to unknown state: ${state}`);
 }
@@ -17,7 +19,7 @@ d._create = function(current, states) {
         }
       }
     }
-    if (state.fn) {
+    if (invokePromiseType.isPrototypeOf(state)) {
       let hasErrorFrom = false;
       for(let [, candidates] of state.transitions) {
         for(let {from} of candidates) {
