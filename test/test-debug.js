@@ -1,4 +1,4 @@
-import { createMachine, interpret, state, transition } from '../machine.js';
+import { createMachine, state, transition } from '../machine.js';
 
 QUnit.module('robot/debug');
 
@@ -35,6 +35,18 @@ QUnit.test('Errors if an invalid initial state is provided', assert => {
     });
     assert.ok(false, 'should have failed');
   } catch(e) {
-    assert.ok(true, 'it errored');
+    assert.ok(true, 'it is errored');
+  }
+});
+
+QUnit.test('Errors when no transitions for event from the current state', assert => {
+  try {
+    const {send} = createMachine('one', {
+      one: state(),
+    });
+    send('go');
+    assert.ok(false, 'should have failed');
+  } catch(e) {
+    assert.ok(true, 'it is errored');
   }
 });
