@@ -1,4 +1,4 @@
-import { createMachine, immediate, interpret, invoke, reduce, state, state as final, transition } from '../machine.js';
+import { createMachine, immediate, interpret, invoke, reduce, state, state as final, transition, options } from '../machine.js';
 
 QUnit.module('Invoke', hooks => {
   QUnit.module('Promise');
@@ -50,6 +50,47 @@ QUnit.module('Invoke', hooks => {
     await Promise.resolve();
     assert.equal(service.context.age, 2, 'Invoked immediately');
     assert.equal(service.machine.current, 'two', 'in the new state');
+  });
+
+  QUnit.test('Fires promise completion event even after transition', async assert => {
+    let machine = createMachine({
+      one: invoke(() => Promise.resolve(13),
+        transition('done', 'oneIsDone'),
+        transition('skip', 'two')
+      ),
+      oneIsDone: final(),
+      two: state(
+        transition('done', 'twoIsDone') // <-- "done" to match invoke success event
+      ),
+      twoIsDone: final()
+    }, () => ({age: 0}));
+
+    let service = interpret(machine, () => {});
+    service.send('skip');
+    assert.equal(service.machine.current, 'two', 'have skipped out of invoking step');
+    await Promise.resolve();
+    assert.equal(service.machine.current, 'twoIsDone', 'received "done" from invoke in step "one"');
+  });
+
+  QUnit.test('Accepts custom event name for completion', async assert => {
+    let machine = createMachine({
+      one: invoke(() => Promise.resolve(13),
+        options({ success: 'oneDone' }),
+        transition('oneDone', 'oneIsDone'),
+        transition('skip', 'two')
+      ),
+      oneIsDone: final(),
+      two: state(
+        transition('done', 'twoIsDone') // <-- "done" does not match invoke success event
+      ),
+      twoIsDone: final()
+    }, () => ({age: 0}));
+
+    let service = interpret(machine, () => {});
+    service.send('skip');
+    assert.equal(service.machine.current, 'two', 'have skipped out of invoking step');
+    await Promise.resolve();
+    assert.equal(service.machine.current, 'two', 'have not received "done" from invoke in step "one"');
   });
 
   QUnit.module('Machine');
