@@ -1,4 +1,4 @@
-import { createMachine, immediate, interpret, invoke, reduce, state, state as final, transition } from '../machine.js';
+import { createMachine, immediate, interpret, invoke, nested, reduce, state, state as final, transition } from '../machine.js';
 
 QUnit.module('Invoke', hooks => {
   QUnit.module('Promise');
@@ -274,5 +274,31 @@ QUnit.module('Invoke', hooks => {
     });
 
     service.send('next');
+  });
+
+  QUnit.test('matches() matches the state', async assert => {
+    const machine = createMachine({
+      one: state(
+        transition('next', 'two')
+      ),
+      two: nested('three', {
+        alpha: state(
+          transition('next', 'beta')
+        ),
+        beta: state()
+      }),
+      three: state()
+    });
+
+    let service = interpret(machine, () => {});
+    assert.equal(service.matches('one'), true, 'is the first state');
+    assert.equal(service.matches('two.alpha'), false, 'not in the child state');
+
+    service.send('next');
+    assert.equal(service.matches('two'), true, 'is in the two state');
+    assert.equal(service.matches('two.alpha'), true, 'in the alpha state');
+
+    service.child.send('next');
+    assert.equal(service.matches('three'), true, 'In the last state');
   });
 });
