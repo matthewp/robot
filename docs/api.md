@@ -49,9 +49,28 @@ If you're using web modules then include a script tag before your main:
 <script type="module" src="./main.js"></script>
 ```
 
-### 3. Stripping with Module Bundler
+### 3. Logging
 
-#### 3.1. Rollup
+The __logging module__ `robot3/logging` provides a helper function which logs state changes when entering a new state. It can be used as the __debug module__ by importing it or including the script before the main. 
+
+```html
+<script type="module" src="https://unpkg.com/robot3/logging"></script>
+<script type="module" src="./main.js"></script>
+```
+
+This method can also be overwritten with a more advanced solution.
+
+```js
+import {d} from 'robot3';
+
+d._onEnter = function(machine, to, state, prevState, event) {
+ // compare states and log the differences
+}
+```
+
+### 4. Stripping with Module Bundler
+
+#### 4.1. Rollup
 
 You can use some Rollup-plugins for excluding __debug module__ from production bundle. The easiest option is to use [rollup-plugin-strip-code](https://www.npmjs.com/package/rollup-plugin-strip-code).
 
@@ -109,6 +128,6 @@ module.exports = {
 
 __mocks/empty.js__ is empty file.
 
-#### 3.2. Webpack
+#### 4.2. Webpack
 
 Similarly to Rollup you can use [webpack-strip-block](https://www.npmjs.com/package/webpack-strip-block) to strip __debug module__ from production bundle.

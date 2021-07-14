@@ -154,6 +154,7 @@ function transitionTo(service, machine, fromEvent, candidates) {
         original: { value: original }
       });
 
+      if (d._onEnter) d._onEnter(machine, to, service.context, context, fromEvent);
       let state = newMachine.state.value;
       return state.enter(newMachine, service, fromEvent);
     }

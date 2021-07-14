@@ -1,4 +1,13 @@
 declare module 'robot3' {
+
+  /**
+   * The debugging object contains an _onEnter method, wich can be set to invoke
+   * this function on every transition.
+   */
+  export const d: {
+    _onEnter?: OnEnterFunction<Machine>
+  }
+
   /**
    * The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name.
    * The value is usually *state* but might also be *invoke*.
@@ -125,6 +134,19 @@ declare module 'robot3' {
 
   export type SendEvent = string | { type: string; [key: string]: any }
   export type SendFunction<T = SendEvent> = (event: T) => void
+
+  /**
+   * This function is invoked before entering a new state and is bound to the debug
+   * object. It is usable to inspect or log changes.
+   *
+   * @param machine - Machine
+   * @param to - name of the target state
+   * @param state - current state
+   * @param prevState - previous state
+   * @param event - event provoking the state change
+   */
+  export type OnEnterFunction<M extends Machine> =
+    <C = M['state']>(machine: M, to: string, state: C, prevState: C, event?: SendEvent) => void
 
   export type Machine<S = {}, C = {}, K = string> = {
     context: C

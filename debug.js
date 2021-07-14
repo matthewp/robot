@@ -1,4 +1,4 @@
-import { d } from './machine.js';
+import { d, invoke } from './machine.js';
 
 const invokePromiseType = Object.getPrototypeOf(invoke(Promise.resolve()));
 
