@@ -164,10 +164,12 @@ function transitionTo(service, machine, fromEvent, candidates) {
 function send(service, event) {
   let eventName = event.type || event;
   let { machine } = service;
-  let { value: state } = machine.state;
+  let { value: state, name: currentStateName } = machine.state;
   
   if(state.transitions.has(eventName)) {
     return transitionTo(service, machine, event, state.transitions.get(eventName)) || machine;
+  } else {
+    if(d._send) d._send(eventName, currentStateName);
   }
   return machine;
 }
