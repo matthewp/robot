@@ -1,4 +1,4 @@
-import { createMachine, immediate, interpret, invoke, reduce, state, state as final, transition } from '../machine.js';
+import { createMachine, immediate, interpret, invoke, reduce, state, state as final, transition, withEvents } from '../machine.js';
 
 QUnit.module('Invoke', hooks => {
   QUnit.module('Promise');
@@ -50,6 +50,54 @@ QUnit.module('Invoke', hooks => {
     await Promise.resolve();
     assert.equal(service.context.age, 2, 'Invoked immediately');
     assert.equal(service.machine.current, 'two', 'in the new state');
+  });
+
+  QUnit.test('Fires promise completion event even after transition', async assert => {
+    let machine = createMachine({
+      one: invoke(() => Promise.resolve(13),
+        transition('done', 'oneIsDone'),
+        transition('skip', 'two')
+      ),
+      oneIsDone: final(),
+      two: state(
+        transition('done', 'twoIsDone') // <-- "done" to match invoke success event
+      ),
+      twoIsDone: final()
+    }, () => ({age: 0}));
+
+    let service = interpret(machine, () => {});
+    service.send('skip');
+    assert.equal(service.machine.current, 'two', 'have skipped out of invoking step');
+    await Promise.resolve();
+    assert.equal(service.machine.current, 'twoIsDone', 'received "done" from invoke in step "one"');
+  });
+
+  QUnit.test('Accepts custom event name for success', async assert => {
+    let machine = createMachine({
+      one: invoke(
+        withEvents(() => Promise.resolve(13), 'oneDone'),
+        transition('oneDone', 'two'),
+      ),
+      two: final()
+    });
+
+    let service = interpret(machine, () => {});
+    await Promise.resolve();
+    assert.equal(service.machine.current, 'two', 'received custom success event');
+  });
+
+  QUnit.test('Accepts custom event name for failure', async assert => {
+    let machine = createMachine({
+      one: invoke(
+        withEvents(() => Promise.reject(13), undefined, 'oneError'),
+        transition('oneError', 'two'),
+      ),
+      two: final(),
+    });
+
+    let service = interpret(machine, () => {});
+    await Promise.resolve(); await Promise.resolve();
+    assert.equal(service.machine.current, 'two', 'received custom failure event');
   });
 
   QUnit.module('Machine');

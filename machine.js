@@ -81,11 +81,21 @@ export function state(...args) {
   return create(stateType, desc);
 }
 
+export function withEvents(fn, success, failure) {
+  fn.eventOverrides = { success, failure };
+  return fn;
+}
+function getEvents(fn) {
+  let { success='done', failure='error' } = fn.eventOverrides || {};
+  return { success, failure };
+}
+
 let invokePromiseType = {
   enter(machine, service, event) {
+    let { success, failure } = getEvents(this.fn);
     this.fn.call(service, service.context, event)
-      .then(data => service.send({ type: 'done', data }))
-      .catch(error => service.send({ type: 'error', error }));
+      .then(data => service.send({ type: success, data }))
+      .catch(error => service.send({ type: failure, error }));
     return machine;
   }
 };
