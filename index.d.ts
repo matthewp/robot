@@ -108,8 +108,8 @@ declare module 'robot3' {
    * @param fn - Promise-returning function
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
-  export function invoke<C, T>(fn: (ctx: C) => Promise<T>, ...args: (Transition | Immediate)[]): MachineState
-  
+  export function invoke<C, T, E>(fn: (ctx: C, event?: E) => Promise<T>, ...args: (Transition | Immediate)[]): MachineState
+
   /**
    * The `invoke` is a special type of state that immediately invokes a Promise-returning function or another machine.
    *
