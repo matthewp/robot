@@ -52,6 +52,28 @@ QUnit.module('Invoke', hooks => {
     assert.equal(service.machine.current, 'two', 'in the new state');
   });
 
+  QUnit.test('Should not fire "done" event when state chnages', async assert => {
+    const wait = ms => () => new Promise(resolve => setTimeout(resolve, ms));
+
+    let machine = createMachine({
+      one: state(transition('click', 'two')),
+      two: invoke(wait(10),
+        transition('done', 'one'),
+        transition('click', 'three')
+      ),
+      three: state(
+        transition('done', 'error'),
+      ),
+      error: state(),
+    });
+
+    let service = interpret(machine, () => { });
+    service.send('click');
+    service.send('click');
+    await wait(15)()
+    assert.equal(service.machine.current, 'three', 'now in the next state');
+  });
+
   QUnit.module('Machine');
 
   QUnit.test('Can invoke a child machine', async assert => {
