@@ -1,6 +1,17 @@
 declare module 'robot3' {
 
   /**
+   * TS Helpers
+   */
+  type NestedKeys<T> = T extends object
+    ? {
+       [P in keyof T]-?: P extends string ? keyof T[P] : never
+     }[keyof T]
+   : never
+
+  type AllStateKeys<T> = NestedKeys<T> | keyof T
+
+  /**
    * The debugging object contains an _onEnter method, wich can be set to invoke
    * this function on every transition.
    */
@@ -20,7 +31,7 @@ declare module 'robot3' {
     initial: keyof S,
     states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
-  ): Machine<typeof states, C, keyof typeof states>
+  ): Machine<typeof states, C, AllStateKeys<S>>
   /**
    * The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name.
    * The value is usually *state* but might also be *invoke*.
@@ -31,7 +42,7 @@ declare module 'robot3' {
   export function createMachine<S = {}, C = {}>(
     states: { [K in keyof S]: MachineState },
     context?: ContextFunction<C>
-  ): Machine<typeof states, C, keyof typeof states>
+  ): Machine<typeof states, C, AllStateKeys<S>>
 
   /**
    * The `state` function returns a state object. A state can take transitions and immediates as arguments.
@@ -109,7 +120,7 @@ declare module 'robot3' {
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
   export function invoke<C, T>(fn: (ctx: C) => Promise<T>, ...args: (Transition | Immediate)[]): MachineState
-  
+
   /**
    * The `invoke` is a special type of state that immediately invokes a Promise-returning function or another machine.
    *
@@ -185,6 +196,7 @@ declare module 'robot3' {
   }
 
   export interface Service<M extends Machine> {
+    child?: Service<M>
     machine: M
     context: M['context']
     onChange: InterpretOnChangeFunction<M>
