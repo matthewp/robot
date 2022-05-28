@@ -5,7 +5,7 @@ d._onEnter = function(machine, to, state, prevState, event) {
   console.groupCollapsed(`Details:`);
   console.log(`Machine`, machine);
   console.log(`Current state`, state);
-  console.log(`Previous state`, state);
+  console.log(`Previous state`, prevState);
 
   if (typeof event === "string") {
     console.log(`Event ${event}`);
