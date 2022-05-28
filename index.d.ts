@@ -73,7 +73,7 @@ declare module 'robot3' {
    */
   export function immediate<C, E>(
     state: string,
-    ...args: (Reducer<C, E> | Guard<C, E>)[]
+    ...args: (Reducer<C, E> | Guard<C, E> | Action<C, E>)[]
   ): Transition
 
   /**
