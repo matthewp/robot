@@ -91,6 +91,72 @@ QUnit.module('Invoke', hooks => {
     assert.equal(c, 3, 'there were 3 transitions');
   });
 
+  QUnit.test('Can invoke a dynamic child machine', async assert => {
+    assert.expect(10);
+    let dynamicMachines = [
+      createMachine({
+      nestedOne: state(
+        transition('go', 'nestedTwo')
+      ),
+      nestedTwo: final()
+    }),
+    createMachine({
+      nestedThree: state(
+        transition('go', 'nestedFour')
+      ),
+      nestedFour: final()
+    })
+  ]
+
+    let root = createMachine({
+      one: state(
+        transition('go', 'two')
+      ),
+      two: invoke(() => dynamicMachines[0],
+        transition('done', 'three')
+      ),
+      three: state(
+        transition('go', 'four')
+      ),
+      four:  invoke(() => dynamicMachines[1],
+        transition('done', 'five')
+      ),
+      five: final()
+    });
+    let c = 0;
+    let service = interpret(root, thisService => {
+      switch(c) {
+        case 0:
+          assert.equal(service.machine.current, 'two');
+          break;
+        case 1:
+          assert.notEqual(thisService, service, 'second time a different service');
+          assert.equal(thisService.machine.current, 'nestedTwo');
+          break;
+        case 2:
+          assert.equal(thisService, service, 'equal service');
+          assert.equal(service.machine.current, 'three', 'now in three state');
+          break;
+        case 3:
+          assert.equal(service.machine.current, 'four');
+          break;
+        case 4:
+          assert.notEqual(thisService, service, 'third time a different service');
+          assert.equal(thisService.machine.current, 'nestedFour');
+          break;  
+        case 5:
+          assert.equal(service.machine.current, 'five', 'now in five state');
+          break;
+      }
+      c++;
+    });
+    service.send('go');
+    service.child.send('go');
+    service.send('go');
+    service.child.send('go');
+    assert.equal(c, 6, 'there were 6 transitions');
+  });
+
   QUnit.test('Child machines receive events from their parents', async assert => {
     const action = fn =>
     reduce((ctx, ev) => {
