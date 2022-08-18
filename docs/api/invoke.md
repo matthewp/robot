@@ -96,6 +96,43 @@ Additionally the parent service will have a `child` property which is the child 
 service.child.send('input');
 ```
 
+A machine also can be invoked dynamically using a function argument instead a simple machine:
+
+```js
+import { createMachine, invoke, reduce, state, state as final, transition } from 'robot3';
+
+const dynamicMachines = [
+    createMachine({ 
+    // a machine implementation...
+    finished: final()
+  }),
+  createMachine({
+    // another machine implementation...
+    finished: final()
+  })
+]
+
+const uiMachine = createMachine({
+  step1: invoke((ctx, ev) => {
+    let index = doStuff() // dynamic stuff to choose a machine (can be based on ctx or ev)
+    return dynamicMachines[index]
+    },
+    transition('done', 'step2',
+      reduce((ctx, ev) => ({ ...ctx, childContext: ev.data }))
+    )
+  ),
+  step2: state() // Machine another machine here?
+});
+
+let service = interpret(wizardMachine, innerService => {
+  if(service !== innerService) {
+    // This must be the `inputMachine` service.
+  }
+});
+```
+This can be useful when you want to delegate the behavior of a root machine to an invoked dynamically child machine based on context or events,
+like an UI machine that has a lot of child plugins with their own behavior, invoked based on user input choose.
+
 ## Events
 
 An `invoke` state will trigger one of the following events upon completion:
