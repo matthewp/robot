@@ -87,7 +87,7 @@ let invokeFnType = {
     if(machine.isPrototypeOf(rn))
       return create(invokeMachineType, {
         machine: valueEnumerable(rn),
-        transitions: this.transitions
+        transitions: valueEnumerable(this.transitions)
       }).enter(machine2, service, event)
     rn.then(data => service.send({ type: 'done', data }))
       .catch(error => service.send({ type: 'error', error }));
