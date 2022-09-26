@@ -12,6 +12,7 @@
     "index.d.ts"
   ],
   "scripts": {
+    "prepare": "npm run build",
     "minify": "terser machine.js -m --module -o machine.min.js",
     "bundlesize": "npm run minify && bundlesize --config bundlesize.json",
     "server": "ws -p 1965",
