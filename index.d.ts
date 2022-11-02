@@ -114,15 +114,23 @@ declare module 'robot3' {
   ): Service<typeof machine>
 
   /**
-   * The `invoke` is a special type of state that immediately invokes a Promise-returning function or another machine.
+   * The `invoke` is a special type of state that immediately invokes a Promise-returning or Machine-returning function, or another machine.
    *
    * @param fn - Promise-returning function
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
   export function invoke<C, T, E extends {} = any>(fn: (ctx: C, e?: E) => Promise<T>, ...args: (Transition | Immediate)[]): MachineState
+  
+  /**
+   * The `invoke` is a special type of state that immediately invokes a Promise-returning or Machine-returning function, or another machine.
+   *
+   * @param fn - Machine-returning function
+   * @param args - Any argument needs to be of type Transition or Immediate.
+   */
+  export function invoke<C, E extends {} = any, M extends Machine>(fn: (ctx: C, e?: E) => M, ...args: (Transition | Immediate)[]): MachineState
 
   /**
-   * The `invoke` is a special type of state that immediately invokes a Promise-returning function or another machine.
+   * The `invoke` is a special type of state that immediately invokes a Promise-returning or Machine-returning function, or another machine.
    *
    * @param machine - Machine
    * @param args - Any argument needs to be of type Transition or Immediate.
