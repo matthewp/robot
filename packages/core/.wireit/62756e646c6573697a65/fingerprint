@@ -1,0 +1,1 @@
+{"fullyTracked":false,"platform":"linux","arch":"x64","nodeVersion":"v18.12.1","command":"bundlesize --config bundlesize.json","extraArgs":[],"clean":true,"files":{},"output":[],"dependencies":{"[\"/home/matthew/dev/robot/packages/core\",\"minify\"]":"bd395902303e1cf6646b98264593cbe250e7b92bc685ca7ae77132fd911c6b4b"},"env":{}}
