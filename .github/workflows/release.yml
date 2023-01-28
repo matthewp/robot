@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - 'packages/core/**'
+
+jobs:
+  changelog:
+    name: Changelog PR or Release
+    if: ${{ github.ref_name == 'main' && github.repository_owner == 'matthewp' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+  
+      - name: Install NPM Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --workspaces
+      
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: npm run changeset publish
+          commit: '[ci] release'
+          title: '[ci] release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

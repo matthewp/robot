@@ -16,6 +16,7 @@
     "bundlesize": "wireit",
     "server": "wireit",
     "test": "wireit",
+    "build:cjs": "wireit",
     "build": "wireit"
   },
   "repository": {
@@ -70,6 +71,9 @@
       "command": "rollup -d dist -f cjs machine.js debug.js logging.js",
       "files": ["machine.js", "debug.js", "logging.js"],
       "output": ["dist"]
+    },
+    "build": {
+      "dependencies": ["build:cjs", "minify"]
     }
   }
 }
