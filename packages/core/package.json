@@ -1,7 +1,7 @@
 {
   "name": "robot3",
   "version": "0.3.2",
-  "description": "A function, immutable Finite State Machine library",
+  "description": "A functional, immutable Finite State Machine library",
   "main": "dist/machine.js",
   "exports": {
     ".": {
