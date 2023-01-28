@@ -3,7 +3,12 @@
   "version": "0.3.2",
   "description": "A function, immutable Finite State Machine library",
   "main": "dist/machine.js",
-  "module": "machine.js",
+  "exports": {
+    ".": {
+      "require": "./dist/machine.js",
+      "default": "./machine.js"
+    }
+  },
   "files": [
     "dist/",
     "debug.js",
