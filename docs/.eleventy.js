@@ -5,8 +5,8 @@ const markdownItTocAndAnchor = require('markdown-it-toc-and-anchor').default;
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.setTemplateFormats([ 'md', 'njk' ]);
-  eleventyConfig.addPassthroughCopy('docs/styles');
-  eleventyConfig.addPassthroughCopy('docs/images');
+  eleventyConfig.addPassthroughCopy('styles');
+  eleventyConfig.addPassthroughCopy('images');
 
   eleventyConfig.addPlugin(pluginSyntaxHighlight);
 
@@ -28,7 +28,7 @@ module.exports = function(eleventyConfig) {
 
   return {
     data: {
-      dir: 'docs/_data'
+      dir: '_data'
     }
   };
 };

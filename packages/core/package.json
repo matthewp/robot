@@ -33,13 +33,9 @@
   },
   "homepage": "https://github.com/matthewp/robot#readme",
   "devDependencies": {
-    "@11ty/eleventy": "^1.0.2",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
     "@matthewp/node-qunit-puppeteer": "^3.0.0",
     "bundlesize": "^0.18.1",
     "local-web-server": "^4.2.1",
-    "markdown-it": "^13.0.1",
-    "markdown-it-toc-and-anchor": "^4.2.0",
     "rollup": "^1.21.4",
     "terser": "^5.16.1"
   },

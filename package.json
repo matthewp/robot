@@ -6,6 +6,7 @@
     "changeset": "changeset"
   },
   "workspaces": [
+    "docs",
     "packages/core"
   ],
   "devDependencies": {
