@@ -1,0 +1,80 @@
+{
+  "name": "robot3",
+  "version": "0.3.2",
+  "description": "A functional, immutable Finite State Machine library",
+  "main": "dist/machine.js",
+  "exports": {
+    ".": {
+      "require": "./dist/machine.js",
+      "default": "./machine.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "debug.js",
+    "logging.js",
+    "machine.js",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "minify": "wireit",
+    "bundlesize": "wireit",
+    "server": "wireit",
+    "test": "wireit",
+    "build:cjs": "wireit",
+    "build": "wireit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/robot.git"
+  },
+  "keywords": [
+    "Finite State Machine"
+  ],
+  "author": "Matthew Phillips <matthew@matthewphillips.info>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/robot/issues"
+  },
+  "homepage": "https://github.com/matthewp/robot#readme",
+  "devDependencies": {
+    "@matthewp/node-qunit-puppeteer": "^3.0.0",
+    "bundlesize": "^0.18.1",
+    "local-web-server": "^4.2.1",
+    "rollup": "^1.21.4",
+    "terser": "^5.16.1"
+  },
+  "wireit": {
+    "minify": {
+      "command": "terser machine.js -m --module -o machine.min.js",
+      "files": ["machine.js"],
+      "output": ["machine.min.js"]
+    },
+    "bundlesize": {
+      "command": "bundlesize --config bundlesize.json",
+      "dependencies": ["minify"]
+    },
+    "server": {
+      "command": "ws -p 1965",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "Listening on"
+        }
+      }
+    },
+    "test": {
+      "command": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
+      "dependencies": ["server"],
+      "files": ["machine.js"],
+      "output": []
+    }, 
+    "build:cjs": {
+      "command": "rollup -d dist -f cjs machine.js debug.js logging.js",
+      "files": ["machine.js", "debug.js", "logging.js"],
+      "output": ["dist"]
+    },
+    "build": {
+      "dependencies": ["build:cjs", "minify"]
+    }
+  }
+}

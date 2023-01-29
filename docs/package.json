@@ -1,0 +1,27 @@
+{
+  "name": "robot-site",
+  "private": true,
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.2",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
+    "markdown-it": "^13.0.1",
+    "markdown-it-toc-and-anchor": "^4.2.0"
+  },
+  "scripts": {
+    "build": "wireit",
+    "dev": "wireit"
+  },
+  "wireit": {
+    "build": {
+      "command": "eleventy --config=.eleventy.js"
+    },
+    "dev": {
+      "command": "eleventy --serve",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "Serving files"
+        }
+      }
+    }
+  }
+}

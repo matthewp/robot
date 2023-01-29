@@ -1,46 +1,16 @@
 {
-  "name": "robot3",
-  "version": "0.3.2",
-  "description": "A function, immutable Finite State Machine library",
-  "main": "dist/machine.js",
-  "module": "machine.js",
-  "files": [
-    "dist/",
-    "debug.js",
-    "logging.js",
-    "machine.js",
-    "index.d.ts"
-  ],
+  "name": "robot-repo",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "minify": "terser machine.js -m --module -o machine.min.js",
-    "bundlesize": "npm run minify && bundlesize --config bundlesize.json",
-    "server": "ws -p 1965",
-    "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
-    "build": "rollup -d dist -f cjs machine.js debug.js logging.js",
-    "preversion": "npm run build"
+    "changeset": "changeset"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/matthewp/robot.git"
-  },
-  "keywords": [
-    "Finite State Machine"
+  "workspaces": [
+    "docs",
+    "packages/core"
   ],
-  "author": "Matthew Phillips <matthew@matthewphillips.info>",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/matthewp/robot/issues"
-  },
-  "homepage": "https://github.com/matthewp/robot#readme",
   "devDependencies": {
-    "@11ty/eleventy": "^1.0.2",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
-    "bundlesize": "^0.18.1",
-    "local-web-server": "^4.2.1",
-    "markdown-it": "^13.0.1",
-    "markdown-it-toc-and-anchor": "^4.2.0",
-    "node-qunit-puppeteer": "^1.0.13",
-    "rollup": "^1.21.4",
-    "terser": "^4.3.1"
+    "@changesets/cli": "^2.26.0",
+    "wireit": "^0.9.3"
   }
 }
