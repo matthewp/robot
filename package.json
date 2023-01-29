@@ -7,10 +7,15 @@
   },
   "workspaces": [
     "docs",
-    "packages/core"
+    "packages/core",
+    "packages/preact-robot",
+    "packages/robot-hooks"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
+    "@matthewp/node-qunit-puppeteer": "^3.0.0",
+    "bundlesize": "^0.18.1",
+    "local-web-server": "^4.2.1",
     "wireit": "^0.9.3"
   }
 }
