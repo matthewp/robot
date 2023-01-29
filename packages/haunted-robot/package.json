@@ -38,7 +38,7 @@
   },
   "wireit": {
     "test": {
-      "command": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
+      "command": "node-qunit-puppeteer http://localhost:1965/packages/haunted-robot/test/test.html 10000",
       "dependencies": ["../..:server"],
       "files": ["machine.js"],
       "output": []
