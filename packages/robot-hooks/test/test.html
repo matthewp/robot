@@ -11,15 +11,24 @@
 <script>
   QUnit.config.autostart = false;
 </script>
-<script defer src="https://unpkg.com/es-module-shims@0.4.4/dist/es-module-shims.js"></script>
-<script type="importmap-shim">
+<script type="importmap">
 {
   "imports": {
-    "robot3": "../node_modules/robot3/machine.js"
+    "haunted": "../../../node_modules/haunted/lib/haunted.js",
+    "lit": "../../../node_modules/lit/index.js",
+    "lit/async-directive.js": "../../../node_modules/lit/async-directive.js",
+    "lit/directive.js": "../../../node_modules/lit/directive.js",
+    "@lit/reactive-element": "../../../node_modules/@lit/reactive-element/reactive-element.js",
+    "lit-html": "../../../node_modules/lit-html/lit-html.js",
+    "lit-html/async-directive.js": "../../../node_modules/lit-html/async-directive.js",
+    "lit-html/directive.js": "../../../node_modules/lit-html/directive.js",
+    "lit-html/is-server.js": "../../../node_modules/lit-html/is-server.js",
+    "lit-element/lit-element.js": "../../../node_modules/lit-element/lit-element.js",
+    "robot3": "../../../node_modules/robot3/machine.js"
   }
 }
 </script>
-<script type="module-shim">
+<script type="module">
   import './test.js';
   QUnit.start();
 </script>

@@ -1,6 +1,6 @@
 import { createMachine, state, transition, invoke } from 'robot3';
 import { createUseMachine } from '../machine.js';
-import { component, useEffect, useState, html } from 'https://unpkg.com/haunted/haunted.js';
+import { component, useEffect, useState, html } from 'haunted';
 
 const useMachine = createUseMachine(useEffect, useState);
 

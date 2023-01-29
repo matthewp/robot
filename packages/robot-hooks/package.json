@@ -10,7 +10,6 @@
     "index.d.ts"
   ],
   "scripts": {
-    "server": "wireit",
     "test": "wireit",
     "build": "wireit"
   },
@@ -29,20 +28,13 @@
     "robot3": "^0.2.3"
   },
   "devDependencies": {
-    "robot3": "^0.2.17"
+    "robot3": "^0.2.17",
+    "haunted": "^5.0.0"
   },
   "wireit": {
-    "server": {
-      "command": "ws -p 1967",
-      "service": {
-        "readyWhen": {
-          "lineMatches": "Listening on"
-        }
-      }
-    },
     "test": {
-      "command": "node-qunit-puppeteer http://localhost:1967/test/test.html 10000",
-      "dependencies": ["server"],
+      "command": "node-qunit-puppeteer http://localhost:1965/packages/robot-hooks/test/test.html 10000",
+      "dependencies": ["../..:server"],
       "files": ["machine.js"],
       "output": []
     },
