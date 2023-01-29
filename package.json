@@ -9,6 +9,7 @@
   "workspaces": [
     "docs",
     "packages/core",
+    "packages/haunted-robot",
     "packages/preact-robot",
     "packages/robot-hooks"
   ],
