@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "server": "wireit"
   },
   "workspaces": [
     "docs",
@@ -17,5 +18,15 @@
     "bundlesize": "^0.18.1",
     "local-web-server": "^4.2.1",
     "wireit": "^0.9.3"
+  },
+  "wireit": {
+    "server": {
+      "command": "ws -p 1965",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "Listening on"
+        }
+      }
+    }
   }
 }

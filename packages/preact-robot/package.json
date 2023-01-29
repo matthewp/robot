@@ -11,7 +11,6 @@
     }
   },
   "scripts": {
-    "server": "wireit",
     "test": "wireit",
     "build": "wireit"
   },
@@ -42,21 +41,14 @@
     "rollup": "^2.8.2"
   },
   "devDependencies": {
-    "preact": "^10.0.0-rc.3",
+    "preact": "^10.11.3",
+    "htm": "^3.1.1",
     "robot3": "^0.2.17"
   },
   "wireit": {
-    "server": {
-      "command": "ws -p 1966",
-      "service": {
-        "readyWhen": {
-          "lineMatches": "Listening on"
-        }
-      }
-    },
     "test": {
-      "command": "node-qunit-puppeteer http://localhost:1966/test/test.html 10000",
-      "dependencies": ["server"],
+      "command": "node-qunit-puppeteer http://localhost:1965/packages/preact-robot/test/test.html 10000",
+      "dependencies": ["../..:server"],
       "files": ["machine.js"],
       "output": []
     },

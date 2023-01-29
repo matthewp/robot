@@ -11,17 +11,19 @@
 <script>
   QUnit.config.autostart = false;
 </script>
-<script defer src="https://unpkg.com/es-module-shims@0.4.4/dist/es-module-shims.js"></script>
-<script type="importmap-shim">
+<script type="importmap">
 {
   "imports": {
-    "preact/hooks": "./preact.js",
-    "robot3": "../node_modules/robot3/machine.js",
+    "htm": "../../../node_modules/htm/dist/htm.module.js",
+    "htm/preact": "../../../node_modules/htm/preact/index.module.js",
+    "preact/hooks": "../../../node_modules/preact/hooks/dist/hooks.module.js",
+    "preact": "../../../node_modules/preact/dist/preact.module.js",
+    "robot3": "../../../node_modules/robot3/machine.js",
     "robot-hooks": "../node_modules/robot-hooks/machine.js"
   }
 }
 </script>
-<script type="module-shim">
+<script type="module">
   import './test.js';
   QUnit.start();
 </script>

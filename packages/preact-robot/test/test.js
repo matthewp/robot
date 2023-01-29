@@ -1,6 +1,7 @@
 import { createMachine, state, transition } from 'robot3';
 import { useMachine } from '../machine.js';
-import { h, render, html } from './preact.js';
+import { h, render } from 'preact';
+import { html } from 'htm/preact';
 
 let wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 let later = () => wait(50);

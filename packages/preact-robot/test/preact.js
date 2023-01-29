@@ -1,1 +1,0 @@
-export * from 'https://packd-es.herokuapp.com/htm@2.2.1/preact,preact@10.0.0-rc.3,preact@10.0.0-rc.3/hooks?flat';
