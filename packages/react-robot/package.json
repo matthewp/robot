@@ -6,7 +6,7 @@
   "module": "machine.js",
   "type": "module",
   "scripts": {
-    "test": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000"
+    "test": "wireit"
   },
   "files": [
     "machine.js",
