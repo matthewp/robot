@@ -10,6 +10,7 @@
     "docs",
     "packages/core",
     "packages/haunted-robot",
+    "packages/lit-robot",
     "packages/preact-robot",
     "packages/react-robot",
     "packages/robot-hooks"
