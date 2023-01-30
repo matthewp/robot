@@ -11,6 +11,7 @@
     "packages/core",
     "packages/haunted-robot",
     "packages/preact-robot",
+    "packages/react-robot",
     "packages/robot-hooks"
   ],
   "devDependencies": {
