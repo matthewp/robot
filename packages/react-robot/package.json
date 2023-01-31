@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/matthewp/react-robot#readme",
   "peerDependencies": {
-    "react": "^16.9.0 || ^18.2.0",
+    "react": "^16.9.0 || ^17.0.0 || ^18.2.0",
     "robot3": "^0.2.3"
   },
   "dependencies": {

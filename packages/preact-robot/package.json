@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/matthewp/preact-robot#readme",
   "peerDependencies": {
-    "preact": "^10.0.0",
+    "preact": "^10.11.3",
     "robot3": "^0.2.3"
   },
   "dependencies": {

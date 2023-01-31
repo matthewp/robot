@@ -30,7 +30,6 @@
     "lit": "^2.6.1",
     "robot3": "^0.2.0"
   },
-  "dependencies": {},
   "devDependencies": {
     "lit": "^2.6.1",
     "robot3": "0.2.1"
