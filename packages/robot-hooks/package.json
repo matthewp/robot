@@ -1,6 +1,6 @@
 {
   "name": "robot-hooks",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "description": "Hooks for use with Robot finite state machines",
   "main": "dist/machine.js",
   "module": "machine.js",
@@ -25,23 +25,31 @@
   },
   "homepage": "https://github.com/matthewp/robot-hooks#readme",
   "peerDependencies": {
-    "robot3": "^0.2.3"
+    "robot3": "^0.4.0"
   },
   "devDependencies": {
-    "robot3": "^0.2.17",
+    "robot3": "^0.4.0",
     "haunted": "^5.0.0"
   },
   "wireit": {
     "test": {
       "command": "node-qunit-puppeteer http://localhost:1965/packages/robot-hooks/test/test.html 10000",
-      "dependencies": ["../..:server"],
-      "files": ["machine.js"],
+      "dependencies": [
+        "../..:server"
+      ],
+      "files": [
+        "machine.js"
+      ],
       "output": []
     },
     "build": {
       "command": "rollup -d dist -f cjs machine.js",
-      "files": ["machine.js"],
-      "output": ["dist"]
+      "files": [
+        "machine.js"
+      ],
+      "output": [
+        "dist"
+      ]
     }
   }
 }

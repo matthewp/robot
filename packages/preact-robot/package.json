@@ -1,6 +1,6 @@
 {
   "name": "preact-robot",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Preact hooks for Robot finite state machines",
   "main": "dist/machine.js",
   "module": "machine.js",
@@ -34,28 +34,36 @@
   "homepage": "https://github.com/matthewp/preact-robot#readme",
   "peerDependencies": {
     "preact": "^10.11.3",
-    "robot3": "^0.2.3"
+    "robot3": "^0.4.0"
   },
   "dependencies": {
-    "robot-hooks": "^0.3.5",
+    "robot-hooks": "^0.4.0",
     "rollup": "^2.8.2"
   },
   "devDependencies": {
     "preact": "^10.11.3",
     "htm": "^3.1.1",
-    "robot3": "^0.2.17"
+    "robot3": "^0.4.0"
   },
   "wireit": {
     "test": {
       "command": "node-qunit-puppeteer http://localhost:1965/packages/preact-robot/test/test.html 10000",
-      "dependencies": ["../..:server"],
-      "files": ["machine.js"],
+      "dependencies": [
+        "../..:server"
+      ],
+      "files": [
+        "machine.js"
+      ],
       "output": []
     },
     "build": {
       "command": "rollup -d dist -f cjs machine.js",
-      "files": ["machine.js"],
-      "output": ["dist"]
+      "files": [
+        "machine.js"
+      ],
+      "output": [
+        "dist"
+      ]
     }
   }
 }

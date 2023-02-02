@@ -1,6 +1,6 @@
 {
   "name": "robot3",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "A functional, immutable Finite State Machine library",
   "main": "dist/machine.js",
   "exports": {
@@ -44,12 +44,18 @@
   "wireit": {
     "minify": {
       "command": "terser machine.js -m --module -o machine.min.js",
-      "files": ["machine.js"],
-      "output": ["machine.min.js"]
+      "files": [
+        "machine.js"
+      ],
+      "output": [
+        "machine.min.js"
+      ]
     },
     "bundlesize": {
       "command": "bundlesize --config bundlesize.json",
-      "dependencies": ["minify"]
+      "dependencies": [
+        "minify"
+      ]
     },
     "server": {
       "command": "ws -p 1965",
@@ -61,17 +67,30 @@
     },
     "test": {
       "command": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
-      "dependencies": ["server"],
-      "files": ["machine.js"],
+      "dependencies": [
+        "server"
+      ],
+      "files": [
+        "machine.js"
+      ],
       "output": []
     },
     "build:cjs": {
       "command": "rollup -d dist -f cjs machine.js debug.js logging.js",
-      "files": ["machine.js", "debug.js", "logging.js"],
-      "output": ["dist"]
+      "files": [
+        "machine.js",
+        "debug.js",
+        "logging.js"
+      ],
+      "output": [
+        "dist"
+      ]
     },
     "build": {
-      "dependencies": ["build:cjs", "minify"]
+      "dependencies": [
+        "build:cjs",
+        "minify"
+      ]
     }
   }
 }

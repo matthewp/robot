@@ -1,6 +1,6 @@
 {
   "name": "haunted-robot",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Haunted hooks for Robot finite state machines",
   "main": "machine.js",
   "module": "machine.js",
@@ -28,20 +28,24 @@
   "homepage": "https://github.com/matthewp/haunted-robot#readme",
   "peerDependencies": {
     "haunted": "^5.0.0",
-    "robot3": "^0.2.3"
+    "robot3": "^0.4.0"
   },
   "dependencies": {
-    "robot-hooks": "^0.3.1"
+    "robot-hooks": "^0.4.0"
   },
   "devDependencies": {
     "haunted": "^5.0.0",
-    "robot3": "^0.2.3"
+    "robot3": "^0.4.0"
   },
   "wireit": {
     "test": {
       "command": "node-qunit-puppeteer http://localhost:1965/packages/haunted-robot/test/test.html 10000",
-      "dependencies": ["../..:server"],
-      "files": ["machine.js"],
+      "dependencies": [
+        "../..:server"
+      ],
+      "files": [
+        "machine.js"
+      ],
       "output": []
     }
   }
