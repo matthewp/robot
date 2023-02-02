@@ -1,0 +1,47 @@
+{
+  "name": "robot-hooks",
+  "version": "0.3.6",
+  "description": "Hooks for use with Robot finite state machines",
+  "main": "dist/machine.js",
+  "module": "machine.js",
+  "files": [
+    "dist/",
+    "machine.js",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "test": "wireit",
+    "build": "wireit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/robot-hooks.git"
+  },
+  "keywords": [],
+  "author": "Matthew Phillips <matthew@matthewphillips.info>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/robot-hooks/issues"
+  },
+  "homepage": "https://github.com/matthewp/robot-hooks#readme",
+  "peerDependencies": {
+    "robot3": "^0.2.3"
+  },
+  "devDependencies": {
+    "robot3": "^0.2.17",
+    "haunted": "^5.0.0"
+  },
+  "wireit": {
+    "test": {
+      "command": "node-qunit-puppeteer http://localhost:1965/packages/robot-hooks/test/test.html 10000",
+      "dependencies": ["../..:server"],
+      "files": ["machine.js"],
+      "output": []
+    },
+    "build": {
+      "command": "rollup -d dist -f cjs machine.js",
+      "files": ["machine.js"],
+      "output": ["dist"]
+    }
+  }
+}

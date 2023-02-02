@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>react-robot tests</title>
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.9.2.css">
+
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="../../../node_modules/react/umd/react.development.js" defer></script>
+<script src="../../../node_modules/react-dom/umd/react-dom.development.js" defer></script>
+<script src="../../../node_modules/react-dom/umd/react-dom-test-utils.development.js" defer></script>
+<script src="https://code.jquery.com/qunit/qunit-2.9.2.js"></script>
+<script>
+  QUnit.config.autostart = false;
+  self.IS_REACT_ACT_ENVIRONMENT = true;
+</script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "./react.js",
+    "robot3": "../../../node_modules/robot3/machine.js",
+    "robot-hooks": "../../../node_modules/robot-hooks/machine.js"
+  }
+}
+</script>
+<script type="module">
+  import './test.js';
+  QUnit.start();
+</script>

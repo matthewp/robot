@@ -1,0 +1,61 @@
+{
+  "name": "preact-robot",
+  "version": "0.2.3",
+  "description": "Preact hooks for Robot finite state machines",
+  "main": "dist/machine.js",
+  "module": "machine.js",
+  "exports": {
+    ".": {
+      "require": "./dist/machine.js",
+      "default": "./machine.js"
+    }
+  },
+  "scripts": {
+    "test": "wireit",
+    "build": "wireit"
+  },
+  "files": [
+    "dist/",
+    "machine.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/preact-robot.git"
+  },
+  "keywords": [
+    "React",
+    "Finite state machine"
+  ],
+  "author": "Matthew Phillips <matthew@matthewphillips.info>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/preact-robot/issues"
+  },
+  "homepage": "https://github.com/matthewp/preact-robot#readme",
+  "peerDependencies": {
+    "preact": "^10.11.3",
+    "robot3": "^0.2.3"
+  },
+  "dependencies": {
+    "robot-hooks": "^0.3.5",
+    "rollup": "^2.8.2"
+  },
+  "devDependencies": {
+    "preact": "^10.11.3",
+    "htm": "^3.1.1",
+    "robot3": "^0.2.17"
+  },
+  "wireit": {
+    "test": {
+      "command": "node-qunit-puppeteer http://localhost:1965/packages/preact-robot/test/test.html 10000",
+      "dependencies": ["../..:server"],
+      "files": ["machine.js"],
+      "output": []
+    },
+    "build": {
+      "command": "rollup -d dist -f cjs machine.js",
+      "files": ["machine.js"],
+      "output": ["dist"]
+    }
+  }
+}

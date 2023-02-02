@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>robot-hooks tests</title>
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.9.2.css">
+
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="https://code.jquery.com/qunit/qunit-2.9.2.js"></script>
+<script>
+  QUnit.config.autostart = false;
+</script>
+<script type="importmap">
+{
+  "imports": {
+    "haunted": "../../../node_modules/haunted/lib/haunted.js",
+    "lit": "../../../node_modules/lit/index.js",
+    "lit/async-directive.js": "../../../node_modules/lit/async-directive.js",
+    "lit/directive.js": "../../../node_modules/lit/directive.js",
+    "@lit/reactive-element": "../../../node_modules/@lit/reactive-element/reactive-element.js",
+    "lit-html": "../../../node_modules/lit-html/lit-html.js",
+    "lit-html/async-directive.js": "../../../node_modules/lit-html/async-directive.js",
+    "lit-html/directive.js": "../../../node_modules/lit-html/directive.js",
+    "lit-html/is-server.js": "../../../node_modules/lit-html/is-server.js",
+    "lit-element/lit-element.js": "../../../node_modules/lit-element/lit-element.js",
+    "robot3": "../../../node_modules/robot3/machine.js"
+  }
+}
+</script>
+<script type="module">
+  import './test.js';
+  QUnit.start();
+</script>

@@ -38,9 +38,6 @@
   },
   "homepage": "https://github.com/matthewp/robot#readme",
   "devDependencies": {
-    "@matthewp/node-qunit-puppeteer": "^3.0.0",
-    "bundlesize": "^0.18.1",
-    "local-web-server": "^4.2.1",
     "rollup": "^1.21.4",
     "terser": "^5.16.1"
   },
@@ -67,7 +64,7 @@
       "dependencies": ["server"],
       "files": ["machine.js"],
       "output": []
-    }, 
+    },
     "build:cjs": {
       "command": "rollup -d dist -f cjs machine.js debug.js logging.js",
       "files": ["machine.js", "debug.js", "logging.js"],

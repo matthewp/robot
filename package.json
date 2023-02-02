@@ -3,14 +3,33 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "server": "wireit"
   },
   "workspaces": [
     "docs",
-    "packages/core"
+    "packages/core",
+    "packages/haunted-robot",
+    "packages/lit-robot",
+    "packages/preact-robot",
+    "packages/react-robot",
+    "packages/robot-hooks"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
+    "@matthewp/node-qunit-puppeteer": "^3.0.0",
+    "bundlesize": "^0.18.1",
+    "local-web-server": "^4.2.1",
     "wireit": "^0.9.3"
+  },
+  "wireit": {
+    "server": {
+      "command": "ws -p 1965",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "Listening on"
+        }
+      }
+    }
   }
 }
