@@ -1,6 +1,6 @@
 {
   "name": "lit-robot",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "LitElement hooks for Robot finite state machines",
   "main": "machine.js",
   "module": "machine.js",
@@ -28,17 +28,21 @@
   "homepage": "https://github.com/matthewp/lit-robot#readme",
   "peerDependencies": {
     "lit": "^2.6.1",
-    "robot3": "^0.2.0"
+    "robot3": "^0.4.0"
   },
   "devDependencies": {
     "lit": "^2.6.1",
-    "robot3": "0.2.1"
+    "robot3": "0.4.0"
   },
   "wireit": {
     "test": {
       "command": "node-qunit-puppeteer http://localhost:1965/packages/lit-robot/test/test.html 10000",
-      "dependencies": ["../..:server"],
-      "files": ["machine.js"],
+      "dependencies": [
+        "../..:server"
+      ],
+      "files": [
+        "machine.js"
+      ],
       "output": []
     }
   }
