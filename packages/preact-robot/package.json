@@ -23,7 +23,7 @@
     "url": "git+https://github.com/matthewp/preact-robot.git"
   },
   "keywords": [
-    "React",
+    "Preact",
     "Finite state machine"
   ],
   "author": "Matthew Phillips <matthew@matthewphillips.info>",
