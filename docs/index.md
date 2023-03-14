@@ -113,12 +113,12 @@ function App() {
       ) : state === 'loaded' ? (
 
         <ul>
-          {users.map(user => {
+          {users.map(user =>
             <li id={`user-${user.id}`}>{user.name}</li>
-          })}
+          )}
         </ul>
 
-      ): ()}
+      ): ''}
 
       <button onClick={() => send('fetch')} disabled={disableButton}>
         Load users
