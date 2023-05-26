@@ -3,14 +3,16 @@
   "version": "0.4.0",
   "description": "A functional, immutable Finite State Machine library",
   "main": "dist/machine.js",
+  "module": "esm/machine.js",
   "exports": {
     ".": {
       "require": "./dist/machine.js",
-      "default": "./machine.js"
+      "default": "./esm/machine.js"
     }
   },
   "files": [
     "dist/",
+    "esm/",
     "debug.js",
     "logging.js",
     "machine.js",
@@ -22,6 +24,7 @@
     "server": "wireit",
     "test": "wireit",
     "build:cjs": "wireit",
+    "build:esm": "wireit",
     "build": "wireit"
   },
   "repository": {
@@ -86,9 +89,21 @@
         "dist"
       ]
     },
+    "build:esm": {
+      "command": "rollup -d esm -f esm machine.js debug.js logging.js",
+      "files": [
+        "machine.js",
+        "debug.js",
+        "logging.js"
+      ],
+      "output": [
+        "esm"
+      ]
+    },
     "build": {
       "dependencies": [
         "build:cjs",
+        "build:esm",
         "minify"
       ]
     }
