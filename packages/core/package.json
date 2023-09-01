@@ -6,6 +6,7 @@
   "exports": {
     ".": {
       "require": "./dist/machine.js",
+      "import": "./machine.js",
       "default": "./machine.js"
     }
   },
