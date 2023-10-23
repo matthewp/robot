@@ -28,11 +28,11 @@
   "homepage": "https://github.com/matthewp/lit-robot#readme",
   "peerDependencies": {
     "lit": "^2.6.1",
-    "robot3": "^0.4.0"
+    "robot3": "^0.4.1"
   },
   "devDependencies": {
     "lit": "^2.6.1",
-    "robot3": "0.4.0"
+    "robot3": "0.4.1"
   },
   "wireit": {
     "test": {
