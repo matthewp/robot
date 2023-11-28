@@ -1,5 +1,11 @@
 # robot3
 
+## 1.0.0
+
+### Major Changes
+
+- 52742ab: Call onChange callbacks for immediate states too
+
 ## 0.4.1
 
 ### Patch Changes
