@@ -1,6 +1,6 @@
 {
   "name": "react-robot",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "React hooks for Robot finite state machines",
   "main": "machine.js",
   "module": "machine.js",
@@ -28,14 +28,14 @@
   "homepage": "https://github.com/matthewp/react-robot#readme",
   "peerDependencies": {
     "react": "^16.9.0 || ^17.0.0 || ^18.2.0",
-    "robot3": "^0.4.0"
+    "robot3": "^1.0.0"
   },
   "dependencies": {
-    "robot-hooks": "^0.4.0"
+    "robot-hooks": "^1.0.0"
   },
   "devDependencies": {
     "react-dom": "^18.2.0",
-    "robot3": "^0.4.0"
+    "robot3": "^1.0.0"
   },
   "wireit": {
     "test": {
