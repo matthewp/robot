@@ -161,6 +161,8 @@ function transitionTo(service, machine, fromEvent, candidates) {
 
       if (d._onEnter) d._onEnter(machine, to, service.context, context, fromEvent);
       let state = newMachine.state.value;
+      service.machine = newMachine;
+      service.onChange(service);
       return state.enter(newMachine, service, fromEvent);
     }
   }
@@ -181,10 +183,7 @@ function send(service, event) {
 
 let service = {
   send(event) {
-    this.machine = send(this, event);
-    
-    // TODO detect change
-    this.onChange(this);
+    send(this, event);
   }
 };
 
