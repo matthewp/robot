@@ -89,8 +89,15 @@ let invokeFnType = {
         machine: valueEnumerable(rn),
         transitions: valueEnumerable(this.transitions)
       }).enter(machine2, service, event)
-    rn.then(data => service.send({ type: 'done', data }))
-      .catch(error => service.send({ type: 'error', error }));
+    rn
+      .then(data => { 
+        if (machine2 === service.machine) 
+          return service.send({ type: 'done', data });
+      })
+      .catch(error => { 
+        if (machine2 === service.machine) 
+          return service.send({ type: 'error', error });
+      });
     return machine2;
   }
 };
