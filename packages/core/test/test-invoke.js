@@ -74,7 +74,7 @@ QUnit.module('Invoke', hooks => {
     assert.equal(service.machine.current, 'three', 'now in the next state');
   });
 
-  QUnit.test('Should fire "done" when context chnages', async assert => {
+  QUnit.test('Should fire "done" when context changes', async assert => {
     const wait = ms => () => new Promise(resolve => setTimeout(resolve, ms));
 
     let machine = createMachine({
