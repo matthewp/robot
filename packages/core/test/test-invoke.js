@@ -52,7 +52,7 @@ QUnit.module('Invoke', hooks => {
     assert.equal(service.machine.current, 'two', 'in the new state');
   });
 
-  QUnit.test('Should not fire "done" event when state chnages', async assert => {
+  QUnit.test('Should not fire "done" event when state changes', async assert => {
     const wait = ms => () => new Promise(resolve => setTimeout(resolve, ms));
 
     let machine = createMachine({
