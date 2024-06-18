@@ -3,9 +3,11 @@
   "version": "0.4.1",
   "description": "A functional, immutable Finite State Machine library",
   "main": "dist/machine.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/machine.js",
+ 			"types": "./dist/index.d.ts",
       "import": "./machine.js",
       "default": "./machine.js"
     }
