@@ -4,10 +4,12 @@
   "description": "Preact hooks for Robot finite state machines",
   "main": "dist/machine.js",
   "module": "machine.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/machine.js",
-      "default": "./machine.js"
+      "default": "./machine.js",
+      "types": "./index.d.ts"
     }
   },
   "scripts": {
