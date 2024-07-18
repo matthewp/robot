@@ -41,10 +41,8 @@
   },
   "homepage": "https://github.com/matthewp/robot#readme",
   "devDependencies": {
-    "bundlesize": "^0.18.1",
     "rollup": "^1.21.4",
-    "terser": "^5.16.1",
-    "wireit": "^0.9.3"
+    "terser": "^5.16.1"
   },
   "wireit": {
     "minify": {
