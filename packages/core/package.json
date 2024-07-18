@@ -42,7 +42,8 @@
   "homepage": "https://github.com/matthewp/robot#readme",
   "devDependencies": {
     "rollup": "^1.21.4",
-    "terser": "^5.16.1"
+    "terser": "^5.16.1",
+    "wireit": "^0.9.3"
   },
   "wireit": {
     "minify": {
