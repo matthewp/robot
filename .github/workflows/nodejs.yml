@@ -20,6 +20,6 @@ jobs:
     - name: Install
       run: npm ci
     - name: Bundle size
-      run: npm run bundlesize --workspaces
+      run: npm run bundlesize -w=packages/core
     - name: Test
       run: npm run test --workspaces
