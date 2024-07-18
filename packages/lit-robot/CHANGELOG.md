@@ -1,5 +1,12 @@
 # lit-robot
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [52742ab]
+  - robot3@1.0.0
+
 ## 0.3.0
 
 ### Minor Changes
