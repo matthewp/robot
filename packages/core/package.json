@@ -7,6 +7,7 @@
   "exports": {
     ".": {
       "require": "./dist/machine.js",
+ 			"types": "./index.d.ts",
       "import": "./machine.js",
       "default": "./machine.js",
       "types": "./index.d.ts"
