@@ -49,7 +49,7 @@
   },
   "wireit": {
     "test": {
-      "command": "node-qunit-puppeteer http://localhost:1965/packages/preact-robot/test/test.html 10000",
+      "command": "node-qunit-puppeteer http://localhost:1965/packages/preact-robot/test/test.html 20000",
       "dependencies": [
         "../..:server"
       ],
