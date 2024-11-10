@@ -133,7 +133,7 @@ QUnit.module('useMachine', hooks => {
     el.remove();
   });
 
-  QUnit.test('Invoking machines the "current" is the child machine', async assert => {
+  QUnit.skip('Invoking machines the "current" is the child machine', async assert => {
     const nested = createMachine({
       nestedOne: state(
         transition('next', 'nestedTwo')

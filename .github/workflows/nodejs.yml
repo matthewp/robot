@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [20.x, 22.x]
 
     steps:
     - uses: actions/checkout@v1
@@ -20,6 +20,6 @@ jobs:
     - name: Install
       run: npm ci
     - name: Bundle size
-      run: npm run bundlesize --workspaces
+      run: npm run bundlesize --workspaces --if-present
     - name: Test
-      run: npm run test --workspaces
+      run: npm run test --workspaces --if-present
