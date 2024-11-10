@@ -1,5 +1,12 @@
 # robot-hooks
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [52742ab]
+  - robot3@1.0.0
+
 ## 0.4.0
 
 ### Minor Changes
