@@ -1,5 +1,17 @@
 # lit-robot
 
+## 2.0.0
+
+### Major Changes
+
+- d949875: Upgrade to Lit 3.x
+
+### Patch Changes
+
+- Updated dependencies [1fc7737]
+- Updated dependencies [0dc1c1a]
+  - robot3@1.0.1
+
 ## 1.0.0
 
 ### Patch Changes
