@@ -1,0 +1,263 @@
+---
+import RobotLogo from '../components/RobotLogo.astro';
+import ContentSection from '../components/ContentSection.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import InfoBox from '../components/InfoBox.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import Code from '../icons/Code.astro';
+import Zap from '../icons/Zap.astro';
+import ArrowRight from '../icons/ArrowRight.astro';
+import Github from '../icons/GitHub.astro';
+import Terminal from '../icons/Terminal.astro';
+import BookOpen from '../icons/BookOpen.astro';
+---
+
+<div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute inset-0 opacity-10">
+      {[...Array(20)].map((_, i) => (
+        <div
+          key={i}
+          class="absolute left-0 right-0 h-px bg-cyan-400"
+          style={{
+            top: `${i * 5}%`,
+            animation: `scanline 8s ${i * 0.1}s infinite linear`
+          }}
+        />
+      ))}
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 py-16 relative">
+    <div class="flex flex-col items-center text-center space-y-6">
+      <div 
+        class="relative w-32 h-32 cursor-pointer group"
+      >
+        <div class="
+          absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 
+          rounded-full flex items-center justify-center transform transition-all duration-300
+            group-hover:scale-110 group-hover:rotate-180
+        ">
+          <div class="w-24 h-24 transition-transform duration-300 group-hover:rotate-180">
+            <RobotLogo />
+          </div>
+        </div>
+        <div class="absolute -inset-4 bg-cyan-400 opacity-20 rounded-full animate-pulse" />
+      </div>
+      
+      <h1 class="text-6xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">
+        ROBOT
+      </h1>
+      
+      <div class="flex items-center space-x-2 text-xl text-cyan-300 font-mono">
+        <Zap class="animate-bounce" />
+        <span>1KB OF PURE MECHANICAL MAGIC</span>
+        <Zap class="animate-bounce" />
+      </div>
+
+      <div class="flex gap-6 mt-8">
+        <button class="group bg-cyan-500 hover:bg-cyan-400 text-black font-mono px-8 py-4 rounded-xl flex items-center gap-2 transform hover:scale-105 transition-all">
+          BOOT UP
+          <ArrowRight class="group-hover:translate-x-1 transition-transform" />
+        </button>
+        <button class="group bg-gray-800 hover:bg-gray-700 font-mono px-8 py-4 rounded-xl flex items-center gap-2 border-2 border-cyan-500 transform hover:scale-105 transition-all">
+          <Github />
+          SOURCE_CODE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* Key Features Section */}
+  <div class="container mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-3 gap-8">
+      {[
+        {
+          icon: <Terminal size={24} />,
+          title: "TINY_FOOTPRINT.exe",
+          description: "Just 1KB of pure robotic efficiency. No bloat, all bot!"
+        },
+        {
+          icon: <Code size={24} />,
+          title: "TYPE_SAFE.sys",
+          description: "Bulletproof typing that would make even a robot proud"
+        },
+        {
+          icon: <BookOpen size={24} />,
+          title: "DOCS.readme",
+          description: "Documentation so clear, even humans can understand it"
+        }
+      ].map((feature, i) => (
+        <FeatureCard key={i} {...feature} />
+      ))}
+    </div>
+  </div>
+
+  {/* Content Sections */}
+  <div class="container mx-auto px-4 py-16 space-y-16">
+    <ContentSection 
+      title="Why Finite State Machines"
+      subtitle="A better way to handle complex UI state"
+    >
+      <div class="space-y-6 text-gray-300 leading-relaxed">
+        <p>
+          With Finite State Machines the term <code class="text-cyan-400">state</code> might 
+          not mean what you think. In the frontend we tend to think of state to mean <em>all</em> of 
+          the variables that control the UI. When we say <code class="text-cyan-400">state</code> in 
+          Finite State Machines, we mean a higher-level sort of state.
+        </p>
+
+        <p>
+          For example, on the GitHub issue page, the issue titles can be edited by the issue creator 
+          and repo maintainers. Initially a title is displayed like this:
+        </p>
+
+        <img 
+          src="/api/placeholder/800/100" 
+          alt="GitHub issue title in view mode"
+          class="rounded-lg my-6"
+        />
+
+        <p>
+          The edit button (in red) changes the view so that the title is in an input for editing, 
+          and the buttons change as well:
+        </p>
+
+        <img 
+          src="/api/placeholder/800/100" 
+          alt="GitHub issue title in edit mode"
+          class="rounded-lg my-6"
+        />
+
+        <InfoBox>
+          If we call this "edit mode" you might be inclined to represent this state as a boolean 
+          and the title as a string. But that\'s missing some crucial states!
+        </InfoBox>
+
+        <CodeBlock 
+          title="STATE_MACHINE.robot"
+          code={`const titleMachine = createMachine({
+states: {
+viewing: {
+  on: { EDIT: 'editing' }
+},
+editing: {
+  on: { 
+    SAVE: 'saving',
+    CANCEL: 'viewing'
+  }
+},
+saving: {
+  on: {
+    SUCCESS: 'viewing',
+    ERROR: 'editing'
+  }
+}
+},
+initial: 'viewing'
+});`}
+        />
+
+        <p>
+          This state machine captures all the possible states our title component can be in:
+          viewing, editing, and saving. Each state has clear transitions to other states based
+          on user actions or API responses.
+        </p>
+
+        <CodeBlock 
+          title="EDITABLE_TITLE.robot"
+          code={`function EditableTitle() {
+const [state, send] = useMachine(titleMachine);
+const [title, setTitle] = useState('Documentation');
+
+if (state.matches('editing')) {
+return (
+  <input
+    value={title}
+    onChange={e => setTitle(e.target.value)}
+    onBlur={() => send('SAVE')}
+  />
+);
+}
+
+return (
+<h1 onClick={() => send('EDIT')}>
+  {title}
+</h1>
+);
+}`}
+        />
+
+        <p>
+          The resulting code is cleaner and more predictable. The state machine ensures we can't
+          end up in impossible states, like showing both the input and the title at once.
+        </p>
+      </div>
+    </ContentSection>
+
+    <ContentSection 
+      title="State Charts"
+      subtitle="Visualize your application's behavior"
+    >
+      <div class="space-y-6 text-gray-300 leading-relaxed">
+        <p>
+          Robot provides built-in support for state charts, allowing you to visualize and understand 
+          complex state machines. State charts extend finite state machines with features like:
+        </p>
+
+        <ul class="list-disc list-inside space-y-2">
+          <li>Hierarchical states</li>
+          <li>Parallel states</li>
+          <li>History states</li>
+          <li>Entry and exit actions</li>
+        </ul>
+
+        <CodeBlock 
+          title="ADVANCED_STATE.robot"
+          code={`const wizardMachine = createMachine({
+initial: 'form',
+states: {
+form: {
+  initial: 'step1',
+  states: {
+    step1: {
+      on: { NEXT: 'step2' }
+    },
+    step2: {
+      on: { 
+        NEXT: 'step3',
+        BACK: 'step1'
+      }
+    },
+    step3: {
+      on: { 
+        SUBMIT: '#submitting',
+        BACK: 'step2'
+      }
+    }
+  }
+},
+submitting: {
+  id: 'submitting',
+  on: {
+    SUCCESS: 'success',
+    ERROR: 'form.step3'
+  }
+},
+success: {
+  type: 'final'
+}
+}
+});`}
+        />
+      </div>
+    </ContentSection>
+  </div>
+
+  <style is:inline>
+    @keyframes scanline {
+      0% { transform: translateY(0) translateX(-100%); }
+      100% { transform: translateY(0) translateX(100%); }
+    }
+  </style>
+</div>
