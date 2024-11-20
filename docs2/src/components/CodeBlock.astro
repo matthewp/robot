@@ -1,5 +1,6 @@
 ---
 import Code from '../icons/Code.astro';
+import { Prism } from '@astrojs/prism';
 ---
 <div class="bg-gray-900 rounded-lg p-6 my-6">
   {Astro.props.title && (
@@ -9,9 +10,9 @@ import Code from '../icons/Code.astro';
       <span>{Astro.props.title}</span>
     </div>
   )}
-  <pre class
-="overflow-x-auto p-4 bg-black/50 rounded-lg text-gray-300 font-mono text-sm">
-    {Astro.props.code}
-  </pre>
+  <div class
+="overflow-x-auto p-4 bg-black/50 rounded-lg text-gray-300 font-mono text-lg">
+    <Prism lang="js" code={Astro.props.code} />   
+  </div>
 </div>
 

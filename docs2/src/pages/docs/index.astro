@@ -4,6 +4,9 @@ import BookOpen from '../../icons/BookOpen.astro';
 import ChevronRight from '../../icons/ChevronRight.astro';
 import Footer from '../../components/Footer.astro';
 import Sidebar from '../../components/DocsSidebar.astro';
+import { Prism } from '@astrojs/prism';
+import '../../styles/base.css';
+import CommonHead from '../../components/CommonHead.astro';
 
 //const [isSearchFocused, setIsSearchFocused] = React.useState(false);
 
@@ -50,7 +53,7 @@ idle: {
 <html lang="en">
 <head>
   <title>Robot Docs</title>
-  <meta charset="utf-8">
+  <CommonHead />
 </head>
 <body>
 <div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
@@ -116,9 +119,9 @@ idle: {
 
         <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500 mb-8">
           <h2 class="font-mono text-xl text-cyan-400 mb-4">Basic Transition</h2>
-          <pre class="bg-black/50 p-4 rounded-lg font-mono text-sm text-gray-300">
-            {basicExample}
-          </pre>
+          <div class="bg-black/50 rounded-lg font-mono text-lg text-gray-300">
+            <Prism lang="js" code={basicExample} />
+          </div>
         </div>
 
         <h2 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Guards</h2>
@@ -127,9 +130,9 @@ idle: {
         </p>
 
         <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500 mb-8">
-          <pre class="font-mono text-sm text-gray-300">
-            {guardExample}
-          </pre>
+          <div class="font-mono text-lg text-gray-300">
+            <Prism lang="js" code={guardExample} />
+          </div>
         </div>
 
         <h2 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Actions</h2>
@@ -138,9 +141,9 @@ idle: {
         </p>
 
         <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500">
-          <pre class="font-mono text-sm text-gray-300">
-            {actionExample}
-          </pre>
+          <div class="font-mono text-lg text-gray-300">
+            <Prism lang="js" code={actionExample} />
+          </div>
         </div>
       </div>
     </main>

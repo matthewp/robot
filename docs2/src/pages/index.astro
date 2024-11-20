@@ -11,12 +11,14 @@ import ArrowRight from '../icons/ArrowRight.astro';
 import Github from '../icons/GitHub.astro';
 import Terminal from '../icons/Terminal.astro';
 import BookOpen from '../icons/BookOpen.astro';
+import CommonHead from '../components/CommonHead.astro';
+import '../styles/base.css';
 ---
 
 <html lang="en">
 <head>
   <title>Robot</title>
-  <meta charset="utf-8">
+  <CommonHead />
 </head>
 <body>
 <div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
@@ -24,7 +26,6 @@ import BookOpen from '../icons/BookOpen.astro';
     <div class="absolute inset-0 opacity-10">
       {[...Array(20)].map((_, i) => (
         <div
-          key={i}
           class="absolute left-0 right-0 h-px bg-cyan-400"
           style={{
             top: `${i * 5}%`,
@@ -63,14 +64,14 @@ import BookOpen from '../icons/BookOpen.astro';
       </div>
 
       <div class="flex gap-6 mt-8">
-        <button class="group bg-cyan-500 hover:bg-cyan-400 text-black font-mono px-8 py-4 rounded-xl flex items-center gap-2 transform hover:scale-105 transition-all">
+        <a href="/docs/" class="group bg-cyan-500 hover:bg-cyan-400 text-black font-mono px-8 py-4 rounded-xl flex items-center gap-2 transform hover:scale-105 transition-all">
           BOOT UP
           <ArrowRight class="group-hover:translate-x-1 transition-transform" />
-        </button>
-        <button class="group bg-gray-800 hover:bg-gray-700 font-mono px-8 py-4 rounded-xl flex items-center gap-2 border-2 border-cyan-500 transform hover:scale-105 transition-all">
+        </a>
+        <a href="https://github.com/matthewp/robot" class="group bg-gray-800 hover:bg-gray-700 font-mono px-8 py-4 rounded-xl flex items-center gap-2 border-2 border-cyan-500 transform hover:scale-105 transition-all">
           <Github />
           SOURCE_CODE
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -143,25 +144,18 @@ import BookOpen from '../icons/BookOpen.astro';
 
         <CodeBlock 
           title="STATE_MACHINE.robot"
-          code={`const titleMachine = createMachine({
-states: {
-viewing: {
-  on: { EDIT: 'editing' }
-},
-editing: {
-  on: { 
-    SAVE: 'saving',
-    CANCEL: 'viewing'
-  }
-},
-saving: {
-  on: {
-    SUCCESS: 'viewing',
-    ERROR: 'editing'
-  }
-}
-},
-initial: 'viewing'
+          code={`const titleMachine = createMachine('viewing', {
+  viewing: state({
+    transition('edit', 'editing')
+  }),
+  editing: state({
+    transition('save', 'saving'),
+    transition('cancel', 'viewing')
+  }),
+  saving: state({
+    transition('success', 'viewing'),
+    transition('error', 'editing')
+  })
 });`}
         />
 

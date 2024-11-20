@@ -1,0 +1,5 @@
+@import "./prism-vsc-dark-plus.css";
+
+.language-js {
+  background: #080C13 !important;
+}
