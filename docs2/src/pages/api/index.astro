@@ -1,0 +1,159 @@
+---
+import Search from '../../icons/Search.astro';
+import BookOpen from '../../icons/BookOpen.astro';
+import ChevronRight from '../../icons/ChevronRight.astro';
+import Footer from '../../components/Footer.astro';
+import Sidebar from '../../components/DocsSidebar.astro';
+
+//const [isSearchFocused, setIsSearchFocused] = React.useState(false);
+
+const isSearchFocused = false;
+
+const basicExample = `const machine = createMachine({
+idle: {
+  on: {
+    START: 'running'
+  }
+},
+running: {
+  on: {
+    STOP: 'idle'
+  }
+}
+});`;
+
+const guardExample = `const machine = createMachine({
+closed: {
+  on: {
+    OPEN: {
+      target: 'opened',
+      guard: (context) => context.isUnlocked
+    }
+  }
+}
+});`;
+
+const actionExample = `const machine = createMachine({
+idle: {
+  on: {
+    FETCH: {
+      target: 'loading',
+      actions: ['logTransition', 'clearError']
+    }
+  }
+}
+});`;
+
+
+---
+
+<html lang="en">
+<head>
+  <title>Robot Docs</title>
+  <meta charset="utf-8">
+</head>
+<body>
+<div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
+  <div class="fixed inset-0 pointer-events-none">
+    <div class="absolute inset-0 opacity-5">
+      {[...Array(20)].map((_, i) => (
+        <div
+          key={i}
+          class="absolute left-0 right-0 h-px bg-cyan-400"
+          style={{
+            top: `${i * 5}%`,
+            animation: `scanline 8s ${i * 0.1}s infinite linear`
+          }}
+        />
+      ))}
+    </div>
+  </div>
+
+  <header class="border-b border-cyan-500/20 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <div class="font-mono text-xl font-bold text-cyan-400">ROBOT_DOCS</div>
+        <div class={`relative w-64 transition-all duration-300 ${isSearchFocused ? 'w-96' : ''}`}>
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+          <input
+            type="text"
+            placeholder="Search documentation..."
+            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-none"
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
+          />
+        </div>
+      </div>
+      <nav class="flex gap-6 text-sm font-mono">
+        <a href="#" class="text-cyan-400 hover:text-cyan-300">DOCS</a>
+        <a href="#" class="text-gray-400 hover:text-gray-300">API</a>
+        <a href="#" class="text-gray-400 hover:text-gray-300">EXAMPLES</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 flex gap-6">
+    <Sidebar />
+    
+    <main class="flex-1 py-8 min-w-0">
+      <div class="prose prose-invert max-w-none">
+        <div class="flex items-center gap-2 text-sm font-mono text-gray-400 mb-4">
+          <BookOpen size={16} />
+          <span>DOCS</span>
+          <ChevronRight size={16} />
+          <span>CORE_CONCEPTS</span>
+          <ChevronRight size={16} />
+          <span>TRANSITIONS</span>
+        </div>
+        
+        <h1 class="font-mono text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500 mb-6">
+          Transitions
+        </h1>
+
+        <p class="text-gray-300 mb-6">
+          Transitions define how states respond to events in your state machine. Each transition maps an event to a target state and can optionally include guards and actions.
+        </p>
+
+        <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500 mb-8">
+          <h2 class="font-mono text-xl text-cyan-400 mb-4">Basic Transition</h2>
+          <pre class="bg-black/50 p-4 rounded-lg font-mono text-sm text-gray-300">
+            {basicExample}
+          </pre>
+        </div>
+
+        <h2 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Guards</h2>
+        <p class="text-gray-300 mb-6">
+          Guards are conditions that must be true for a transition to occur. They're useful for adding conditional logic to your state machines.
+        </p>
+
+        <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500 mb-8">
+          <pre class="font-mono text-sm text-gray-300">
+            {guardExample}
+          </pre>
+        </div>
+
+        <h2 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Actions</h2>
+        <p class="text-gray-300 mb-6">
+          Actions are side effects that occur during transitions. They can be used to update context, call APIs, or trigger other effects.
+        </p>
+
+        <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500">
+          <pre class="font-mono text-sm text-gray-300">
+            {actionExample}
+          </pre>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <style is:inline>
+  @keyframes scanline {
+    0% { transform: translateY(0) translateX(-100%); }
+    100% { transform: translateY(0) translateX(100%); }
+  }
+  </style>
+
+  <Footer />
+</div>
+</body>
+</html>

@@ -4,6 +4,7 @@ import ContentSection from '../components/ContentSection.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import InfoBox from '../components/InfoBox.astro';
 import CodeBlock from '../components/CodeBlock.astro';
+import Footer from '../components/Footer.astro';
 import Code from '../icons/Code.astro';
 import Zap from '../icons/Zap.astro';
 import ArrowRight from '../icons/ArrowRight.astro';
@@ -12,6 +13,12 @@ import Terminal from '../icons/Terminal.astro';
 import BookOpen from '../icons/BookOpen.astro';
 ---
 
+<html lang="en">
+<head>
+  <title>Robot</title>
+  <meta charset="utf-8">
+</head>
+<body>
 <div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
     <div class="absolute inset-0 opacity-10">
@@ -260,4 +267,8 @@ success: {
       100% { transform: translateY(0) translateX(100%); }
     }
   </style>
+
+  <Footer />
 </div>
+</body>
+</html>
