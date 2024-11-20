@@ -1,5 +1,11 @@
 # robot3
 
+## 1.0.1
+
+### Patch Changes
+
+- cc17481: Add debug to package exports
+
 ## 1.0.0
 
 ### Major Changes
