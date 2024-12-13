@@ -43,6 +43,10 @@ Tests are located in the `test/` folder. Load `test/test.html` in your browser o
 
 Robot works with a variety of UI libraries, and includes integrations for React, Preact, Haunted, and more. See the [integrations page](https://thisrobot.life/integrations.html) to learn more.
 
+## Tools
+
+* Visualization of robot state machines: [robot3-viz](https://github.com/jbreckmckye/robot3-viz)
+
 ## License
 
 BSD-2-Clause
