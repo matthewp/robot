@@ -196,3 +196,34 @@ const machine = createMachine({
   error: state()
 })
 ```
+
+## Cancellation
+
+JavaScript does not support cancellation of promises: the action which will
+resolve the promise will run to completion or until it encounters an error.
+
+There are situations where the result of the promise no longer matters. The
+machine should proceed to a different action, or simply stop changing state
+entirely. To achieve this with the `invoke` state, an extra event can be
+added to the state like the `cancel` event in the example below.
+
+```js
+import { createMachine, invoke, reduce, state, transition } from 'robot3';
+
+const loadTodos = () => Promise.reject("Sorry but you can't do that");
+
+const machine = createMachine({
+  start: invoke(loadTodos,
+    transition('cancel', 'cancelled'),
+    transition('done', 'loaded',
+      reduce((ctx, ev) => ({ ...ctx, todo: ev.data }))
+    )
+  ),
+  cancelled: state(),
+  loaded: state()
+})
+```
+
+By moving out of `start` state before the promise returned by `loadTodos`
+resolves, the function result will be discarded: the machine finds that it
+is no longer in the state from which is was invoked and discards the event.
