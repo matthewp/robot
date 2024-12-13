@@ -72,7 +72,8 @@ Here we create a `nested` function that defines a submachine.
 
 ```js
 // A helper function for more easily building nested state machines.
-const nested = (to, states) => createMachine(states,
+const nested = (to, states) => invoke(
+  createMachine(states),
   transition('done', to)
 );
 
