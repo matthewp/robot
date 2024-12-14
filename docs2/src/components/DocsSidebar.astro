@@ -21,6 +21,9 @@ const activeItem = undefined;
       { title: "REACT", id: "react" },
       { title: "VUE", id: "vue" },
       { title: "SVELTE", id: "svelte" }
+    ],
+    'API': [
+      { title: 'createMachine', id: 'create-machine', slug: 'createMachine' }
     ]
   };
 ---
@@ -99,7 +102,11 @@ const activeItem = undefined;
           {items.map((item) => (
             <a
               key={item.id}
-              href={`#${item.id}`}
+              href={
+                ('slug' in item) ? 
+                `/docs/${item.slug}/` :
+                `#${item.id}`
+              }
               role="menuitem"
               tab-index="-1"
               onKeyDown={(e) => handleItemKeyDown(e, item.id)}

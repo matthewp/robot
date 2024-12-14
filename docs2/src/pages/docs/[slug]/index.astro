@@ -1,57 +1,51 @@
 ---
-import Search from '../../icons/Search.astro';
-import BookOpen from '../../icons/BookOpen.astro';
-import ChevronRight from '../../icons/ChevronRight.astro';
-import Footer from '../../components/Footer.astro';
-import Sidebar from '../../components/DocsSidebar.astro';
+import Search from '../../../icons/Search.astro';
+import BookOpen from '../../../icons/BookOpen.astro';
+import ChevronRight from '../../../icons/ChevronRight.astro';
+import Footer from '../../../components/Footer.astro';
+import Sidebar from '../../../components/DocsSidebar.astro';
 import { Prism } from '@astrojs/prism';
-import '../../styles/base.css';
-import CommonHead from '../../components/CommonHead.astro';
+import '../../../styles/base.css';
+import CommonHead from '../../../components/CommonHead.astro';
+
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  return docs.map(item => {
+    return {
+      params: { slug: item.data.title },
+      props: { item }
+    }
+  });
+}
 
 const isSearchFocused = false;
 
-const basicExample = `const machine = createMachine({
-idle: {
-  on: {
-    START: 'running'
-  }
-},
-running: {
-  on: {
-    STOP: 'idle'
-  }
-}
-});`;
-
-const guardExample = `const machine = createMachine({
-closed: {
-  on: {
-    OPEN: {
-      target: 'opened',
-      guard: (context) => context.isUnlocked
-    }
-  }
-}
-});`;
-
-const actionExample = `const machine = createMachine({
-idle: {
-  on: {
-    FETCH: {
-      target: 'loading',
-      actions: ['logTransition', 'clearError']
-    }
-  }
-}
-});`;
-
-
+const { Content } = await Astro.props.item.render();
 ---
-
-<html lang="en">
+<html>
 <head>
-  <title>Robot Docs</title>
+  <title>{ Astro.props.item.data.title }</title>
   <CommonHead />
+  <style is:global>
+    .prose p {
+      margin-bottom: 1.5rem;
+    }
+
+    .prose h2 {
+      font-size: 1.875rem; /* 30px */
+      line-height: 2.25rem;
+      font-weight: 700;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      margin-bottom: 1.5rem;
+
+      --to-stop: ;
+      --from-stop: ;
+      background-clip: text;
+      background-image: linear-gradient(to right, #ec4899 var(--to-stop), #22d3ee var(--from-stop));
+    }
+  </style>
 </head>
 <body>
 <div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
@@ -104,45 +98,14 @@ idle: {
           <ChevronRight size={16} />
           <span>CORE_CONCEPTS</span>
           <ChevronRight size={16} />
-          <span>TRANSITIONS</span>
+          <span>{ Astro.props.item.data.title }</span>
         </div>
         
         <h1 class="font-mono text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500 mb-6">
-          Transitions
+          { Astro.props.item.data.title }
         </h1>
 
-        <p class="text-gray-300 mb-6">
-          Transitions define how states respond to events in your state machine. Each transition maps an event to a target state and can optionally include guards and actions.
-        </p>
-
-        <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500 mb-8">
-          <h2 class="font-mono text-xl text-cyan-400 mb-4">Basic Transition</h2>
-          <div class="bg-black/50 rounded-lg font-mono text-lg text-gray-300">
-            <Prism lang="js" code={basicExample} />
-          </div>
-        </div>
-
-        <h2 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Guards</h2>
-        <p class="text-gray-300 mb-6">
-          Guards are conditions that must be true for a transition to occur. They're useful for adding conditional logic to your state machines.
-        </p>
-
-        <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500 mb-8">
-          <div class="font-mono text-lg text-gray-300">
-            <Prism lang="js" code={guardExample} />
-          </div>
-        </div>
-
-        <h2 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Actions</h2>
-        <p class="text-gray-300 mb-6">
-          Actions are side effects that occur during transitions. They can be used to update context, call APIs, or trigger other effects.
-        </p>
-
-        <div class="bg-gray-900 rounded-xl p-6 border-2 border-cyan-500">
-          <div class="font-mono text-lg text-gray-300">
-            <Prism lang="js" code={actionExample} />
-          </div>
-        </div>
+        <Content />
       </div>
     </main>
   </div>
@@ -156,5 +119,12 @@ idle: {
 
   <Footer />
 </div>
+</body>
+</html>
+
+
+
+
+
 </body>
 </html>

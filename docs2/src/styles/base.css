@@ -1,5 +1,26 @@
 @import "./prism-vsc-dark-plus.css";
 
-.language-js {
+pre.language-js {
   background: #080C13 !important;
+  padding: 0;
+  position: relative;
+  border-width: 2px;
+  border-color: rgb(6 182 212 / 1);
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+pre.language-js::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  content: '';
+  padding: 1.5rem;
+  background: yellow;
+  background-color: rgb(17 24 39 / 1);
+}
+
+pre.language-js > code.language-js {
+  display: block;
+  padding: 1.5rem;
 }
