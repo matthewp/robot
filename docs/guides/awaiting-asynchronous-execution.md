@@ -2,7 +2,7 @@
 layout: page.njk
 title: Awaiting asynchronous execution
 tags: guide
-permalink: guides/awaiting-asynchronous-execution.md
+permalink: guides/awaiting-asynchronous-execution.html
 ---
 
 In a scenario where it's necessary to `await` the machine to enter a `final`
