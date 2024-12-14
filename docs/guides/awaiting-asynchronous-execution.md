@@ -6,7 +6,7 @@ permalink: guides/awaiting-asynchronous-execution.md
 ---
 
 In a scenario where it's necessary to `await` the machine to enter a `final`
-state (a state which has no transitions), the `onChange` callback can be used
+state (a state which has no transitions), the `onChange` callback (the second argument to `interpret`) can be used
 to resolve a promise. The promise can be externally awaited.
 
 ```js
