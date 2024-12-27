@@ -133,12 +133,19 @@ QUnit.module('useMachine', hooks => {
     el.remove();
   });
 
-  QUnit.skip('Invoking machines the "current" is the child machine', async assert => {
+  QUnit.test('Invoking machines the "current" is the child machine', async assert => {
+    const deep = createMachine({
+      deepOne: state(
+        transition('next', 'deepTwo')
+      ),
+      deepTwo: state(),
+    });
     const nested = createMachine({
       nestedOne: state(
         transition('next', 'nestedTwo')
       ),
-      nestedTwo: state()
+      nestedTwo: invoke(deep, transition('done', 'nestedThree')),
+      nestedThree: state()
     });
     const machine = createMachine({
       one: state(
@@ -150,11 +157,9 @@ QUnit.module('useMachine', hooks => {
       three: state()
     });
 
-    let current, send, service;
+    let service;
     function App() {
-      const [currentState, sendEvent, thisService] = useMachine(machine);
-      current = currentState;
-      send = sendEvent;
+      const [current, _send, thisService] = useMachine(machine);
       service = thisService;
 
       return html`
@@ -167,10 +172,13 @@ QUnit.module('useMachine', hooks => {
       let text = () => el.textContent.trim();
 
       assert.equal(text(), 'State: one');
-      yield send('next');
+      yield service.send('next');
 
       assert.equal(text(), 'State: nestedOne');
       yield service.child.send('next');
+
+      assert.equal(text(), 'State: deepOne');
+      yield service.child.child.send('next');
       
       assert.equal(text(), 'State: three');
     });
