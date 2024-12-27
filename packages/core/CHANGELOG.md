@@ -1,5 +1,12 @@
 # robot3
 
+## 1.0.2
+
+### Patch Changes
+
+- 9fbdbcb: Set the most deeply nested current service to current
+- 0409089: Documentation for advanced use of 'invoke()'
+
 ## 1.0.1
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # robot-hooks
 
+## 1.0.1
+
+### Patch Changes
+
+- 9fbdbcb: Set the most deeply nested current service to current
+- Updated dependencies [9fbdbcb]
+- Updated dependencies [0409089]
+  - robot3@1.0.2
+
 ## 1.0.0
 
 ### Patch Changes
