@@ -24,7 +24,11 @@ export function createUseMachine(useEffect, useState) {
         if (!mounted) {
           return;
         }
-        setCurrent(createCurrent(service.child || service));
+        let currentService = service;
+        while(currentService.child) {
+          currentService = currentService.child;
+        }
+        setCurrent(createCurrent(currentService));
       }, data || initialContext);
     }
 
