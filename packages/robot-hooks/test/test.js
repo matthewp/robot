@@ -139,7 +139,7 @@ QUnit.module('useMachine', hooks => {
         transition('next', 'deepTwo')
       ),
       deepTwo: state(),
-    })
+    });
     const nested = createMachine({
       nestedOne: state(
         transition('next', 'nestedTwo')
