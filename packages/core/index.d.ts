@@ -241,7 +241,7 @@ declare module 'robot3' {
 
   type ExtractNonAnyValues<T> = {
     [K in keyof T]: IsAny<T[K]> extends true ? never : T[K]
-  }[keyof T];
+  }[keyof T] & {};
 
   export type GetMachineTransitions<M extends Machine> = 
     ExtractNonAnyValues<GetTransitionsFromStates<GetMachineStateObject<M>>>;
