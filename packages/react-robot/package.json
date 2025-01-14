@@ -1,6 +1,6 @@
 {
   "name": "react-robot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React hooks for Robot finite state machines",
   "main": "machine.js",
   "module": "machine.js",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "react-dom": "^18.2.0",
-    "robot3": "^1.0.0"
+    "robot3": "^1.1.0"
   },
   "wireit": {
     "test": {
