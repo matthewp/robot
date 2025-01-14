@@ -1,5 +1,11 @@
 # react-robot
 
+## 1.1.0
+
+### Minor Changes
+
+- 910dfaa: Support React 19
+
 ## 1.0.0
 
 ### Patch Changes

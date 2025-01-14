@@ -1,6 +1,6 @@
 {
   "name": "robot3",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A functional, immutable Finite State Machine library",
   "main": "dist/machine.js",
   "types": "./index.d.ts",

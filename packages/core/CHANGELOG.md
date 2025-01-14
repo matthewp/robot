@@ -1,5 +1,13 @@
 # robot3
 
+## 1.1.0
+
+### Minor Changes
+
+- 4f6fb69: Autocomplete for service.send()
+
+  This makes it so that the event name in `service.send(event)` is inferred from the transitions used to create the machine.
+
 ## 1.0.2
 
 ### Patch Changes
