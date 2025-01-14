@@ -11,6 +11,8 @@
   ],
   "scripts": {
     "test": "wireit",
+    "test:browser": "wireit",
+    "test:types": "wireit",
     "build": "wireit"
   },
   "repository": {
@@ -33,6 +35,16 @@
   },
   "wireit": {
     "test": {
+      "dependencies": [
+        "test:types",
+        "test:browser"
+      ]
+    },
+    "test:types": {
+      "command": "tsc -p test/types/tsconfig.json",
+      "files": []
+    },
+    "test:browser": {
       "command": "node-qunit-puppeteer http://localhost:1965/packages/robot-hooks/test/test.html 10000",
       "dependencies": [
         "../..:server"
