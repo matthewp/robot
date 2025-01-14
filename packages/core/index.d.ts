@@ -9,14 +9,23 @@ declare module 'robot3' {
      }[keyof T]
    : never
 
-  type AllStateKeys<T> = NestedKeys<T> | keyof T
+  type AllStateKeys<T> = NestedKeys<T> | keyof T;
+
+  type MachineStates<S = {}, F extends string = string> = {
+    [K in keyof S]: {
+      final: boolean
+      transitions: Map<string, Transition<F>[]>
+      immediates?: Map<string, Immediate<F>[]>
+      enter?: any
+    }
+  }
 
   /**
    * The debugging object contains an _onEnter method, wich can be set to invoke
    * this function on every transition.
    */
   export const d: {
-    _onEnter?: OnEnterFunction<Machine>
+    _onEnter?: OnEnterFunction<Machine<any>>
   }
 
   /**
@@ -27,11 +36,11 @@ declare module 'robot3' {
    * @param states - An object of states, where each key is a state name, and the values are one of *state* or *invoke*.
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
-  export function createMachine<S = {}, C = {}>(
+  export function createMachine<S extends MachineStates<S, F>, C = {}, F extends string = string>(
     initial: keyof S,
-    states: { [K in keyof S]: MachineState },
+    states: S,
     context?: ContextFunction<C>
-  ): Machine<typeof states, C, AllStateKeys<S>>
+  ): Machine<S, C, AllStateKeys<S>>
   /**
    * The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name.
    * The value is usually *state* but might also be *invoke*.
@@ -39,17 +48,19 @@ declare module 'robot3' {
    * @param states - An object of states, where each key is a state name, and the values are one of *state* or *invoke*.
    * @param context - A function that returns an object of extended state values. The function can receive an `event` argument.
    */
-  export function createMachine<S = {}, C = {}>(
-    states: { [K in keyof S]: MachineState },
+  export function createMachine<S extends MachineStates<S, F>, C = {}, F extends string = string>(
+    states: S,
     context?: ContextFunction<C>
-  ): Machine<typeof states, C, AllStateKeys<S>>
+  ): Machine<S, C, AllStateKeys<S>>;
 
   /**
    * The `state` function returns a state object. A state can take transitions and immediates as arguments.
    *
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
-  export function state(...args: (Transition | Immediate)[]): MachineState
+  export function state<T extends Transition<any> | Immediate<any>>(
+    ...args: T[]
+  ): MachineState<T extends Transition<infer F> ? F : string>;
 
   /**
    * A `transition` function is used to move from one state to another.
@@ -58,11 +69,11 @@ declare module 'robot3' {
    * @param state - The name of the destination state.
    * @param args - Any extra argument will be evaluated to check if they are one of Reducer, Guard or Action.
    */
-  export function transition<C, E>(
-    event: string,
+  export function transition<F extends string, C, E>(
+    event: F,
     state: string,
     ...args: (Reducer<C, E> | Guard<C, E> | Action<C, E>)[]
-  ): Transition
+  ): Transition<F>;
 
   /**
    * An `immediate` function is a type of transition that occurs immediately; it doesn't wait for an event to proceed.
@@ -71,10 +82,10 @@ declare module 'robot3' {
    * @param state - The name of the destination state.
    * @param args - Any extra argument will be evaluated to check if they are a Reducer or a Guard.
    */
-  export function immediate<C, E>(
+  export function immediate<F extends string, C, E>(
     state: string,
     ...args: (Reducer<C, E> | Guard<C, E> | Action<C, E>)[]
-  ): Transition
+  ): Transition<F>
 
   /**
    * A `guard` is a method that determines if a transition can proceed.
@@ -119,7 +130,7 @@ declare module 'robot3' {
    * @param fn - Promise-returning function
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
-  export function invoke<C, T, E extends {} = any>(fn: (ctx: C, e?: E) => Promise<T>, ...args: (Transition | Immediate)[]): MachineState
+  export function invoke<C, T, E extends {} = any>(fn: (ctx: C, e?: E) => Promise<T>, ...args: (Transition<any> | Immediate<any>)[]): MachineState<any>
   
   /**
    * The `invoke` is a special type of state that immediately invokes a Promise-returning or Machine-returning function, or another machine.
@@ -127,7 +138,7 @@ declare module 'robot3' {
    * @param fn - Machine-returning function
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
-  export function invoke<C, E extends {} = any, M extends Machine>(fn: (ctx: C, e?: E) => M, ...args: (Transition | Immediate)[]): MachineState
+  export function invoke<C, E extends {} = any, M extends Machine = any>(fn: (ctx: C, e?: E) => M, ...args: (Transition<any> | Immediate<any>)[]): MachineState<any>
 
   /**
    * The `invoke` is a special type of state that immediately invokes a Promise-returning or Machine-returning function, or another machine.
@@ -135,7 +146,7 @@ declare module 'robot3' {
    * @param machine - Machine
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
-  export function invoke<M extends Machine>(machine: M, ...args: (Transition | Immediate)[]): MachineState
+  export function invoke<M extends Machine>(machine: M, ...args: (Transition<any> | Immediate<any>)[]): MachineState<any>
 
   /* General Types */
 
@@ -151,8 +162,8 @@ declare module 'robot3' {
     service: Service<T>
   ) => void
 
-  export type SendEvent = string | { type: string; [key: string]: any }
-  export type SendFunction<T = SendEvent> = (event: T) => void
+  export type SendEvent<T extends string = string> = T | { type: T; [key: string]: any }
+  export type SendFunction<T extends string> = (event: SendEvent<T> & {}) => void
 
   /**
    * This function is invoked before entering a new state and is bound to the debug
@@ -164,16 +175,16 @@ declare module 'robot3' {
    * @param prevState - previous state
    * @param event - event provoking the state change
    */
-  export type OnEnterFunction<M extends Machine> =
+  export type OnEnterFunction<M extends Machine<any>> =
     <C = M['state']>(machine: M, to: string, state: C, prevState: C, event?: SendEvent) => void
 
-  export type Machine<S = {}, C = {}, K = string> = {
+  export type Machine<S extends MachineStates<S, F> = {}, C = {}, K = string, F extends string = string> = {
     context: C
     current: K
     states: S
     state: {
       name: K
-      value: MachineState
+      value: MachineState<F>
     }
   }
 
@@ -189,15 +200,15 @@ declare module 'robot3' {
     fn: GuardFunction<C, E>
   }
 
-  export interface MachineState {
+  export interface MachineState<F extends string> {
     final: boolean
-    transitions: Map<string, Transition[]>
-    immediates?: Map<string, Immediate[]>
+    transitions: Map<F, Transition<F>[]>
+    immediates?: Map<F, Immediate<F>[]>
     enter?: any
   }
 
-  export interface Transition {
-    from: string | null
+  export interface Transition<F extends string> {
+    from: F | null
     to: string
     guards: any[]
     reducers: any[]
@@ -208,8 +219,30 @@ declare module 'robot3' {
     machine: M
     context: M['context']
     onChange: InterpretOnChangeFunction<M>
-    send: SendFunction
+    send: SendFunction<GetMachineTransitions<M>>
   }
 
-  export type Immediate = Transition
+  export type Immediate<F extends string> = Transition<F>;
+
+  // Utilities
+  type IsAny<T> = 0 extends (1 & T) ? true : false;
+
+  // Get state objects from a Machine
+  type GetMachineStateObject<M extends Machine> = M['states'];
+
+  // Create mapped type without the final indexing
+  type GetTransitionsFromStates<S> = {
+  [K in keyof S]: S[K] extends { transitions: Map<string, Array<Transition<infer F>>> }
+    ? IsAny<F> extends true 
+      ? never 
+      : F
+    : never
+  }
+
+  type ExtractNonAnyValues<T> = {
+    [K in keyof T]: IsAny<T[K]> extends true ? never : T[K]
+  }[keyof T] & {};
+
+  export type GetMachineTransitions<M extends Machine> = 
+    ExtractNonAnyValues<GetTransitionsFromStates<GetMachineStateObject<M>>>;
 }

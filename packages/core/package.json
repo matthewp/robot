@@ -29,6 +29,8 @@
     "bundlesize": "wireit",
     "server": "wireit",
     "test": "wireit",
+    "test:types": "wireit",
+    "test:browser": "wireit",
     "build:cjs": "wireit",
     "build": "wireit"
   },
@@ -74,6 +76,16 @@
       }
     },
     "test": {
+      "dependencies": [
+        "test:types",
+        "test:browser"
+      ]
+    },
+    "test:types": {
+      "command": "tsc -p test/types/tsconfig.json",
+      "files": []
+    },
+    "test:browser": {
       "command": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
       "dependencies": [
         "server"
