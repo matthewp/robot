@@ -1,6 +1,6 @@
 {
   "name": "haunted-robot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Haunted hooks for Robot finite state machines",
   "main": "machine.js",
   "module": "machine.js",
@@ -31,7 +31,7 @@
     "robot3": "^1.0.0"
   },
   "dependencies": {
-    "robot-hooks": "^1.0.0"
+    "robot-hooks": "^1.1.0"
   },
   "devDependencies": {
     "haunted": "^5.0.0",
