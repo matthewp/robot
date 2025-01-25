@@ -58,9 +58,9 @@ declare module 'robot3' {
    *
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
-  export function state<T extends Transition<any> | Immediate<any>>(
-    ...args: T[]
-  ): MachineState<T extends Transition<infer F> ? F : string>;
+  export function state<T extends (Transition<any> | Immediate<any>)[]>(
+    ...args: T
+  ): MachineState<T[number] extends (Transition<infer F>)? F : string>;
 
   /**
    * A `transition` function is used to move from one state to another.
