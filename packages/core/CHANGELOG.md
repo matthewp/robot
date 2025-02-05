@@ -1,5 +1,11 @@
 # robot3
 
+## 1.1.1
+
+### Patch Changes
+
+- 1d6179a: Fixes types for the state() function.
+
 ## 1.1.0
 
 ### Minor Changes
