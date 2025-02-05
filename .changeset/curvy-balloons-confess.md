@@ -2,4 +2,4 @@
 "robot3": patch
 ---
 
-Fixed types
+Fixes types for the state() function.
