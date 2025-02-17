@@ -155,10 +155,28 @@ export function createMachine(current, states, contextFn = empty) {
 }
 
 function transitionTo(service, machine, fromEvent, candidates) {
+  if (!service || !machine || !candidates) {
+    throw new Error('Missing required parameters in transitionTo');
+  }
+
   let { context } = service;
-  for(let { to, guards, reducers } of candidates) {  
+  
+  const candidatesLength = candidates.length;
+  for(let i = 0; i < candidatesLength; i++) {
+    const candidate = candidates[i];
+    const { to, guards, reducers } = candidate;
+
+    if(typeof guards !== 'function') {
+      console.warn('Invalid guard function provided');
+      continue;
+    }
+
     if(guards(context, fromEvent)) {
-      service.context = reducers.call(service, context, fromEvent);
+      const newContext = reducers.call(service, context, fromEvent);
+      if (newContext === context) {
+        console.warn('Reducer should return new context object');
+      }
+      service.context = newContext;
 
       let original = machine.original || machine;
       let newMachine = create(original, {
