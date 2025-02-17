@@ -96,6 +96,21 @@ QUnit.module('Invoke', hooks => {
     assert.equal(service.machine.current, 'three', 'now in the correct state');
   });
 
+  QUnit.test('Should handle error cases gracefully', async assert => {
+    const errorMachine = createMachine({
+      start: invoke(() => Promise.reject(new Error('Test error')),
+        transition('error', 'error'),
+        transition('done', 'success')
+      ),
+      error: state(),
+      success: state()
+    });
+
+    let service = interpret(errorMachine, () => {});
+    await Promise.resolve();
+    assert.equal(service.machine.current, 'error', 'Transitions to error state');
+  });
+
   QUnit.module('Machine');
 
   QUnit.test('Can invoke a child machine', async assert => {

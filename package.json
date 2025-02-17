@@ -16,7 +16,7 @@
     "packages/robot-hooks"
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.26.0",
+    "@changesets/cli": "^2.28.0",
     "bundlesize": "^1.0.0-beta.2",
     "local-web-server": "^4.2.1",
     "node-qunit-puppeteer": "^2.2.0",
@@ -34,5 +34,21 @@
   },
   "dependencies": {
     "expect-type": "^1.1.0"
-  }
+  },
+  "description": "<p align=\"center\">\r   <img \r     alt=\"The Robot logo, with green background.\"\r     src=\"https://github.com/matthewp/robot-logo/raw/master/logo/robot-green.png\"\r     width=\"40%\"\r   />\r </p>",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lothartj/robot2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lothartj/robot2/issues"
+  },
+  "homepage": "https://github.com/lothartj/robot2#readme"
 }
