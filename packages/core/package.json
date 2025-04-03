@@ -15,6 +15,11 @@
       "require": "./dist/debug.js",
       "import": "./debug.js",
       "default": "./debug.js"
+    },
+    "./logging": {
+      "require": "./dist/logging.js",
+      "import": "./logging.js",
+      "default": "./logging.js"
     }
   },
   "files": [
