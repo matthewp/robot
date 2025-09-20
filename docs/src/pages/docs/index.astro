@@ -10,6 +10,7 @@ import CommonHead from '../../components/CommonHead.astro';
 import Code from '../../icons/Code.astro';
 import Zap from '../../icons/Zap.astro';
 import Terminal from '../../icons/Terminal.astro';
+import Menu from '../../icons/Menu.astro';
 import '../../styles/base.css';
 
 const isSearchFocused = false;
@@ -94,9 +95,12 @@ const machine = createMachine({
 
   <header class="border-b border-cyan-500/20 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
     <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-8">
-        <div class="font-mono text-xl font-bold text-cyan-400">ROBOT_DOCS</div>
-        <div class={`relative w-64 transition-all duration-300 ${isSearchFocused ? 'w-96' : ''}`}>
+      <div class="flex items-center gap-4 lg:gap-8">
+        <button id="mobile-sidebar-toggle" class="lg:hidden text-cyan-400 p-2" aria-label="Toggle sidebar">
+          <Menu size={24} />
+        </button>
+        <a href="/" class="font-mono text-lg lg:text-xl font-bold text-cyan-400">ROBOT_DOCS</a>
+        <div class={`hidden lg:block relative w-64 transition-all duration-300 ${isSearchFocused ? 'w-96' : ''}`}>
           <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
           <input
             type="text"
@@ -107,16 +111,42 @@ const machine = createMachine({
           />
         </div>
       </div>
-      <nav class="flex gap-6 text-sm font-mono">
+      <nav class="hidden lg:flex gap-6 text-sm font-mono">
         <a href="/docs/" class="text-cyan-400 hover:text-cyan-300">DOCS</a>
         <a href="/docs/createMachine/" class="text-gray-400 hover:text-gray-300">API</a>
         <a href="https://github.com/matthewp/robot" class="text-gray-400 hover:text-gray-300">GITHUB</a>
       </nav>
+      <button id="mobile-menu-toggle" class="lg:hidden text-cyan-400 p-2" aria-label="Toggle menu">
+        <Menu size={24} />
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-cyan-500/30">
+      <div class="px-4 py-4 space-y-3">
+        <a href="/docs/" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">DOCS</a>
+        <a href="/docs/createMachine/" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">API</a>
+        <a href="https://github.com/matthewp/robot" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">GITHUB</a>
+        <div class="relative">
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+          <input
+            type="text"
+            placeholder="Search..."
+            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-none"
+          />
+        </div>
+      </div>
     </div>
   </header>
 
+  <script>
+    import { initMobileNav } from '../../scripts/mobile-nav.js';
+    initMobileNav();
+  </script>
+
   <div class="container mx-auto px-4 flex gap-6">
-    <Sidebar />
+    <div id="docs-sidebar" class="fixed lg:static lg:translate-x-0 -translate-x-full top-16 left-0 h-[calc(100vh-4rem)] lg:h-auto w-64 bg-gray-900/95 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none z-50 lg:z-auto transition-transform duration-300 overflow-y-auto">
+      <Sidebar />
+    </div>
     <main class="flex-1 py-8 min-w-0">
       <div class="prose prose-invert max-w-none">
         <div class="flex items-center gap-2 text-sm font-mono text-gray-400 mb-4">
@@ -126,16 +156,16 @@ const machine = createMachine({
           <span>GETTING_STARTED</span>
         </div>
 
-        <h1 class="font-mono text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500 mb-8">
+        <h1 class="font-mono text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500 mb-8">
           Robot Documentation
         </h1>
 
-        <p class="text-xl text-gray-300 mb-8">
+        <p class="text-lg lg:text-xl text-gray-300 mb-8">
           Build <strong class="text-cyan-400">finite state machines</strong> in a simple and flexible way.
           At just <strong class="text-cyan-400">1KB</strong>, Robot brings declarative state management to your applications.
         </p>
 
-        <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-12">
           <FeatureCard
             title="TINY_SIZE"
             description="Just 1KB of pure robotic efficiency. No bloat, all bot!"
@@ -156,7 +186,7 @@ const machine = createMachine({
           </FeatureCard>
         </div>
 
-        <h2 class="font-mono text-3xl font-bold text-cyan-400 mb-6">Getting Started</h2>
+        <h2 class="font-mono text-2xl lg:text-3xl font-bold text-cyan-400 mb-6">Getting Started</h2>
 
         <p class="text-gray-300 mb-6">
           Install Robot via npm or yarn:
@@ -175,7 +205,7 @@ const machine = createMachine({
           </div>
         </div>
 
-        <h3 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Basic Example</h3>
+        <h3 class="font-mono text-xl lg:text-2xl font-bold text-cyan-400 mb-4">Basic Example</h3>
 
         <p class="text-gray-300 mb-6">
           Create your first state machine:
@@ -186,7 +216,7 @@ const machine = createMachine({
           code={basicExample}
         />
 
-        <h3 class="font-mono text-2xl font-bold text-cyan-400 mb-4 mt-8">Use with React/Preact</h3>
+        <h3 class="font-mono text-xl lg:text-2xl font-bold text-cyan-400 mb-4 mt-8">Use with React/Preact</h3>
 
         <p class="text-gray-300 mb-6">
           Robot has integrations for all major frameworks:
@@ -197,7 +227,7 @@ const machine = createMachine({
           code={integrationExample}
         />
 
-        <h3 class="font-mono text-2xl font-bold text-cyan-400 mb-4 mt-8">Advanced Features</h3>
+        <h3 class="font-mono text-xl lg:text-2xl font-bold text-cyan-400 mb-4 mt-8">Advanced Features</h3>
 
         <p class="text-gray-300 mb-6">
           Handle async operations, context, and complex state logic:
@@ -209,7 +239,7 @@ const machine = createMachine({
         />
 
         <div class="bg-gray-900/50 rounded-xl p-8 border border-cyan-500/30 mt-12">
-          <h3 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Why Finite State Machines?</h3>
+          <h3 class="font-mono text-xl lg:text-2xl font-bold text-cyan-400 mb-4">Why Finite State Machines?</h3>
           <p class="text-gray-300 mb-4">
             Robot brings the declarative revolution to application state. Instead of managing multiple booleans
             and imperative state updates, define your states declaratively and eliminate invalid states entirely.
@@ -218,7 +248,7 @@ const machine = createMachine({
             With Robot, your states and transitions are validated when the machine is created, preventing an
             entire category of bugs before they happen.
           </p>
-          <div class="grid md:grid-cols-2 gap-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             <div>
               <h4 class="font-mono text-lg font-bold text-pink-400 mb-3">✅ With Robot</h4>
               <ul class="text-gray-300 space-y-2 text-sm">
@@ -241,11 +271,11 @@ const machine = createMachine({
         </div>
 
         <div class="mt-12 text-center">
-          <h3 class="font-mono text-2xl font-bold text-cyan-400 mb-4">Ready to Build?</h3>
+          <h3 class="font-mono text-xl lg:text-2xl font-bold text-cyan-400 mb-4">Ready to Build?</h3>
           <p class="text-gray-300 mb-6">
             Explore the documentation to learn about Robot's powerful features and integrations.
           </p>
-          <div class="flex justify-center gap-4">
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
             <a href="/docs/createMachine/" class="bg-cyan-500 hover:bg-cyan-400 text-black font-mono px-6 py-3 rounded-lg transition-colors">
               API Reference
             </a>

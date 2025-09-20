@@ -11,6 +11,7 @@ import ArrowRight from '../icons/ArrowRight.astro';
 import Github from '../icons/GitHub.astro';
 import Terminal from '../icons/Terminal.astro';
 import BookOpen from '../icons/BookOpen.astro';
+import Menu from '../icons/Menu.astro';
 import CommonHead from '../components/CommonHead.astro';
 import '../styles/base.css';
 ---
@@ -22,6 +23,35 @@ import '../styles/base.css';
 </head>
 <body>
 <div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
+  <!-- Mobile Navigation -->
+  <nav class="lg:hidden fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm z-50 border-b border-cyan-500/30">
+    <div class="flex items-center justify-between px-4 py-3">
+      <a href="/" class="flex items-center gap-2">
+        <div class="w-8 h-8">
+          <RobotLogo />
+        </div>
+        <span class="font-mono text-cyan-400 font-bold">ROBOT</span>
+      </a>
+      <button id="mobile-menu-toggle" class="text-cyan-400 p-2" aria-label="Toggle menu">
+        <Menu size={24} />
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden border-t border-cyan-500/30">
+      <div class="px-4 py-4 space-y-3">
+        <a href="/docs/" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">DOCUMENTATION</a>
+        <a href="https://github.com/matthewp/robot" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">GITHUB</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+
+    toggle?.addEventListener('click', () => {
+      menu?.classList.toggle('hidden');
+    });
+  </script>
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
     <div class="absolute inset-0 opacity-10">
       {[...Array(20)].map((_, i) => (
@@ -36,7 +66,7 @@ import '../styles/base.css';
     </div>
   </div>
 
-  <div class="container mx-auto px-4 py-16 relative">
+  <div class="container mx-auto px-4 py-16 lg:py-16 pt-24 relative">
     <div class="flex flex-col items-center text-center space-y-6">
       <div 
         class="relative w-32 h-32 cursor-pointer group"
@@ -53,22 +83,22 @@ import '../styles/base.css';
         <div class="absolute -inset-4 bg-cyan-400 opacity-20 rounded-full animate-pulse" />
       </div>
       
-      <h1 class="text-6xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">
         ROBOT
       </h1>
       
-      <div class="flex items-center space-x-2 text-xl text-cyan-300 font-mono">
+      <div class="flex items-center justify-center flex-wrap gap-2 text-base sm:text-lg lg:text-xl text-cyan-300 font-mono text-center">
         <Zap class="animate-bounce" />
         <span>1KB OF PURE MECHANICAL MAGIC</span>
         <Zap class="animate-bounce" />
       </div>
 
-      <div class="flex gap-6 mt-8">
-        <a href="/docs/" class="group bg-cyan-500 hover:bg-cyan-400 text-black font-mono px-8 py-4 rounded-xl flex items-center gap-2 transform hover:scale-105 transition-all">
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-8 w-full sm:w-auto">
+        <a href="/docs/" class="group bg-cyan-500 hover:bg-cyan-400 text-black font-mono px-6 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center justify-center gap-2 transform hover:scale-105 transition-all">
           BOOT UP
           <ArrowRight class="group-hover:translate-x-1 transition-transform" />
         </a>
-        <a href="https://github.com/matthewp/robot" class="group bg-gray-800 hover:bg-gray-700 font-mono px-8 py-4 rounded-xl flex items-center gap-2 border-2 border-cyan-500 transform hover:scale-105 transition-all">
+        <a href="https://github.com/matthewp/robot" class="group bg-gray-800 hover:bg-gray-700 font-mono px-6 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center justify-center gap-2 border-2 border-cyan-500 transform hover:scale-105 transition-all">
           <Github />
           SOURCE_CODE
         </a>
@@ -77,8 +107,8 @@ import '../styles/base.css';
   </div>
 
   {/* Key Features Section */}
-  <div class="container mx-auto px-4 py-16">
-    <div class="grid md:grid-cols-3 gap-8">
+  <div class="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
       <FeatureCard
         title="TINY_FOOTPRINT.exe"
         description="Just 1KB of pure robotic efficiency. No bloat, all bot!"
@@ -101,7 +131,7 @@ import '../styles/base.css';
   </div>
 
   {/* Content Sections */}
-  <div class="container mx-auto px-4 py-16 space-y-16">
+  <div class="container mx-auto px-4 py-8 sm:py-12 lg:py-16 space-y-12 lg:space-y-16">
     <ContentSection
       title="Why Finite State Machines"
       subtitle="A better way to handle complex UI state"
@@ -227,7 +257,7 @@ import '../styles/base.css';
           Robot is inspired by a variety of projects involving finite state machines including:
         </p>
 
-        <div class="grid md:grid-cols-1 gap-6">
+        <div class="grid grid-cols-1 gap-4 sm:gap-6">
           <div class="bg-gray-800/50 rounded-lg p-6 border border-cyan-500/20 hover:border-cyan-400 transition-colors">
             <h4 class="font-mono text-lg font-bold text-cyan-400 mb-3">
               <a href="https://statecharts.dev/" class="hover:text-cyan-300 transition-colors" target="_blank" rel="noopener noreferrer">
