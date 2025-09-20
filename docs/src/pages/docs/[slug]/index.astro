@@ -4,6 +4,7 @@ import BookOpen from '../../../icons/BookOpen.astro';
 import ChevronRight from '../../../icons/ChevronRight.astro';
 import Footer from '../../../components/Footer.astro';
 import Sidebar from '../../../components/DocsSidebar.astro';
+import Menu from '../../../icons/Menu.astro';
 import { Prism } from '@astrojs/prism';
 import '../../../styles/base.css';
 import CommonHead from '../../../components/CommonHead.astro';
@@ -66,9 +67,12 @@ const { Content } = await Astro.props.item.render();
 
   <header class="border-b border-cyan-500/20 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
     <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-8">
-        <div class="font-mono text-xl font-bold text-cyan-400">ROBOT_DOCS</div>
-        <div class={`relative w-64 transition-all duration-300 ${isSearchFocused ? 'w-96' : ''}`}>
+      <div class="flex items-center gap-4 lg:gap-8">
+        <button id="mobile-sidebar-toggle" class="lg:hidden text-cyan-400 p-2" aria-label="Toggle sidebar">
+          <Menu size={24} />
+        </button>
+        <a href="/" class="font-mono text-lg lg:text-xl font-bold text-cyan-400">ROBOT_DOCS</a>
+        <div class={`hidden lg:block relative w-64 transition-all duration-300 ${isSearchFocused ? 'w-96' : ''}`}>
           <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
           <input
             type="text"
@@ -79,16 +83,42 @@ const { Content } = await Astro.props.item.render();
           />
         </div>
       </div>
-      <nav class="flex gap-6 text-sm font-mono">
-        <a href="#" class="text-cyan-400 hover:text-cyan-300">DOCS</a>
-        <a href="#" class="text-gray-400 hover:text-gray-300">API</a>
-        <a href="#" class="text-gray-400 hover:text-gray-300">EXAMPLES</a>
+      <nav class="hidden lg:flex gap-6 text-sm font-mono">
+        <a href="/docs/" class="text-cyan-400 hover:text-cyan-300">DOCS</a>
+        <a href="/docs/createMachine/" class="text-gray-400 hover:text-gray-300">API</a>
+        <a href="https://github.com/matthewp/robot" class="text-gray-400 hover:text-gray-300">GITHUB</a>
       </nav>
+      <button id="mobile-menu-toggle" class="lg:hidden text-cyan-400 p-2" aria-label="Toggle menu">
+        <Menu size={24} />
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-cyan-500/30">
+      <div class="px-4 py-4 space-y-3">
+        <a href="/docs/" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">DOCS</a>
+        <a href="/docs/createMachine/" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">API</a>
+        <a href="https://github.com/matthewp/robot" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">GITHUB</a>
+        <div class="relative">
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+          <input
+            type="text"
+            placeholder="Search..."
+            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-none"
+          />
+        </div>
+      </div>
     </div>
   </header>
 
+  <script>
+    import { initMobileNav } from '../../../scripts/mobile-nav.js';
+    initMobileNav();
+  </script>
+
   <div class="container mx-auto px-4 flex gap-6">
-    <Sidebar />
+    <div id="docs-sidebar" class="fixed lg:static lg:translate-x-0 -translate-x-full top-16 left-0 h-[calc(100vh-4rem)] lg:h-auto w-64 bg-gray-900/95 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none z-50 lg:z-auto transition-transform duration-300 overflow-y-auto">
+      <Sidebar />
+    </div>
     
     <main class="flex-1 py-8 min-w-0">
       <div class="prose prose-invert max-w-none">
@@ -101,7 +131,7 @@ const { Content } = await Astro.props.item.render();
           <span>{ Astro.props.item.data.title }</span>
         </div>
         
-        <h1 class="font-mono text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500 mb-6">
+        <h1 class="font-mono text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500 mb-6">
           { Astro.props.item.data.title }
         </h1>
 
