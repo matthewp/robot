@@ -30,7 +30,7 @@ jobs:
     - name: Build Site
       run: npm run --workspace=docs build
 
-    - run: rclone sync docs/_site remote:thisrobot.life
+    - run: rclone sync docs/dist remote:thisrobot.life
 
     - name: Invalidate CDN
       uses: chetan/invalidate-cloudfront-action@master

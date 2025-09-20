@@ -8,7 +8,6 @@
   },
   "workspaces": [
     "docs",
-    "docs2",
     "packages/core",
     "packages/haunted-robot",
     "packages/lit-robot",
