@@ -1,5 +1,21 @@
 # robot3
 
+## 1.2.0
+
+### Minor Changes
+
+- 0cf6366: '/logging' is now exported, so you can import it in your dev environment to log state changes.
+
+  ```ts
+  import 'robot3/logging';
+
+  import {...} from 'robot3';
+  ```
+
+### Patch Changes
+
+- 950b6fa: Fix syntax error in state function type definition that caused TypeScript compilation failures. The previous change had a missing space in a conditional type expression, breaking type inference for state transitions.
+
 ## 1.1.1
 
 ### Patch Changes
