@@ -1,0 +1,9 @@
+---
+import Info from '../icons/Info.astro';
+---
+<div class="bg-cyan-500/10 border-l-4 border-cyan-500 p-4 my-6 rounded-r-lg">
+  <div class="flex gap-3">
+    <Info size={20} class="text-cyan-400 flex-shrink-0 mt-1" />
+    <div class="text-gray-300"><slot /></div>
+  </div>
+</div>

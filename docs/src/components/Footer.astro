@@ -1,0 +1,41 @@
+---
+import Github from '../icons/GitHub.astro';
+import Heart from '../icons/Heart.astro';
+---
+<footer class="border-t border-cyan-500/20 bg-gray-900/50 backdrop-blur-sm mt-16">
+  <div class="container mx-auto px-4 py-8">
+    <div class="grid md:grid-cols-3 gap-8 text-center">
+      <div>
+        <h3 class="font-mono text-cyan-400 font-bold mb-4 text-sm">CONNECT</h3>
+        <div class="space-y-2">
+          <a href="https://github.com" class="flex items-center justify-center gap-2 text-gray-200 hover:text-cyan-400 transition-colors">
+            <Github size={16} />
+            <span>GitHub</span>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-mono text-cyan-400 font-bold mb-4 text-sm">DOCS</h3>
+        <div class="space-y-2">
+          <a href="/docs/quick-start" class="block text-gray-200 hover:text-cyan-400 transition-colors">Quick Start</a>
+          <a href="/docs/api" class="block text-gray-200 hover:text-cyan-400 transition-colors">API Reference</a>
+          <a href="/docs/examples" class="block text-gray-200 hover:text-cyan-400 transition-colors">Examples</a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-mono text-cyan-400 font-bold mb-4 text-sm">RESOURCES</h3>
+        <div class="space-y-2">
+          <a href="/changelog" class="block text-gray-200 hover:text-cyan-400 transition-colors">Changelog</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex justify-center mt-8 pt-8 border-t border-cyan-500/20">
+      <p class="text-gray-200 text-sm">
+        © 2025 Robot. Built with 🔧 by developers.
+      </p>
+    </div>
+  </div>
+</footer>

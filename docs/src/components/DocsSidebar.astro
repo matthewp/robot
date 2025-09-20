@@ -1,0 +1,141 @@
+---
+import Menu from '../icons/Menu.astro';
+import ChevronDown from '../icons/ChevronDown.astro';
+
+const activeItem = undefined;
+
+  const sections = {
+    'CORE_CONCEPTS': [
+      { title: "STATE", id: "state" },
+      { title: "TRANSITIONS", id: "transitions" },
+      { title: "EVENTS", id: "events" },
+      { title: "GUARDS", id: "guards" },
+      { title: "ACTIONS", id: "actions" }
+    ],
+    'GUIDES': [
+      { title: "COMPOSITION", id: "composition", slug: "composition" },
+      { title: "NESTED_STATES", id: "nested-states", slug: "nested-states" },
+      { title: "ASYNC_EXECUTION", id: "awaiting-asynchronous-execution", slug: "awaiting-asynchronous-execution" },
+      { title: "VS_XSTATE", id: "comparison-with-xstate", slug: "comparison-with-xstate" }
+    ],
+    'INTEGRATIONS': [
+      { title: "REACT_ROBOT", id: "react-robot", slug: "react-robot" },
+      { title: "PREACT_ROBOT", id: "preact-robot", slug: "preact-robot" },
+      { title: "SVELTE_ROBOT", id: "svelte-robot-factory", slug: "svelte-robot-factory" },
+      { title: "LIT_ROBOT", id: "lit-robot", slug: "lit-robot" },
+      { title: "HAUNTED_ROBOT", id: "haunted-robot", slug: "haunted-robot" },
+      { title: "ROBOT_HOOKS", id: "robot-hooks", slug: "robot-hooks" }
+    ],
+    'API': [
+      { title: 'createMachine', id: 'create-machine', slug: 'createMachine' },
+      { title: 'state', id: 'state', slug: 'state' },
+      { title: 'transition', id: 'transition', slug: 'transition' },
+      { title: 'guard', id: 'guard', slug: 'guard' },
+      { title: 'action', id: 'action', slug: 'action' },
+      { title: 'reduce', id: 'reduce', slug: 'reduce' },
+      { title: 'invoke', id: 'invoke', slug: 'invoke' },
+      { title: 'interpret', id: 'interpret', slug: 'interpret' },
+      { title: 'immediate', id: 'immediate', slug: 'immediate' }
+    ]
+  };
+---
+
+<nav id="docs-sidebar" class="w-64 flex-shrink-0 py-8" aria-label="Documentation navigation">
+  <script>
+    function toggleSection(ev) {
+      let button = this;
+      let section = this.closest('[data-type=section]');
+      let chevronDown = this.querySelector('.chevron-down');
+      let menu = section.querySelector('[role=menu]');
+      
+      let isNowExpanded = !button.hasAttribute('aria-expanded');
+
+      if(isNowExpanded) {
+        button.setAttribute('aria-expanded', '');
+        chevronDown.classList.add('rotate-0');
+        chevronDown.classList.remove('-rotate-90');
+        menu.classList.add('block');
+        menu.classList.remove('hidden');
+
+        for(let item of section.querySelectorAll('[role="menuitem"]')) {
+          item.tabIndex = 0;
+        }
+      } else {
+        button.removeAttribute('aria-expanded');
+        chevronDown.classList.add('-rotate-90');
+        chevronDown.classList.remove('rotate-0');
+        menu.classList.remove('block');
+        menu.classList.add('hidden');
+
+        for(let item of section.querySelectorAll('[role="menuitem"]')) {
+          item.tabIndex = -1;
+        }        
+      }
+    }
+
+    function onSectionClick(ev) {
+      toggleSection.call(this, ev);
+    }
+
+    function onKeyDown(ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        toggleSection.call(this, ev);
+      }
+      
+    }
+    
+    for(let button of document.querySelectorAll('#docs-sidebar [data-type=section-button]')) {
+      button.addEventListener('click', onSectionClick);
+      button.addEventListener('keydown', onKeyDown);
+    }
+  </script>
+  <div class="sticky top-24">
+    {Object.entries(sections).map(([sectionName, items], index) => (
+      <div data-type="section" key={sectionName} class={index > 0 ? 'mt-8' : ''}>
+        <button
+          data-type="section-button"
+          class="flex items-center gap-2 text-sm font-mono mb-4 text-cyan-400 hover:text-cyan-300 transition-colors w-full"
+          aria-controls={`section-${sectionName}`}
+        >
+          <Menu size={16} aria-hidden="true" />
+          <span>{sectionName}</span>
+          <ChevronDown
+            size={16}
+            class="chevron-down ml-auto transform transition-transform duration-200 -rotate-90"
+            aria-hidden="true"
+          />
+        </button>
+        <div 
+          id={`section-${sectionName}`}
+          role="menu"
+          class="space-y-1 transition-all duration-200 hidden"
+        >
+          {items.map((item) => (
+            <a
+              key={item.id}
+              href={
+                ('slug' in item) ? 
+                `/docs/${item.slug}/` :
+                `#${item.id}`
+              }
+              role="menuitem"
+              tab-index="-1"
+              onKeyDown={(e) => handleItemKeyDown(e, item.id)}
+              aria-current={activeItem === item.id ? 'page' : undefined}
+              class={`
+                block px-4 py-2 rounded-lg font-mono text-sm
+                ${activeItem === item.id ? 
+                  'bg-cyan-500/10 text-cyan-400 border-l-2 border-cyan-500' : 
+                  'text-gray-400 hover:bg-gray-800'
+                }
+              `}
+            >
+              {item.title}
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</nav>

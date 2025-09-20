@@ -1,0 +1,8 @@
+<div class="group bg-gray-900 p-8 rounded-xl border-2 border-cyan-500 hover:border-pink-500 transition-colors relative overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 to-pink-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+  <div class="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+    <slot />
+  </div>
+  <h3 class="text-xl font-bold mb-2 font-mono text-cyan-400">{Astro.props.title}</h3>
+  <p class="text-gray-400">{Astro.props.description}</p>
+</div>

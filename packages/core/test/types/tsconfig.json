@@ -4,7 +4,7 @@
   "compilerOptions": {
     /* Base Options: */
     "esModuleInterop": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "target": "es2022",
     "allowJs": false,
     "moduleDetection": "force",

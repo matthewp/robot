@@ -1,0 +1,130 @@
+---
+import Search from '../../../icons/Search.astro';
+import BookOpen from '../../../icons/BookOpen.astro';
+import ChevronRight from '../../../icons/ChevronRight.astro';
+import Footer from '../../../components/Footer.astro';
+import Sidebar from '../../../components/DocsSidebar.astro';
+import { Prism } from '@astrojs/prism';
+import '../../../styles/base.css';
+import CommonHead from '../../../components/CommonHead.astro';
+
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  return docs.map(item => {
+    return {
+      params: { slug: item.slug },
+      props: { item }
+    }
+  });
+}
+
+const isSearchFocused = false;
+
+const { Content } = await Astro.props.item.render();
+---
+<html>
+<head>
+  <title>{ Astro.props.item.data.title }</title>
+  <CommonHead />
+  <style is:global>
+    .prose p {
+      margin-bottom: 1.5rem;
+    }
+
+    .prose h2 {
+      font-size: 1.875rem; /* 30px */
+      line-height: 2.25rem;
+      font-weight: 700;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      margin-bottom: 1.5rem;
+
+      --to-stop: ;
+      --from-stop: ;
+      background-clip: text;
+      background-image: linear-gradient(to right, #ec4899 var(--to-stop), #22d3ee var(--from-stop));
+    }
+  </style>
+</head>
+<body>
+<div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
+  <div class="fixed inset-0 pointer-events-none">
+    <div class="absolute inset-0 opacity-5">
+      {[...Array(20)].map((_, i) => (
+        <div
+          key={i}
+          class="absolute left-0 right-0 h-px bg-cyan-400"
+          style={{
+            top: `${i * 5}%`,
+            animation: `scanline 8s ${i * 0.1}s infinite linear`
+          }}
+        />
+      ))}
+    </div>
+  </div>
+
+  <header class="border-b border-cyan-500/20 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <div class="font-mono text-xl font-bold text-cyan-400">ROBOT_DOCS</div>
+        <div class={`relative w-64 transition-all duration-300 ${isSearchFocused ? 'w-96' : ''}`}>
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+          <input
+            type="text"
+            placeholder="Search documentation..."
+            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-none"
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
+          />
+        </div>
+      </div>
+      <nav class="flex gap-6 text-sm font-mono">
+        <a href="#" class="text-cyan-400 hover:text-cyan-300">DOCS</a>
+        <a href="#" class="text-gray-400 hover:text-gray-300">API</a>
+        <a href="#" class="text-gray-400 hover:text-gray-300">EXAMPLES</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 flex gap-6">
+    <Sidebar />
+    
+    <main class="flex-1 py-8 min-w-0">
+      <div class="prose prose-invert max-w-none">
+        <div class="flex items-center gap-2 text-sm font-mono text-gray-400 mb-4">
+          <BookOpen size={16} />
+          <span>DOCS</span>
+          <ChevronRight size={16} />
+          <span>CORE_CONCEPTS</span>
+          <ChevronRight size={16} />
+          <span>{ Astro.props.item.data.title }</span>
+        </div>
+        
+        <h1 class="font-mono text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500 mb-6">
+          { Astro.props.item.data.title }
+        </h1>
+
+        <Content />
+      </div>
+    </main>
+  </div>
+
+  <style is:inline>
+  @keyframes scanline {
+    0% { transform: translateY(0) translateX(-100%); }
+    100% { transform: translateY(0) translateX(100%); }
+  }
+  </style>
+
+  <Footer />
+</div>
+</body>
+</html>
+
+
+
+
+
+</body>
+</html>
