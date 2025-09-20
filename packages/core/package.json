@@ -1,16 +1,25 @@
 {
   "name": "robot3",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "A functional, immutable Finite State Machine library",
   "main": "dist/machine.js",
   "types": "./index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/machine.js",
- 			"types": "./index.d.ts",
       "import": "./machine.js",
       "default": "./machine.js",
       "types": "./index.d.ts"
+    },
+    "./debug": {
+      "require": "./dist/debug.js",
+      "import": "./debug.js",
+      "default": "./debug.js"
+    },
+    "./logging": {
+      "require": "./dist/logging.js",
+      "import": "./logging.js",
+      "default": "./logging.js"
     }
   },
   "files": [
@@ -25,6 +34,8 @@
     "bundlesize": "wireit",
     "server": "wireit",
     "test": "wireit",
+    "test:types": "wireit",
+    "test:browser": "wireit",
     "build:cjs": "wireit",
     "build": "wireit"
   },
@@ -70,6 +81,16 @@
       }
     },
     "test": {
+      "dependencies": [
+        "test:types",
+        "test:browser"
+      ]
+    },
+    "test:types": {
+      "command": "tsc -p test/types/tsconfig.json",
+      "files": []
+    },
+    "test:browser": {
       "command": "node-qunit-puppeteer http://localhost:1965/test/test.html 10000",
       "dependencies": [
         "server"

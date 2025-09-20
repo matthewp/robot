@@ -359,7 +359,7 @@ QUnit.module('Invoke', hooks => {
 
   QUnit.test('Invoking a machine that immediately finishes', async assert => {
     assert.expect(3);
-    const expectations = [ 'two', 'nestedTwo', 'three' ];
+    const expectations = [ 'nestedTwo', 'three', 'three' ];
 
     const child = createMachine({
       nestedOne: state(
@@ -379,8 +379,6 @@ QUnit.module('Invoke', hooks => {
     });
 
     let service = interpret(parent, s => {
-      // TODO not totally sure if this is correct, but I think it should
-      // hit this only once and be equal to three
       assert.equal(s.machine.current, expectations.shift());
     });
 

@@ -1,5 +1,32 @@
 # robot3
 
+## 1.1.1
+
+### Patch Changes
+
+- 1d6179a: Fixes types for the state() function.
+
+## 1.1.0
+
+### Minor Changes
+
+- 4f6fb69: Autocomplete for service.send()
+
+  This makes it so that the event name in `service.send(event)` is inferred from the transitions used to create the machine.
+
+## 1.0.2
+
+### Patch Changes
+
+- 9fbdbcb: Set the most deeply nested current service to current
+- 0409089: Documentation for advanced use of 'invoke()'
+
+## 1.0.1
+
+### Patch Changes
+
+- cc17481: Add debug to package exports
+
 ## 1.0.0
 
 ### Major Changes

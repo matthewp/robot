@@ -6,6 +6,7 @@ on:
     - main
     paths:
     - 'docs/**'
+    - '.github/workflows/site.yml'
 
 jobs:
   deploy:
@@ -18,22 +19,18 @@ jobs:
       with:
         node-version: 22
 
+    - name: Setup Rclone
+      uses: AnimMouse/setup-rclone@v1
+      with:
+        rclone_config: ${{ secrets.RCLONE_CONFIG }}
+
     - name: Install dependencies
       run: npm ci
 
     - name: Build Site
       run: npm run --workspace=docs build
 
-    - name: Sync Bucket
-      uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --delete
-      env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        DEST_DIR: '/'
-        SOURCE_DIR: 'docs/_site'      # optional: defaults to entire repository
+    - run: rclone sync docs/_site remote:thisrobot.life
 
     - name: Invalidate CDN
       uses: chetan/invalidate-cloudfront-action@master

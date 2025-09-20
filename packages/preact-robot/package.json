@@ -1,6 +1,6 @@
 {
   "name": "preact-robot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Preact hooks for Robot finite state machines",
   "main": "dist/machine.js",
   "module": "machine.js",
@@ -39,7 +39,7 @@
     "robot3": "^1.0.0"
   },
   "dependencies": {
-    "robot-hooks": "^1.0.0",
+    "robot-hooks": "^1.1.0",
     "rollup": "^2.8.2"
   },
   "devDependencies": {

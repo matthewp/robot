@@ -1,6 +1,6 @@
 {
   "name": "robot-hooks",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Hooks for use with Robot finite state machines",
   "main": "dist/machine.js",
   "module": "machine.js",
@@ -11,6 +11,8 @@
   ],
   "scripts": {
     "test": "wireit",
+    "test:browser": "wireit",
+    "test:types": "wireit",
     "build": "wireit"
   },
   "repository": {
@@ -25,14 +27,24 @@
   },
   "homepage": "https://github.com/matthewp/robot-hooks#readme",
   "peerDependencies": {
-    "robot3": "^1.0.0"
+    "robot3": "^1.0.2"
   },
   "devDependencies": {
-    "robot3": "^1.0.0",
+    "robot3": "^1.0.2",
     "haunted": "^5.0.0"
   },
   "wireit": {
     "test": {
+      "dependencies": [
+        "test:types",
+        "test:browser"
+      ]
+    },
+    "test:types": {
+      "command": "tsc -p test/types/tsconfig.json",
+      "files": []
+    },
+    "test:browser": {
       "command": "node-qunit-puppeteer http://localhost:1965/packages/robot-hooks/test/test.html 10000",
       "dependencies": [
         "../..:server"
