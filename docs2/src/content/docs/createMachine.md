@@ -4,7 +4,7 @@ tags: api
 permalink: api/createMachine.html
 ---
 
-The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name. The value is usually [state](./state.html) but might also be [invoke](./invoke.html).
+The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name. The value is usually [state](/docs/state/) but might also be [invoke](/docs/invoke/).
 
 
 This is a common example that provides 2 states and a [context](#context)
@@ -46,7 +46,7 @@ console.log(service.machine.current, 'inactive');
 
 ## states
 
-An object of states, where each key is a state name, and the values are one of [state](./state.html) or [invoke](./invoke.html).
+An object of states, where each key is a state name, and the values are one of [state](/docs/state/) or [invoke](/docs/invoke/).
 
 ## context
 
@@ -54,7 +54,7 @@ An object of states, where each key is a state name, and the values are one of [
 
 A second argument to `createMachine` is the `context` for the machine; a function that returns an object of [extended state values](https://patterns.eecs.berkeley.edu/?page_id=470#Context). This is useful for storing values coming from places like forms.
 
-The `context` function receives an `initialContext` argument. This is anything passed as the third argument to [interpret](./interpret.html) like so:
+The `context` function receives an `initialContext` argument. This is anything passed as the third argument to [interpret](/docs/interpret/) like so:
 
 ```js
 const context = initialContext => ({

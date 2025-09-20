@@ -79,178 +79,188 @@ import '../styles/base.css';
   {/* Key Features Section */}
   <div class="container mx-auto px-4 py-16">
     <div class="grid md:grid-cols-3 gap-8">
-      {[
-        {
-          icon: <Terminal size={24} />,
-          title: "TINY_FOOTPRINT.exe",
-          description: "Just 1KB of pure robotic efficiency. No bloat, all bot!"
-        },
-        {
-          icon: <Code size={24} />,
-          title: "TYPE_SAFE.sys",
-          description: "Bulletproof typing that would make even a robot proud"
-        },
-        {
-          icon: <BookOpen size={24} />,
-          title: "DOCS.readme",
-          description: "Documentation so clear, even humans can understand it"
-        }
-      ].map((feature, i) => (
-        <FeatureCard key={i} {...feature} />
-      ))}
+      <FeatureCard
+        title="TINY_FOOTPRINT.exe"
+        description="Just 1KB of pure robotic efficiency. No bloat, all bot!"
+      >
+        <Terminal size={24} />
+      </FeatureCard>
+      <FeatureCard
+        title="TYPE_SAFE.sys"
+        description="Bulletproof typing that would make even a robot proud"
+      >
+        <Code size={24} />
+      </FeatureCard>
+      <FeatureCard
+        title="DOCS.readme"
+        description="Documentation so clear, even humans can understand it"
+      >
+        <BookOpen size={24} />
+      </FeatureCard>
     </div>
   </div>
 
   {/* Content Sections */}
   <div class="container mx-auto px-4 py-16 space-y-16">
-    <ContentSection 
+    <ContentSection
       title="Why Finite State Machines"
       subtitle="A better way to handle complex UI state"
     >
       <div class="space-y-6 text-gray-300 leading-relaxed">
         <p>
-          With Finite State Machines the term <code class="text-cyan-400">state</code> might 
-          not mean what you think. In the frontend we tend to think of state to mean <em>all</em> of 
-          the variables that control the UI. When we say <code class="text-cyan-400">state</code> in 
+          With Finite State Machines the term <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">state</code> might
+          not mean what you think. In the frontend we tend to think of state to mean <em>all</em> of
+          the variables that control the UI. When we say <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">state</code> in
           Finite State Machines, we mean a higher-level sort of state.
         </p>
 
         <p>
-          For example, on the GitHub issue page, the issue titles can be edited by the issue creator 
+          For example, on the GitHub issue page, the issue titles can be edited by the issue creator
           and repo maintainers. Initially a title is displayed like this:
         </p>
 
-        <img 
-          src="/api/placeholder/800/100" 
-          alt="GitHub issue title in view mode"
-          class="rounded-lg my-6"
+        <img
+          src="/images/issue-view-mode.png"
+          alt="Issue title in preview mode"
+          class="rounded-lg my-6 filter grayscale brightness-75 contrast-125 border border-cyan-500/30"
         />
 
         <p>
-          The edit button (in red) changes the view so that the title is in an input for editing, 
+          The edit button (in red) changes the view so that the title is in an input for editing,
           and the buttons change as well:
         </p>
 
-        <img 
-          src="/api/placeholder/800/100" 
-          alt="GitHub issue title in edit mode"
-          class="rounded-lg my-6"
-        />
-
-        <InfoBox>
-          If we call this "edit mode" you might be inclined to represent this state as a boolean 
-          and the title as a string. But that\'s missing some crucial states!
-        </InfoBox>
-
-        <CodeBlock 
-          title="STATE_MACHINE.robot"
-          code={`const titleMachine = createMachine('viewing', {
-  viewing: state({
-    transition('edit', 'editing')
-  }),
-  editing: state({
-    transition('save', 'saving'),
-    transition('cancel', 'viewing')
-  }),
-  saving: state({
-    transition('success', 'viewing'),
-    transition('error', 'editing')
-  })
-});`}
+        <img
+          src="/images/issue-edit-mode.png"
+          alt="Issue title in edit mode"
+          class="rounded-lg my-6 filter grayscale brightness-75 contrast-125 border border-cyan-500/30"
         />
 
         <p>
-          This state machine captures all the possible states our title component can be in:
-          viewing, editing, and saving. Each state has clear transitions to other states based
-          on user actions or API responses.
+          If we call this <strong class="text-cyan-400">edit mode</strong> you might be inclined to represent this state as a boolean and the title as a string:
         </p>
 
-        <CodeBlock 
-          title="EDITABLE_TITLE.robot"
-          code={`function EditableTitle() {
-const [state, send] = useMachine(titleMachine);
-const [title, setTitle] = useState('Documentation');
-
-if (state.matches('editing')) {
-return (
-  <input
-    value={title}
-    onChange={e => setTitle(e.target.value)}
-    onBlur={() => send('SAVE')}
-  />
-);
-}
-
-return (
-<h1 onClick={() => send('EDIT')}>
-  {title}
-</h1>
-);
-}`}
+        <CodeBlock
+          title="SIMPLE_STATE.js"
+          code="let editMode = false;\nlet title = '';"
         />
 
         <p>
-          The resulting code is cleaner and more predictable. The state machine ensures we can't
-          end up in impossible states, like showing both the input and the title at once.
+          When the <strong class="text-cyan-400">Edit</strong> button is clicked you would toggle the <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">editMode</code> variable to <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">true</code>. When <strong class="text-cyan-400">Save</strong> or <strong class="text-cyan-400">Cancel</strong> are clicked, toggle it back to <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">false</code>.
         </p>
+
+        <p>
+          But <em>oops</em>, we're missing something here. When you click <strong class="text-cyan-400">Save</strong> it should keep the changed title and save that via an API call. When you click <strong class="text-cyan-400">Cancel</strong> it should forget your changes and restore the previous title.
+        </p>
+
+        <p>
+          So we have some new states we've discovered, the <strong class="text-cyan-400">cancel</strong> state and the <strong class="text-cyan-400">save</strong> state. You might not think of these as states, but rather just some code that you run on events. Think of what happens when you click Save; it makes an external request to a server. That request could fail for a number of reasons. Or you might want to display a loading indicator while the save is taking place. This is definitely a state! <strong class="text-cyan-400">Cancel</strong>, while more simple and immediate, is also a state, as it at least requires some logic to tell the application that the newly inputted title can be ignored.
+        </p>
+
+        <p>
+          You can imagine this component having more states as well. What should happen if the user blanks out the input and then clicks save? You can't have an empty title. It seems that this component should have some sort of <strong class="text-cyan-400">validation</strong> state as well. So we've identified at least 6 states:
+        </p>
+
+        <ul class="list-disc list-inside space-y-2 ml-4 text-gray-300">
+          <li><strong class="text-cyan-400">preview</strong>: The default view when on an issue page.</li>
+          <li><strong class="text-cyan-400">edit</strong>: When in edit mode.</li>
+          <li><strong class="text-cyan-400">save</strong>: When saving to a remote API.</li>
+          <li><strong class="text-cyan-400">error</strong>: When the API server errors for some reason.</li>
+          <li><strong class="text-cyan-400">cancel</strong>: When rolling back changes from edit mode.</li>
+          <li><strong class="text-cyan-400">validate</strong>: When confirming the new input title is an acceptable string.</li>
+        </ul>
+
+        <p>
+          I'll spare you the code, but you can imagine that writing this logic imperatively can result in a number of bugs. You might be tempted to represent these states as a bunch of booleans:
+        </p>
+
+        <CodeBlock
+          title="BOOLEAN_FLAGS.js"
+          code="let editMode = false;\nlet saving = false;\nlet validating = false;\nlet saveHadError = false;"
+        />
+
+        <p>
+          And then toggle these booleans in response to the appropriate event. We've all written code this way. You can pull it off, but why do so when you don't have to? Take, for example, what happens when new requirements are added, resulting in yet another new state of this component. You would need to add another boolean, and change all of your code to toggle the boolean as needed.
+        </p>
+
+        <p>
+          In recent years there has been a revolution in <a href="https://en.wikipedia.org/wiki/Declarative_programming" class="text-cyan-400 hover:text-cyan-300 underline">declarative programming</a> in the front-end. We use tools such as <a href="https://reactjs.org/" class="text-cyan-400 hover:text-cyan-300 underline">React</a> to represent our UI as a function of state. This is great, but we still write imperative code to manage our state like this:
+        </p>
+
+        <CodeBlock
+          title="IMPERATIVE_STATE.js"
+          code="function resetState() {\n  setValidating(false);\n  setSaving(false);\n  setBlurred(false);\n  setEditing(false);\n  if(!focused) setTouched(false);\n  setDirty(true);\n}"
+        />
+
+        <p>
+          <a href="https://en.wikipedia.org/wiki/Finite-state_machine" class="text-cyan-400 hover:text-cyan-300 underline">Finite State Machines</a> bring the declarative revolution to application (and component) state. By representing your states declaratively you can <strong class="text-cyan-400">eliminate invalid states</strong> and prevent an entire category of bugs. Finite State Machines are like static typing for your states.
+        </p>
+
+        <p>
+          Robot is a Finite State Machine library meant to be simple, functional, and fun. With Robot you might represent this title component like so:
+        </p>
+
+        <CodeBlock
+          title="TITLE_MACHINE.robot"
+          code="import { createMachine, guard, immediate, invoke, state, transition, reduce } from 'robot3';\n\nconst machine = createMachine({\n  preview: state(\n    transition('edit', 'editMode',\n      // Save the current title as oldTitle so we can reset later.\n      reduce(ctx => ({ ...ctx, oldTitle: ctx.title }))\n    )\n  ),\n  editMode: state(\n    transition('input', 'editMode',\n      reduce((ctx, ev) => ({ ...ctx, title: ev.target.value }))\n    ),\n    transition('cancel', 'cancel'),\n    transition('save', 'validate')\n  ),\n  cancel: state(\n    immediate('preview',\n      // Reset the title back to oldTitle\n      reduce(ctx => ({ ...ctx, title: ctx.oldTitle }))\n    )\n  ),\n  validate: state(\n    // Check if the title is valid. If so go\n    // to the save state, otherwise go back to editMode\n    immediate('save', guard(titleIsValid)),\n    immediate('editMode')\n  ),\n  save: invoke(saveTitle,\n    transition('done', 'preview'),\n    transition('error', 'error')\n  ),\n  error: state(\n    // Should we provide a retry or...?\n  )\n});"
+        />
+
+        <p>
+          This <em>might</em> seem like a lot of code, but consider that:
+        </p>
+
+        <ul class="list-disc list-inside space-y-2 ml-4 text-gray-300">
+          <li>This prevents the component from ever being in an invalid state.</li>
+          <li>This captures <em>all</em> of the possible states. When writing imperative code you often ignore uncommon or inconvenient states like errors. With Finite State Machines it's much harder to ignore reality.</li>
+          <li>States and transitions are validated at the moment that the machine is created and will throw when using <a href="/docs/" class="text-cyan-400 hover:text-cyan-300 underline">robot/debug</a>.</li>
+        </ul>
+
       </div>
     </ContentSection>
 
-    <ContentSection 
-      title="State Charts"
-      subtitle="Visualize your application's behavior"
+    <ContentSection
+      title="Inspiration"
+      subtitle="Standing on the shoulders of giants"
     >
       <div class="space-y-6 text-gray-300 leading-relaxed">
         <p>
-          Robot provides built-in support for state charts, allowing you to visualize and understand 
-          complex state machines. State charts extend finite state machines with features like:
+          Robot is inspired by a variety of projects involving finite state machines including:
         </p>
 
-        <ul class="list-disc list-inside space-y-2">
-          <li>Hierarchical states</li>
-          <li>Parallel states</li>
-          <li>History states</li>
-          <li>Entry and exit actions</li>
-        </ul>
+        <div class="grid md:grid-cols-1 gap-6">
+          <div class="bg-gray-800/50 rounded-lg p-6 border border-cyan-500/20 hover:border-cyan-400 transition-colors">
+            <h4 class="font-mono text-lg font-bold text-cyan-400 mb-3">
+              <a href="https://statecharts.dev/" class="hover:text-cyan-300 transition-colors" target="_blank" rel="noopener noreferrer">
+                Statecharts
+              </a>
+            </h4>
+            <p class="text-gray-300 text-sm">
+              The specification that fixes some of the issues with Finite State Machines. Robot adopts a number of these changes.
+            </p>
+          </div>
 
-        <CodeBlock 
-          title="ADVANCED_STATE.robot"
-          code={`const wizardMachine = createMachine({
-initial: 'form',
-states: {
-form: {
-  initial: 'step1',
-  states: {
-    step1: {
-      on: { NEXT: 'step2' }
-    },
-    step2: {
-      on: { 
-        NEXT: 'step3',
-        BACK: 'step1'
-      }
-    },
-    step3: {
-      on: { 
-        SUBMIT: '#submitting',
-        BACK: 'step2'
-      }
-    }
-  }
-},
-submitting: {
-  id: 'submitting',
-  on: {
-    SUCCESS: 'success',
-    ERROR: 'form.step3'
-  }
-},
-success: {
-  type: 'final'
-}
-}
-});`}
-        />
+          <div class="bg-gray-800/50 rounded-lg p-6 border border-cyan-500/20 hover:border-cyan-400 transition-colors">
+            <h4 class="font-mono text-lg font-bold text-cyan-400 mb-3">
+              <a href="https://xstate.js.org/" class="hover:text-cyan-300 transition-colors" target="_blank" rel="noopener noreferrer">
+                XState
+              </a>
+            </h4>
+            <p class="text-gray-300 text-sm">
+              The excellent JavaScript library that implements the Statecharts XML spec.
+            </p>
+          </div>
+
+          <div class="bg-gray-800/50 rounded-lg p-6 border border-cyan-500/20 hover:border-cyan-400 transition-colors">
+            <h4 class="font-mono text-lg font-bold text-cyan-400 mb-3">
+              <a href="https://github.com/p-org/P" class="hover:text-cyan-300 transition-colors" target="_blank" rel="noopener noreferrer">
+                The P Programming Language
+              </a>
+            </h4>
+            <p class="text-gray-300 text-sm">
+              A DSL for representing Finite State Machines.
+            </p>
+          </div>
+        </div>
       </div>
     </ContentSection>
   </div>
