@@ -9,5 +9,8 @@ export default defineConfig({
   },
   markdown: {
     syntaxHighlight: 'prism'
+  },
+  server: {
+    host: '0.0.0.0'
   }
 });

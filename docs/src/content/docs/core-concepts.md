@@ -1,20 +1,27 @@
 ---
 title: Core Concepts
 tags: core
-permalink: core/concepts.html
 ---
 
-Robot is built around finite state machines. Understanding these core concepts will help you build more predictable and maintainable applications.
+# Core Concepts
 
-## STATE
+Robot is built around finite state machines (FSMs). Understanding these core concepts will help you build more predictable and maintainable applications.
 
-<span id="state"></span>
+## What Are Finite State Machines?
 
-States are the foundation of any state machine. At any given time, your machine is in exactly one state. States represent the different modes or conditions your application can be in.
+A finite state machine is a mathematical model of computation that can be in exactly one state at any given time. The machine can change from one state to another in response to events. This change is called a transition.
+
+FSMs have been around since the 1950s and are used everywhere - from traffic lights to complex software systems. They provide a structured way to model behavior that involves distinct modes or phases.
+
+## The Five Core Concepts
+
+Robot's state machines are built on five fundamental concepts:
+
+### [State](/docs/concepts-state/)
+
+States represent the different modes or conditions your application can be in. At any given time, your machine is in exactly one state.
 
 ```js
-import { createMachine, state } from 'robot3';
-
 const machine = createMachine({
   idle: state(),
   loading: state(),
@@ -23,191 +30,123 @@ const machine = createMachine({
 });
 ```
 
-States in Robot are declarative - you define what states exist and what transitions are possible from each state. This makes your application's behavior predictable and easy to reason about.
+**Learn more**: [Understanding State](/docs/concepts-state/)
 
-### Initial State
+### [Transitions](/docs/concepts-transitions/)
 
-Every machine starts in the first state defined. In the example above, the machine begins in the `idle` state.
-
-### Final States
-
-States with no transitions are considered final states. When a machine reaches a final state, it stays there unless externally reset.
-
-## TRANSITIONS
-
-<span id="transitions"></span>
-
-Transitions define how your machine moves from one state to another in response to events. They're the arrows in your state diagram.
+Transitions define how your machine moves from one state to another in response to events. They're the pathways that connect your states.
 
 ```js
-import { createMachine, state, transition } from 'robot3';
-
-const machine = createMachine({
-  idle: state(
-    transition('fetch', 'loading')
-  ),
-  loading: state(
-    transition('done', 'loaded'),
-    transition('error', 'error')
-  ),
-  loaded: state(),
-  error: state(
-    transition('retry', 'loading')
-  )
-});
+idle: state(
+  transition('fetch', 'loading')
+),
+loading: state(
+  transition('success', 'loaded'),
+  transition('error', 'error')
+)
 ```
 
-### Transition Syntax
+**Learn more**: [Understanding Transitions](/docs/concepts-transitions/)
 
-Each transition takes:
-- An event name (what triggers the transition)
-- A target state (where to go when triggered)
-- Optional guards and actions
+### [Events](/docs/concepts-events/)
 
-Transitions are deterministic - for any given state and event combination, there's only one possible outcome.
-
-## EVENTS
-
-<span id="events"></span>
-
-Events are the triggers that cause state transitions. They represent things that happen in your application - user interactions, API responses, timers, etc.
+Events are the triggers that cause state transitions. They represent things that happen - user interactions, API responses, timers, or any occurrence that should cause your machine to change state.
 
 ```js
-import { interpret } from 'robot3';
-
-const service = interpret(machine, () => {
-  console.log('State changed to:', service.machine.current);
-});
+const service = interpret(machine);
 
 // Send events to trigger transitions
 service.send('fetch');
-service.send('done');
+service.send({ type: 'success', data: users });
 ```
 
-### Event Data
+**Learn more**: [Understanding Events](/docs/concepts-events/)
 
-Events can carry data that's used by guards and actions:
-
-```js
-service.send({ type: 'done', data: { user: 'Alice' } });
-```
-
-### Event Types
-
-Robot supports several types of events:
-- **User events**: Explicitly sent via `service.send()`
-- **Immediate transitions**: Automatically triggered when entering a state
-- **Invoked promises**: Success/error events from async operations
-
-## GUARDS
-
-<span id="guards"></span>
+### [Guards](/docs/concepts-guards/)
 
 Guards are conditions that must be met for a transition to occur. They let you add conditional logic to your state machines without complicating the state structure.
 
 ```js
-import { createMachine, state, transition, guard } from 'robot3';
-
-const machine = createMachine({
-  idle: state(
-    transition('submit', 'processing',
-      guard((ctx) => ctx.form.isValid)
-    )
-  ),
-  processing: state()
-});
-```
-
-### Guard Functions
-
-Guards are pure functions that receive the context and event, returning `true` to allow the transition or `false` to prevent it:
-
-```js
-const isValidUser = (ctx, event) => {
-  return event.user && event.user.age >= 18;
-};
-
-const machine = createMachine({
-  waiting: state(
-    transition('login', 'authenticated',
-      guard(isValidUser)
-    )
-  ),
-  authenticated: state()
-});
-```
-
-### Multiple Guards
-
-You can chain multiple guards - all must pass for the transition to occur:
-
-```js
-transition('submit', 'processing',
-  guard(isValid),
-  guard(hasPermission)
+idle: state(
+  transition('submit', 'processing',
+    guard((ctx) => ctx.form.isValid)
+  )
 )
 ```
 
-## ACTIONS
+**Learn more**: [Understanding Guards](/docs/concepts-guards/)
 
-<span id="actions"></span>
+### [Actions](/docs/concepts-actions/)
 
 Actions are side effects that occur during transitions. They let you update context, make API calls, update the DOM, or perform any other effects.
 
 ```js
-import { createMachine, state, transition, action } from 'robot3';
-
-const updateUser = action((ctx, event) => {
-  return { ...ctx, user: event.user };
-});
-
-const machine = createMachine({
-  idle: state(
-    transition('login', 'authenticated', updateUser)
-  ),
-  authenticated: state()
-});
-```
-
-### Action Types
-
-Robot supports different types of actions:
-
-#### Context Actions
-Update the machine's context:
-
-```js
-const increment = action((ctx) => ({ ...ctx, count: ctx.count + 1 }));
-```
-
-#### Side Effect Actions
-Perform effects without changing context:
-
-```js
-const log = action((ctx, event) => {
-  console.log('Transitioning with:', event);
-  return ctx; // Return unchanged context
-});
-```
-
-#### Multiple Actions
-
-Chain multiple actions to execute in sequence:
-
-```js
-transition('submit', 'success',
-  validate,
-  saveToAPI,
-  updateUI
+idle: state(
+  transition('login', 'authenticated',
+    reduce((ctx, ev) => ({ ...ctx, user: ev.user }))
+  )
 )
 ```
 
-### Action Timing
+**Learn more**: [Understanding Actions](/docs/concepts-actions/)
 
-Actions execute during the transition, after guards have passed but before entering the new state. This timing ensures:
-- Guards see the old context
-- The new state receives the updated context
-- Side effects don't occur if guards fail
+## Why Use Finite State Machines?
+
+### Eliminate Invalid States
+
+Without FSMs, applications often use multiple booleans that can create impossible combinations:
+
+```js
+// Without FSM - invalid states possible ❌
+let loading = false;
+let loaded = false;
+let error = false;
+
+// What does this mean?
+loading = true;
+loaded = true;
+```
+
+With FSMs, you're always in exactly one valid state:
+
+```js
+// With FSM - always valid ✅
+const machine = createMachine({
+  idle: state(),
+  loading: state(),
+  loaded: state(),
+  error: state()
+});
+```
+
+### Make Behavior Explicit
+
+FSMs make your application's behavior self-documenting:
+
+```js
+const authMachine = createMachine({
+  loggedOut: state(
+    transition('login', 'authenticating')
+  ),
+  authenticating: state(
+    transition('success', 'loggedIn'),
+    transition('failure', 'loggedOut')
+  ),
+  loggedIn: state(
+    transition('logout', 'loggedOut')
+  )
+});
+```
+
+Just by reading the machine, you can see every possible state and how they connect.
+
+### Prevent Unexpected Behavior
+
+Only defined transitions can occur. You can't accidentally jump from `idle` to `loaded` if you didn't define that transition.
+
+### Enable Better Testing
+
+With explicit states and transitions, you can test every path through your application systematically.
 
 ## Putting It All Together
 
@@ -264,5 +203,34 @@ This example demonstrates:
 - **Events**: Different triggers (fetch, success, failure, retry)
 - **Guards**: Validation before allowing transitions
 - **Actions**: Context updates and side effects
+
+## Next Steps
+
+Now that you understand the core concepts, you can:
+
+1. **Dive deeper**: Read the detailed guides for each concept
+   - [Understanding State](/docs/concepts-state/)
+   - [Understanding Transitions](/docs/concepts-transitions/)
+   - [Understanding Events](/docs/concepts-events/)
+   - [Understanding Guards](/docs/concepts-guards/)
+   - [Understanding Actions](/docs/concepts-actions/)
+
+2. **Explore the API**: Check out the API reference for implementation details
+   - [createMachine](/docs/createmachine/)
+   - [state](/docs/state/)
+   - [transition](/docs/transition/)
+   - [guard](/docs/guard/)
+   - [action](/docs/action/)
+
+3. **Learn patterns**: See how to apply these concepts in real applications
+   - [Composition](/docs/composition/)
+   - [Nested States](/docs/nested-states/)
+   - [Async Execution](/docs/awaiting-asynchronous-execution/)
+
+4. **Integrate with frameworks**: Use Robot with your favorite UI library
+   - [React Robot](/docs/react-robot/)
+   - [Preact Robot](/docs/preact-robot/)
+   - [Svelte Robot](/docs/svelte-robot-factory/)
+   - [Lit Robot](/docs/lit-robot/)
 
 These core concepts form the foundation of Robot's state management. Master these, and you'll be able to model complex application behavior in a clear, maintainable way.
