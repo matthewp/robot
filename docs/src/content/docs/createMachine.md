@@ -1,7 +1,8 @@
 ---
 title: createMachine
 tags: api
-permalink: api/createMachine.html
+permalink: api/createmachine.html
+section: api
 ---
 
 The `createMachine` function creates a state machine. It takes an object of *states* with the key being the state name. The value is usually [state](/docs/state/) but might also be [invoke](/docs/invoke/).
