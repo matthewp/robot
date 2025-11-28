@@ -1,5 +1,11 @@
 # react-robot
 
+## 1.2.1
+
+### Patch Changes
+
+- c2adf9f: Fix send function type to properly derive transitions from machine type
+
 ## 1.2.0
 
 ### Minor Changes
