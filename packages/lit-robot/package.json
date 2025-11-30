@@ -9,7 +9,8 @@
     "test": "wireit"
   },
   "files": [
-    "machine.js"
+    "machine.js",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",
