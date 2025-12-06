@@ -1,6 +1,6 @@
 {
   "name": "lit-robot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "LitElement hooks for Robot finite state machines",
   "main": "machine.js",
   "module": "machine.js",

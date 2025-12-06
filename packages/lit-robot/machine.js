@@ -1,20 +1,22 @@
 import { interpret } from 'robot3';
 
-function Robot(Base) {
+function Robot(Base, machine, onChange) {
   if(Base == null) {
-    throw new Error('Robot(Base) expects a Base class');
+    throw new Error('Robot(Base, machine) expects a Base class');
+  }
+
+  if(machine == null) {
+    throw new Error('Robot(Base, machine) expects a machine')
   }
 
   return class RobotLitElement extends Base {
     constructor() {
       super();
       
-      let machine = new.target.machine;
-      this.service = interpret(machine, service => {
-        this.machine = service.machine;
+      this.service = interpret(machine, ...args => {
+        onChange?.(...args);
         this.requestUpdate();
       }, { element: this });
-      this.machine = this.service.machine;
     }
   }
 }
