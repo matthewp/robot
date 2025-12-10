@@ -5,9 +5,9 @@ declare module 'robot3' {
    */
   type NestedKeys<T> = T extends object
     ? {
-       [P in keyof T]-?: P extends string ? keyof T[P] : never
-     }[keyof T]
-   : never
+      [P in keyof T]-?: P extends string ? keyof T[P] : never
+    }[keyof T]
+    : never
 
   type AllStateKeys<T> = NestedKeys<T> | keyof T;
 
@@ -58,9 +58,9 @@ declare module 'robot3' {
    *
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
-  export function state<T extends Transition<any> | Immediate<any>>(
-    ...args: T[]
-  ): MachineState<T extends Transition<infer F> ? F : string>;
+  export function state<T extends ReadonlyArray<Transition<any> | Immediate<any>>>(
+    ...args: T
+  ): MachineState<ExtractTransitionOrImmediateTypes<T>[number]>;
 
   /**
    * A `transition` function is used to move from one state to another.
@@ -131,7 +131,7 @@ declare module 'robot3' {
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
   export function invoke<C, T, E extends {} = any>(fn: (ctx: C, e?: E) => Promise<T>, ...args: (Transition<any> | Immediate<any>)[]): MachineState<any>
-  
+
   /**
    * The `invoke` is a special type of state that immediately invokes a Promise-returning or Machine-returning function, or another machine.
    *
@@ -146,7 +146,9 @@ declare module 'robot3' {
    * @param machine - Machine
    * @param args - Any argument needs to be of type Transition or Immediate.
    */
-  export function invoke<M extends Machine>(machine: M, ...args: (Transition<any> | Immediate<any>)[]): MachineState<any>
+  export function invoke<M extends Machine>(machine: M, ...args: (Transition<any> | Immediate<any>)[]):
+  // fixme: this type isn't 100% correct, as it adds the child's transitions to the parent.
+    MachineState<GetMachineTransitions<M>>
 
   /* General Types */
 
@@ -232,17 +234,20 @@ declare module 'robot3' {
 
   // Create mapped type without the final indexing
   type GetTransitionsFromStates<S> = {
-  [K in keyof S]: S[K] extends { transitions: Map<string, Array<Transition<infer F>>> }
-    ? IsAny<F> extends true 
-      ? never 
-      : F
-    : never
+    [K in keyof S]: S[K] extends { transitions: Map<string, Array<Transition<infer F>>> }
+      ? IsAny<F> extends true
+        ? never
+        : F
+      : never
   }
 
   type ExtractNonAnyValues<T> = {
     [K in keyof T]: IsAny<T[K]> extends true ? never : T[K]
   }[keyof T] & {};
 
-  export type GetMachineTransitions<M extends Machine> = 
+  export type GetMachineTransitions<M extends Machine> =
     ExtractNonAnyValues<GetTransitionsFromStates<GetMachineStateObject<M>>>;
+
+  type ExtractTransitionOrImmediateTypes<T extends ReadonlyArray<Transition<any> | Immediate<any>>> =
+    { [K in keyof T]: T[K] extends Transition<infer V> ? V : T[K] extends Immediate<infer V> ? V : never };
 }
