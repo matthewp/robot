@@ -1,5 +1,11 @@
 # robot3
 
+## 1.3.0
+
+### Minor Changes
+
+- bcc2995: Improve the type definition for state and invoke functions
+
 ## 1.2.0
 
 ### Minor Changes
