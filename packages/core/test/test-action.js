@@ -18,4 +18,20 @@ QUnit.module('Action', () => {
     assert.equal(service.context, orig, 'context stays the same');
     assert.equal(count, 1, 'side-effect performed');
   });
+
+  QUnit.test('Discards the return value', assert => {
+    let orig = {};
+    let machine = createMachine({
+      one: state(
+        transition('ping', 'two',
+          action(() => -1)
+        )
+      ),
+      two: state()
+    }, () => orig);
+    let service = interpret(machine, () => {});
+    service.send('ping');
+
+    assert.equal(service.context, orig, 'context stays the same');
+  });
 });
