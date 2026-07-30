@@ -28,7 +28,7 @@ function fnType(fn) {
 
 let reduceType = {};
 export let reduce = fnType.bind(reduceType);
-export let action = fn => reduce((ctx, ev) => !!~fn(ctx, ev) && ctx);
+export let action = fn => reduce((ctx, ev) => (fn(ctx, ev), ctx));
 
 let guardType = {};
 export let guard = fnType.bind(guardType);
