@@ -1,5 +1,11 @@
 # robot3
 
+## 1.3.1
+
+### Patch Changes
+
+- 238ba8f: Fix `action()` callbacks returning `-1` corrupting the context.
+
 ## 1.3.0
 
 ### Minor Changes
