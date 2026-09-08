@@ -83,18 +83,18 @@ export function state(...args) {
 
 let invokeFnType = {
   enter(machine2, service, event) {
-    let rn = this.fn.call(service, service.context, event)
-    if(machine.isPrototypeOf(rn))
+    let invokedResult = this.fn.call(service, service.context, event);
+    if (machine.isPrototypeOf(invokedResult))
       return create(invokeMachineType, {
-        machine: valueEnumerable(rn),
+        machine: valueEnumerable(invokedResult),
         transitions: valueEnumerable(this.transitions)
-      }).enter(machine2, service, event)
-    rn
-      .then(data => { 
+      }).enter(machine2, service, event);
+    invokedResult
+      .then(data => {
         if (machine2 === service.machine) 
           return service.send({ type: 'done', data });
       })
-      .catch(error => { 
+      .catch(error => {
         if (machine2 === service.machine) 
           return service.send({ type: 'error', error });
       });
@@ -113,7 +113,7 @@ let invokeMachineType = {
     if(service.child.machine.state.value.final) {
       let data = service.child.context;
       delete service.child;
-      return transitionTo(service, machine, { type: 'done', data }, this.transitions.get('done'));
+      return send(service, { type: 'done', data }) || machine;
     }
     return machine;
   }
@@ -165,11 +165,14 @@ function transitionTo(service, machine, fromEvent, candidates) {
         current: valueEnumerable(to),
         original: { value: original }
       });
-
       if (d._onEnter) d._onEnter(machine, to, service.context, context, fromEvent);
+      let isSelfTransition = machine.current === to;
+      if (!isSelfTransition) delete service.child;
+
       let state = newMachine.state.value;
       service.machine = newMachine;
-      let ret = state.enter(newMachine, service, fromEvent);
+      let ret = (isSelfTransition && service.child) ?
+        newMachine : state.enter(newMachine, service, fromEvent);
       service.onChange(service);
       return ret;
     }
@@ -180,7 +183,7 @@ function send(service, event) {
   let eventName = event.type || event;
   let { machine } = service;
   let { value: state, name: currentStateName } = machine.state;
-  
+
   if(state.transitions.has(eventName)) {
     return transitionTo(service, machine, event, state.transitions.get(eventName)) || machine;
   } else {
@@ -195,7 +198,7 @@ let service = {
   }
 };
 
-export function interpret(machine, onChange, initialContext, event) {
+export function interpret(machine, onChange = () => { }, initialContext, event) {
   let s = Object.create(service, {
     machine: valueEnumerableWritable(machine),
     context: valueEnumerableWritable(machine.context(initialContext, event)),

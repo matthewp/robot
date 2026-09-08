@@ -47,4 +47,25 @@ QUnit.module('Guards', hooks => {
     service.send({ type: 'ping', canProceed: true });
     assert.equal(service.machine.current, 'two', 'now moved');
   });
+
+  QUnit.test('Chained guards short-circuit when a preceding guard returns false', assert => {
+    let secondGuardCalled = false;
+    let machine = createMachine({
+      one: state(
+        transition('ping', 'two',
+          guard(() => false),
+          guard(() => {
+            secondGuardCalled = true;
+            return true;
+          })
+        )
+      ),
+      two: state()
+    });
+
+    let service = interpret(machine, () => {});
+    service.send('ping');
+    assert.equal(service.machine.current, 'one', 'Transition blocked');
+    assert.equal(secondGuardCalled, false, 'Second guard was not called due to short-circuiting');
+  });
 });
