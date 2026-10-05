@@ -1,8 +1,8 @@
 # react-robot
 
-[React](https://reactjs.org/) hooks for use with [Robot](https://thisrobot.life/) finite state machines.
+[React](https://reactjs.org/) hooks for use with [Robot](https://regularhuman.dev/) finite state machines.
 
-See documentation on [the website](https://thisrobot.life/integrations/react-robot.html).
+See documentation on [the website](https://regularhuman.dev/docs/react-robot/).
 
 ```js
 import { useMachine } from 'react-robot';
@@ -27,7 +27,7 @@ function App() {
 }
 ```
 
-## 📚 [Documentation](https://thisrobot.life/integrations/react-robot.html)
+## 📚 [Documentation](https://regularhuman.dev/docs/react-robot/)
 
 * Please star [the repository](https://github.com/matthewp/react-robot) on GitHub.
 * [File an issue](https://github.com/matthewp/react-robot/issues) if you find a bug. Or better yet...

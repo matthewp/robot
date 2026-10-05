@@ -10,7 +10,7 @@
 
 A small functional and immutable Finite State Machine library. Using state machines for your components brings the declarative programming approach to application state.
 
-See [thisrobot.life](https://thisrobot.life/) for the main documentation.
+See [regularhuman.dev](https://regularhuman.dev/) for the main documentation.
 
 ```js
 import { createMachine, interpret, state, transition } from 'robot3';
@@ -29,7 +29,7 @@ const service = interpret(machine, () => {
 });
 ```
 
-## 📚 [Documentation](https://thisrobot.life/)
+## 📚 [Documentation](https://regularhuman.dev/)
 
 * Please star [the repository](https://github.com/matthewp/robot) on GitHub.
 * [File an issue](https://github.com/matthewp/robot/issues) if you find a bug. Or better yet...
@@ -41,7 +41,7 @@ Tests are located in the `test/` folder. Load `test/test.html` in your browser o
 
 ## Integrations
 
-Robot works with a variety of UI libraries, and includes integrations for React, Preact, Haunted, and more. See the [integrations page](https://thisrobot.life/integrations.html) to learn more.
+Robot works with a variety of UI libraries, and includes integrations for React, Preact, Haunted, and more. See the [documentation](https://regularhuman.dev/docs/) to learn more.
 
 ## Tools
 
