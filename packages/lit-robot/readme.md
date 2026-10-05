@@ -1,8 +1,8 @@
 # lit-robot
 
-[LitElement](https://lit-element.polymer-project.org/) integration with [Robot](https://thisrobot.life/).
+[LitElement](https://lit-element.polymer-project.org/) integration with [Robot](https://regularhuman.dev/).
 
-See documentation on [the website](https://thisrobot.life/integrations/lit-robot.html).
+See documentation on [the website](https://regularhuman.dev/docs/lit-robot/).
 
 ```js
 import { Robot } from 'lit-robot';
@@ -30,7 +30,7 @@ class MyApp extends Robot(LitElement) {
 }
 ```
 
-## 📚 [Documentation](https://thisrobot.life/integrations/lit-robot.html)
+## 📚 [Documentation](https://regularhuman.dev/docs/lit-robot/)
 
 * Please star [the repository](https://github.com/matthewp/robot) on GitHub.
 * [File an issue](https://github.com/matthewp/robot/issues) if you find a bug. Or better yet...

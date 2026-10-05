@@ -1,8 +1,8 @@
 # preact-robot
 
-[Preact](https://preactjs.com/) hooks for use with [Robot](https://thisrobot.life/).
+[Preact](https://preactjs.com/) hooks for use with [Robot](https://regularhuman.dev/).
 
-See documentation on [the website](https://thisrobot.life/integrations/preact-robot.html).
+See documentation on [the website](https://regularhuman.dev/docs/preact-robot/).
 
 ```js
 import { useMachine } from 'preact-robot';
@@ -28,7 +28,7 @@ function App() {
 }
 ```
 
-## 📚 [Documentation](https://thisrobot.life/integrations/preact-robot.html)
+## 📚 [Documentation](https://regularhuman.dev/docs/preact-robot/)
 
 * Please star [the repository](https://github.com/matthewp/preact-robot) on GitHub.
 * [File an issue](https://github.com/matthewp/preact-robot/issues) if you find a bug. Or better yet...

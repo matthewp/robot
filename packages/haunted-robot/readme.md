@@ -1,8 +1,8 @@
 # haunted-robot
 
-[Haunted](https://github.com/matthewp/haunted) hooks for use with [Robot](https://thisrobot.life/).
+[Haunted](https://github.com/matthewp/haunted) hooks for use with [Robot](https://regularhuman.dev/).
 
-See documentation on [the website](https://thisrobot.life/integrations/haunted-robot.html).
+See documentation on [the website](https://regularhuman.dev/docs/haunted-robot/).
 
 ```js
 import { useMachine } from 'haunted-robot';
@@ -29,7 +29,7 @@ function App() {
 customElements.define('my-app', component(App));
 ```
 
-## 📚 [Documentation](https://thisrobot.life/integrations/haunted-robot.html)
+## 📚 [Documentation](https://regularhuman.dev/docs/haunted-robot/)
 
 * Please star [the repository](https://github.com/matthewp/haunted-robot) on GitHub.
 * [File an issue](https://github.com/matthewp/haunted-robot/issues) if you find a bug. Or better yet...

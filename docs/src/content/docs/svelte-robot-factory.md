@@ -41,7 +41,7 @@ useMachine(machine, event);
 Arguments:
 
 - [machine](/docs/interpret/#machine): Robot state machine
-- [event](https://thisrobot.life/api/interpret.html#event): Object which will be passed to the [context function](/docs/createMachine/#context)
+- [event](/docs/interpret/#event): Object which will be passed to the [context function](/docs/createMachine/#context)
 
 Returns:
 
@@ -62,7 +62,7 @@ function useMachine(machine, event)
 
 ```js
 <!--
-  example integration with https://thisrobot.life
+  example integration with https://regularhuman.dev/
 	supports send, context, and machine (to include machine.current & machine.state)
 -->
 

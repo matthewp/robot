@@ -1,6 +1,6 @@
 # robot-hooks
 
-Hooks utilities for use with [Robot](https://thisrobot.life/). Use this to create a `useMachine` hook that works with any hook-supporting view library.
+Hooks utilities for use with [Robot](https://regularhuman.dev/). Use this to create a `useMachine` hook that works with any hook-supporting view library.
 
 ## Installation
 
@@ -16,9 +16,9 @@ Or Yarn:
 yarn add robot-hooks
 ```
 
-## 📚 [Documentation](https://thisrobot.life/integrations/robot-hooks.html)
+## 📚 [Documentation](https://regularhuman.dev/docs/robot-hooks/)
 
-* This repo (and other integrations) are documented [on thisrobot.life](https://thisrobot.life/integrations/robot-hooks.html).
+* This repo (and other integrations) are documented [on regularhuman.dev](https://regularhuman.dev/docs/robot-hooks/).
 * Please star ⭐️ [this repo](https://github.com/matthewp/robot-hooks).
 
 ## License
