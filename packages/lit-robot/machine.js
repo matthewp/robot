@@ -13,7 +13,7 @@ function Robot(Base, machine, onChange) {
     constructor() {
       super();
       
-      this.service = interpret(machine, ...args => {
+      this.service = interpret(machine, (...args) => {
         onChange?.(...args);
         this.requestUpdate();
       }, { element: this });
