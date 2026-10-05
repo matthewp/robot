@@ -203,8 +203,8 @@ When an event is sent, transitions execute in this order:
 2. **Transition matched**: The machine finds a transition with that event name
 3. **Guards checked**: If guards exist, they must pass (covered in [Guards](/docs/concepts-guards/))
 4. **Actions executed**: Any actions or reducers run (covered in [Actions](/docs/concepts-actions/))
-5. **State changed**: The machine transitions to the target state
-6. **Context updated**: Any context changes from actions take effect
+5. **Context updated**: The context returned by the reducers takes effect
+6. **State changed**: The machine transitions to the target state
 
 This predictable execution order ensures consistent behavior.
 

@@ -9,6 +9,8 @@ section: api
 
 __action__ takes a function that will be run during a [transition](/docs/transition/). The primary purpose of using action is to perform *side-effects*.
 
+The function receives the current [context](/docs/createMachine/#context) and the event. Its return value is ignored and the context passes through unchanged. To update the context, use [reduce](/docs/reduce/) instead.
+
 This example triggers an event on an element when transitioning to the next state.
 
 ```js

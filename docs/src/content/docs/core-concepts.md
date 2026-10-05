@@ -78,7 +78,7 @@ idle: state(
 
 ### [Actions](/docs/concepts-actions/)
 
-Actions are side effects that occur during transitions. They let you update context, make API calls, update the DOM, or perform any other effects.
+Actions are side effects that occur during transitions, like making API calls or updating the DOM. To update context, use `reduce`, which returns the new context.
 
 ```js
 idle: state(
@@ -153,15 +153,15 @@ With explicit states and transitions, you can test every path through your appli
 Here's a complete example using all core concepts:
 
 ```js
-import { createMachine, state, transition, guard, action, interpret } from 'robot3';
+import { createMachine, state, transition, guard, reduce, interpret } from 'robot3';
 
-// Actions
-const setUser = action((ctx, event) => ({ ...ctx, user: event.data }));
-const clearError = action((ctx) => ({ ...ctx, error: null }));
-const setError = action((ctx, event) => ({ ...ctx, error: event.error }));
+// Reducers
+const setUser = reduce((ctx, event) => ({ ...ctx, user: event.data }));
+const clearError = reduce((ctx) => ({ ...ctx, error: null }));
+const setError = reduce((ctx, event) => ({ ...ctx, error: event.error }));
 
 // Guards
-const isValid = guard((ctx, event) => event.data && event.data.email);
+const isValid = (ctx, event) => event.data && event.data.email;
 
 // Machine definition
 const machine = createMachine({
@@ -181,10 +181,10 @@ const machine = createMachine({
   error: state(
     transition('retry', 'loading', clearError)
   )
-}, {
+}, () => ({
   user: null,
   error: null
-});
+}));
 
 // Create and use service
 const service = interpret(machine, () => {
@@ -202,7 +202,7 @@ This example demonstrates:
 - **Transitions**: Movement between states based on events
 - **Events**: Different triggers (fetch, success, failure, retry)
 - **Guards**: Validation before allowing transitions
-- **Actions**: Context updates and side effects
+- **Reducers**: Context updates
 
 ## Next Steps
 
