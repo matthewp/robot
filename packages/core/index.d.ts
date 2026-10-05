@@ -54,11 +54,12 @@ declare module 'robot3' {
   ): Machine<S, C, AllStateKeys<S>>;
 
   /**
-   * The `state` function returns a state object. A state can take transitions and immediates as arguments.
+   * The `state` function returns a state object. A state can take transitions, immediates, reducers and actions as arguments.
+   * Reducers and actions run when the state is entered (but not on a transition from the state to itself).
    *
-   * @param args - Any argument needs to be of type Transition or Immediate.
+   * @param args - Any argument needs to be of type Transition, Immediate, Reducer or Action.
    */
-  export function state<T extends ReadonlyArray<Transition<any> | Immediate<any>>>(
+  export function state<T extends ReadonlyArray<Transition<any> | Immediate<any> | Reducer<any, any> | Action<any, any>>>(
     ...args: T
   ): MachineState<ExtractTransitionOrImmediateTypes<T>[number]>;
 
@@ -248,6 +249,6 @@ declare module 'robot3' {
   export type GetMachineTransitions<M extends Machine> =
     ExtractNonAnyValues<GetTransitionsFromStates<GetMachineStateObject<M>>>;
 
-  type ExtractTransitionOrImmediateTypes<T extends ReadonlyArray<Transition<any> | Immediate<any>>> =
+  type ExtractTransitionOrImmediateTypes<T extends ReadonlyArray<unknown>> =
     { [K in keyof T]: T[K] extends Transition<infer V> ? V : T[K] extends Immediate<infer V> ? V : never };
 }

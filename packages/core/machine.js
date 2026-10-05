@@ -57,6 +57,12 @@ function enterImmediate(machine, service, event) {
   return transitionTo(service, machine, event, this.immediates) || machine;
 }
 
+function enterState(machine, service, event, from) {
+  if(from !== machine.current)
+    service.context = this.reducers.call(service, service.context, event);
+  return this.immediates ? enterImmediate.call(this, machine, service, event) : machine;
+}
+
 function transitionsToMap(transitions) {
   let m = new Map();
   for(let t of transitions) {
@@ -70,13 +76,18 @@ let stateType = { enter: identity };
 export function state(...args) {
   let transitions = filter(transitionType, args);
   let immediates = filter(immediateType, args);
+  let reducers = filter(reduceType, args);
   let desc = {
-    final: valueEnumerable(args.length === 0),
+    final: valueEnumerable(!transitions.length && !immediates.length),
     transitions: valueEnumerable(transitionsToMap(transitions))
   };
   if(immediates.length) {
     desc.immediates = valueEnumerable(immediates);
     desc.enter = valueEnumerable(enterImmediate);
+  }
+  if(reducers.length) {
+    desc.reducers = valueEnumerable(stack(reducers.map(t => t.fn), identity, callForward));
+    desc.enter = valueEnumerable(enterState);
   }
   return create(stateType, desc);
 }
@@ -169,7 +180,7 @@ function transitionTo(service, machine, fromEvent, candidates) {
       if (d._onEnter) d._onEnter(machine, to, service.context, context, fromEvent);
       let state = newMachine.state.value;
       service.machine = newMachine;
-      let ret = state.enter(newMachine, service, fromEvent);
+      let ret = state.enter(newMachine, service, fromEvent, machine.current);
       service.onChange(service);
       return ret;
     }
