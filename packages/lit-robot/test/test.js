@@ -15,12 +15,11 @@ QUnit.module('useMachine', hooks => {
       two: state()
     });
 
-    class MyApp extends Robot(LitElement) {
-      static machine = machine;
+    class MyApp extends Robot(LitElement, machine) {
 
       render() {
         service = this.service;
-        let state = this.machine.state;
+        let state = this.service.machine.state;
 
         return html`
           <div>State: ${state.name}</div>
@@ -51,8 +50,7 @@ QUnit.module('useMachine', hooks => {
       el: ev.element
     }));
 
-    class MyApp extends Robot(LitElement) {
-      static machine = machine;
+    class MyApp extends Robot(LitElement, machine) {
 
       render() {
         let context = this.service.context;
