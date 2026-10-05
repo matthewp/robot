@@ -6,6 +6,7 @@ import {
   createMachine,
   transition,
   state,
+  immediate,
   invoke, interpret
 } from 'robot3';
 
@@ -41,6 +42,36 @@ test('types machine with multiple transitions from one state', () => {
   expectTypeOf<ObjectParams['type']>().toEqualTypeOf<'go-one' | 'go-two' | 'go-three'>();
 });
 
+
+test('types states with different events per transition (#262)', () => {
+  const machine = createMachine({
+    idle: state(
+      transition('start', 'running')
+    ),
+    running: state(
+      transition('pause', 'paused'),
+      transition('stop', 'idle')
+    ),
+    paused: state(
+      transition('resume', 'running'),
+      transition('stop', 'idle')
+    )
+  });
+
+  type EventParam = Parameters<Service<typeof machine>['send']>[0];
+  expectTypeOf<Extract<EventParam, string>>().toEqualTypeOf<'start' | 'pause' | 'stop' | 'resume'>();
+});
+
+test('immediate does not widen the event type', () => {
+  const machine = createMachine({
+    idle: state(transition('check', 'checking')),
+    checking: state(immediate('done')),
+    done: state(transition('reset', 'idle'))
+  });
+
+  type EventParam = Parameters<Service<typeof machine>['send']>[0];
+  expectTypeOf<Extract<EventParam, string>>().toEqualTypeOf<'check' | 'reset'>();
+});
 
 test('types nested machine', () => {
   const stopwalk = createMachine({
