@@ -262,7 +262,7 @@ This is how you achieve branching logic in state machines.
 ## Guard Execution Timing
 
 Guards execute before any actions or reducers. This ensures:
-- Guards see the old context (before actions modify it)
+- Guards see the context as it was before the transition (before any reducers update it)
 - Actions only run if guards pass
 - State changes only happen if guards pass
 
