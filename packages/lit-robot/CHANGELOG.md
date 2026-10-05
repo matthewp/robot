@@ -1,5 +1,11 @@
 # lit-robot
 
+## 3.0.1
+
+### Patch Changes
+
+- abae3cb: Fix the `Robot` mixin throwing "function is not iterable" when an element is constructed
+
 ## 3.0.0
 
 ### Major Changes
