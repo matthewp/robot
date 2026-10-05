@@ -13,6 +13,8 @@ The reducer receives the current context and the event, and the value it returns
 
 When a transition has several reducers and actions, they run in the order they are listed, and each receives the context returned by the reducers before it.
 
+Reducers can also be passed directly to [state](/docs/state/#entering-a-state), where they run whenever the machine enters that state.
+
 In this example are implementing a login form that sets the `login` and `password` properties on the context.
 
 ```js

@@ -11,6 +11,8 @@ __action__ takes a function that will be run during a [transition](/docs/transit
 
 The function receives the current [context](/docs/createMachine/#context) and the event. Its return value is ignored and the context passes through unchanged. To update the context, use [reduce](/docs/reduce/) instead.
 
+Actions can also be passed directly to [state](/docs/state/#entering-a-state), where they run whenever the machine enters that state.
+
 This example triggers an event on an element when transitioning to the next state.
 
 ```js

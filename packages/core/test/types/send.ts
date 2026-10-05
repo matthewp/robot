@@ -7,6 +7,8 @@ import {
   transition,
   state,
   immediate,
+  reduce,
+  action,
   invoke, interpret
 } from 'robot3';
 
@@ -71,6 +73,20 @@ test('immediate does not widen the event type', () => {
 
   type EventParam = Parameters<Service<typeof machine>['send']>[0];
   expectTypeOf<Extract<EventParam, string>>().toEqualTypeOf<'check' | 'reset'>();
+});
+
+test('reducers and actions in state() do not add events', () => {
+  const machine = createMachine({
+    idle: state(
+      reduce((ctx: { n: number }) => ({ ...ctx, n: 0 })),
+      action(() => {}),
+      transition('go', 'done')
+    ),
+    done: state(reduce((ctx: { n: number }) => ctx))
+  }, () => ({ n: 0 }));
+
+  type EventParam = Parameters<Service<typeof machine>['send']>[0];
+  expectTypeOf<Extract<EventParam, string>>().toEqualTypeOf<'go'>();
 });
 
 test('types nested machine', () => {

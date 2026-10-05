@@ -183,6 +183,28 @@ const machine = createMachine({
 });
 ```
 
+## Running Code When Entering a State
+
+Reducers and actions can also be passed directly to `state`. They run whenever the machine enters that state, no matter which transition led there:
+
+```js
+const machine = createMachine({
+  idle: state(
+    transition('fetch', 'loading')
+  ),
+  loading: state(
+    reduce(ctx => ({ ...ctx, error: null, startedAt: Date.now() })),
+    action(showSpinner),
+    transition('done', 'loaded'),
+    transition('fail', 'error')
+  ),
+  loaded: state(action(hideSpinner)),
+  error: state(action(hideSpinner))
+});
+```
+
+This keeps the context a state depends on next to the state, instead of spread across every transition that leads into it. Entry reducers and actions run after the transition's own reducers, and don't run on a transition from a state to itself. See [state](/docs/state/#entering-a-state) for the details.
+
 ## Execution Order
 
 When a transition occurs, this is the execution order:
@@ -193,7 +215,8 @@ When a transition occurs, this is the execution order:
 4. **Actions and reducers run**: In the order they are listed
 5. **Context updated**: The context returned by the last reducer takes effect
 6. **State changes**: Machine transitions to target state
-7. **Listeners notified**: Change listeners called with new state and context
+7. **Entry actions and reducers run**: Those passed to the target `state`, unless it's a transition from a state to itself
+8. **Listeners notified**: Change listeners called with new state and context
 
 ```js
 const machine = createMachine({
