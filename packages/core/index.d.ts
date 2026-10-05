@@ -83,10 +83,10 @@ declare module 'robot3' {
    * @param state - The name of the destination state.
    * @param args - Any extra argument will be evaluated to check if they are a Reducer or a Guard.
    */
-  export function immediate<F extends string, C, E>(
+  export function immediate<C, E>(
     state: string,
     ...args: (Reducer<C, E> | Guard<C, E> | Action<C, E>)[]
-  ): Transition<F>
+  ): Immediate<never>
 
   /**
    * A `guard` is a method that determines if a transition can proceed.
