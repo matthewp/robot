@@ -14,7 +14,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matthewp/lit-robot.git"
+    "url": "git+https://github.com/matthewp/robot.git",
+    "directory": "packages/lit-robot"
   },
   "keywords": [
     "Web componennts",

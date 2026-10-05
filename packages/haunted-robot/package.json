@@ -13,7 +13,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matthewp/haunted-robot.git"
+    "url": "git+https://github.com/matthewp/robot.git",
+    "directory": "packages/haunted-robot"
   },
   "keywords": [
     "Haunted",

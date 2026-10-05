@@ -14,7 +14,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matthewp/react-robot.git"
+    "url": "git+https://github.com/matthewp/robot.git",
+    "directory": "packages/react-robot"
   },
   "keywords": [
     "React",

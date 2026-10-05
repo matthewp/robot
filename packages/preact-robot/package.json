@@ -22,7 +22,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matthewp/preact-robot.git"
+    "url": "git+https://github.com/matthewp/robot.git",
+    "directory": "packages/preact-robot"
   },
   "keywords": [
     "Preact",

@@ -41,7 +41,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matthewp/robot.git"
+    "url": "git+https://github.com/matthewp/robot.git",
+    "directory": "packages/core"
   },
   "keywords": [
     "Finite State Machine"
