@@ -17,7 +17,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matthewp/robot-hooks.git"
+    "url": "git+https://github.com/matthewp/robot.git",
+    "directory": "packages/robot-hooks"
   },
   "keywords": [],
   "author": "Matthew Phillips <matthew@matthewphillips.info>",

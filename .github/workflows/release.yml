@@ -10,25 +10,32 @@ jobs:
     name: Changelog PR or Release
     if: ${{ github.ref_name == 'main' && github.repository_owner == 'matthewp' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write # Required for npm trusted publishing (OIDC)
     strategy:
       matrix:
         node-version: [22.x]
     steps:
-      - uses: actions/checkout@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v7
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
-  
+
+      # Trusted publishing requires npm >= 11.5.1
+      - name: Update npm
+        run: npm install -g npm@11
+
       - name: Install NPM Dependencies
         run: npm ci
 
       - name: Build
         run: npm run build --workspaces --if-present
-      
+
+      # No NPM_TOKEN: changesets/action falls back to OIDC trusted publishing
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
@@ -38,4 +45,4 @@ jobs:
           title: '[ci] release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
