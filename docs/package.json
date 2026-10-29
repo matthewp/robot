@@ -13,6 +13,7 @@
     "@astrojs/prism": "^4.1.2",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.4",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.5"
   }
 }
