@@ -54,21 +54,6 @@ html {
 
 body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
 
-/* A faint engineering grid, only behind the top of the page. */
-body::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 640px;
-  pointer-events: none;
-  z-index: -1;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.55), transparent);
-}
-
 a { color: inherit; }
 img, svg { display: block; max-width: 100%; }
 ::selection { background: var(--accent); color: var(--bg); }

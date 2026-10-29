@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import CodeBlock from '../components/CodeBlock.astro';
-import RobotLogo from '../components/RobotLogo.astro';
+import Schematic from '../components/Schematic.astro';
 import ArrowRight from '../icons/ArrowRight.astro';
 import GitHub from '../icons/GitHub.astro';
 
@@ -13,9 +13,12 @@ const machine = createMachine({
   ),
   loading: invoke(loadUsers,
     transition('done', 'loaded'),
-    transition('error', 'idle')
+    transition('error', 'error')
   ),
-  loaded: state()
+  loaded: state(),
+  error: state(
+    transition('retry', 'loading')
+  )
 });`;
 ---
 <Base title="Robot · Finite state machines, built from functions" nav="home">
@@ -36,18 +39,10 @@ const machine = createMachine({
 
     <div class="hero-panel">
       <CodeBlock title="users.js" code={heroExample} />
-      <div class="readout" aria-label="State readout: the machine is in the loading state">
-        <span class="label">State readout</span>
-        <ol class="states">
-          <li><span class="led off"></span> idle</li>
-          <li class="arrow" aria-hidden="true">─ fetch ▸</li>
-          <li class="on"><span class="led amber"></span> loading</li>
-          <li class="arrow" aria-hidden="true">─ done ▸</li>
-          <li><span class="led off"></span> loaded</li>
-        </ol>
-      </div>
     </div>
   </section>
+
+  <div class="wrap fig"><Schematic /></div>
 
   <section class="wrap spec">
     <div class="spec-head">
@@ -221,7 +216,7 @@ const machine = createMachine({
     gap: 4rem;
     align-items: center;
     padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-bottom: 5rem;
   }
   .hero h1 {
     margin: 1.25rem 0 1.25rem;
@@ -234,32 +229,13 @@ const machine = createMachine({
   .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }
   .hero-panel :global(.code) { margin: 0; box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.8); }
 
-  .readout {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1.5rem;
-    margin-top: 0.75rem;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--bg-raised);
-  }
-  .states { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0; padding: 0; list-style: none; font-family: var(--mono); font-size: 0.8rem; color: var(--text-3); }
-  .states li { display: flex; align-items: center; gap: 0.4rem; }
-  .states .on { color: var(--text); }
-  .states .on .led { animation: blink 1.6s steps(2, jump-none) infinite; }
-  .states .arrow { color: var(--text-3); opacity: 0.7; }
-  @keyframes blink { 50% { opacity: 0.35; } }
-  @media (prefers-reduced-motion: reduce) { .states .on .led { animation: none; } }
 
   .spec {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
     gap: 4rem;
-    padding-top: 4rem;
+    padding-top: 5rem;
     padding-bottom: 5rem;
-    border-top: 1px solid var(--line);
   }
   .spec h2 { margin: 0.75rem 0 0; font-size: 1.75rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
   .spec-table { margin: 0; }
