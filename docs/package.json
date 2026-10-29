@@ -10,9 +10,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/prism": "^3.1.0",
-    "@astrojs/tailwind": "^5.1.2",
-    "astro": "^4.16.12",
-    "tailwindcss": "^3.4.14"
+    "@astrojs/prism": "^4.1.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.4.4",
+    "tailwindcss": "^4.3.3"
   }
 }

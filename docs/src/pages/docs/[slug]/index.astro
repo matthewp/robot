@@ -9,13 +9,13 @@ import { Prism } from '@astrojs/prism';
 import '../../../styles/base.css';
 import CommonHead from '../../../components/CommonHead.astro';
 
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs');
   return docs.map(item => {
     return {
-      params: { slug: item.slug },
+      params: { slug: item.id },
       props: { item }
     }
   });
@@ -23,7 +23,7 @@ export async function getStaticPaths() {
 
 const isSearchFocused = false;
 
-const { Content } = await Astro.props.item.render();
+const { Content } = await render(Astro.props.item);
 ---
 <html>
 <head>
@@ -49,7 +49,7 @@ const { Content } = await Astro.props.item.render();
   </style>
 </head>
 <body>
-<div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
+<div class="min-h-screen bg-linear-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
   <div class="fixed inset-0 pointer-events-none">
     <div class="absolute inset-0 opacity-5">
       {[...Array(20)].map((_, i) => (
@@ -65,7 +65,7 @@ const { Content } = await Astro.props.item.render();
     </div>
   </div>
 
-  <header class="border-b border-cyan-500/20 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
+  <header class="border-b border-cyan-500/20 bg-gray-900/50 backdrop-blur-xs sticky top-0 z-50">
     <div class="container mx-auto px-4 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4 lg:gap-8">
         <button id="mobile-sidebar-toggle" class="lg:hidden text-cyan-400 p-2" aria-label="Toggle sidebar">
@@ -77,7 +77,7 @@ const { Content } = await Astro.props.item.render();
           <input
             type="text"
             placeholder="Search documentation..."
-            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-none"
+            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-hidden"
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
           />
@@ -103,7 +103,7 @@ const { Content } = await Astro.props.item.render();
           <input
             type="text"
             placeholder="Search..."
-            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-none"
+            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-hidden"
           />
         </div>
       </div>
@@ -116,7 +116,7 @@ const { Content } = await Astro.props.item.render();
   </script>
 
   <div class="container mx-auto px-4 flex gap-6">
-    <div id="docs-sidebar" class="fixed lg:static lg:translate-x-0 -translate-x-full top-16 left-0 h-[calc(100vh-4rem)] lg:h-auto w-64 bg-gray-900/95 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none z-50 lg:z-auto transition-transform duration-300 overflow-y-auto">
+    <div id="docs-sidebar" class="fixed lg:static lg:translate-x-0 -translate-x-full top-16 left-0 h-[calc(100vh-4rem)] lg:h-auto w-64 bg-gray-900/95 lg:bg-transparent backdrop-blur-xs lg:backdrop-blur-none z-50 lg:z-auto transition-transform duration-300 overflow-y-auto">
       <Sidebar />
     </div>
     
@@ -131,7 +131,7 @@ const { Content } = await Astro.props.item.render();
           <span>{ Astro.props.item.data.title }</span>
         </div>
         
-        <h1 class="font-mono text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500 mb-6">
+        <h1 class="font-mono text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-pink-500 mb-6">
           { Astro.props.item.data.title }
         </h1>
 

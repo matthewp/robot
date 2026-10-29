@@ -1,9 +1,14 @@
 import { defineConfig } from 'astro/config';
 
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  integrations: [tailwind()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  // Astro 7 defaults to 'jsx', which strips whitespace between inline
+  // elements. Keep the Astro 4 behaviour so text renders the same.
+  compressHTML: true,
   devToolbar: {
     enabled: false,
   },
