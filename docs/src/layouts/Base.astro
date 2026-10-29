@@ -1,6 +1,7 @@
 ---
 import RobotLogo from '../components/RobotLogo.astro';
 import '../styles/site.css';
+import { version } from '../../../packages/core/package.json';
 
 interface Props {
   title: string;
@@ -33,7 +34,7 @@ const {
       <a class="brand" href="/" aria-label="Robot home">
         <RobotLogo />
         <span class="brand-name">ROBOT</span>
-        <span class="brand-version">v3</span>
+        <span class="brand-version">v{version}</span>
       </a>
       <nav class="site-nav" aria-label="Main">
         <a href="/docs/" aria-current={nav === 'docs' ? 'page' : undefined}>Docs</a>
