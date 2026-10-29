@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@astrojs/prism": "^4.1.2",
-    "@tailwindcss/vite": "^4.3.3",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
     "astro": "^7.4.4",
-    "tailwindcss": "^4.3.3",
     "vite": "^8.3.5"
   }
 }

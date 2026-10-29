@@ -1,0 +1,21 @@
+---
+import { sections, href } from '../lib/nav';
+
+const { slug } = Astro.props;
+---
+{sections.map((section, i) => (
+  <div class="nav-group">
+    <span class="label"><b>{String(i + 1).padStart(2, '0')}</b>{section.label}</span>
+    <ul>
+      {section.items.map((item) => (
+        <li>
+          <a
+            href={href(item.slug)}
+            class:list={{ api: item.api }}
+            aria-current={item.slug === slug ? 'page' : undefined}
+          >{item.title}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+))}

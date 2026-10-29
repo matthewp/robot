@@ -1,0 +1,58 @@
+---
+import RobotLogo from '../components/RobotLogo.astro';
+import '../styles/site.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  nav?: 'home' | 'docs' | 'api';
+}
+
+const {
+  title,
+  description = 'Robot is a 1.3 kB library for building finite state machines out of plain functions.',
+  nav,
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="theme-color" content="#0b0d0e">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Robot docs for language models">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="Robot home">
+        <RobotLogo />
+        <span class="brand-name">ROBOT</span>
+        <span class="brand-version">v3</span>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="/docs/" aria-current={nav === 'docs' ? 'page' : undefined}>Docs</a>
+        <a href="/docs/createmachine/" aria-current={nav === 'api' ? 'page' : undefined}>API</a>
+        <a href="https://github.com/matthewp/robot">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <slot />
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span class="label"><span class="led"></span>&nbsp; Robot · MIT licensed</span>
+      <a class="label" href="https://github.com/matthewp/robot">Source</a>
+      <a class="label" href="https://www.npmjs.com/package/robot3">npm</a>
+      <a class="label" href="/llms.txt">llms.txt</a>
+      <span class="label eot">End of transmission ■</span>
+    </div>
+  </footer>
+</body>
+</html>

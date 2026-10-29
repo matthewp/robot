@@ -1,21 +1,19 @@
 ---
-import Code from '../icons/Code.astro';
 import { Prism } from '@astrojs/prism';
 
-// Vertical margin; pages can override it.
-const { class: margin = 'my-4 lg:my-6' } = Astro.props;
----
-<div class:list={['bg-gray-900 rounded-lg p-4 lg:p-6', margin]}>
-  {Astro.props.title && (
-    <div class
-  ="flex items-center gap-2 mb-4 font-mono text-cyan-400 text-sm lg:text-base">
-      <Code size={16} />
-      <span>{Astro.props.title}</span>
-    </div>
-  )}
-  <div class
-="overflow-x-auto p-3 lg:p-4 bg-black/50 rounded-lg text-gray-300 font-mono text-xs sm:text-sm lg:text-base">
-    <Prism lang="js" code={Astro.props.code} />
-  </div>
-</div>
+interface Props {
+  code: string;
+  title?: string;
+  lang?: string;
+}
 
+const { code, title, lang = 'js' } = Astro.props;
+---
+<div class="code">
+  <div class="code-head">
+    <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    {title && <span class="label">{title}</span>}
+    <span class="label lang">{lang.toUpperCase()}</span>
+  </div>
+  <Prism lang={lang} code={code} />
+</div>

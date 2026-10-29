@@ -1,0 +1,14 @@
+/* Quiet syntax colours: one hue per role, nothing neon. */
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: #67716e; font-style: italic; }
+.token.punctuation, .token.operator { color: #8d9794; }
+.token.keyword, .token.module, .token.control-flow { color: #c8a2f0; }
+.token.string, .token.template-string, .token.char, .token.attr-value { color: #a5e3b8; }
+.token.number, .token.boolean, .token.constant { color: #f2b94b; }
+.token.function, .token.method { color: #8fc8f5; }
+.token.class-name, .token.builtin { color: #f0d08a; }
+.token.property, .token.parameter, .token.attr-name { color: #d6dcda; }
+.token.tag { color: #8fc8f5; }
+.token.regex, .token.important { color: #f29a7a; }
+.token.interpolation-punctuation { color: #c8a2f0; }
+.token.italic { font-style: italic; }
+.token.bold { font-weight: 600; }
