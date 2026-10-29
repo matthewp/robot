@@ -22,9 +22,9 @@ import '../styles/base.css';
   <CommonHead />
 </head>
 <body>
-<div class="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
+<div class="min-h-screen bg-linear-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
   <!-- Mobile Navigation -->
-  <nav class="lg:hidden fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm z-50 border-b border-cyan-500/30">
+  <nav class="lg:hidden fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-xs z-50 border-b border-cyan-500/30">
     <div class="flex items-center justify-between px-4 py-3">
       <a href="/" class="flex items-center gap-2">
         <div class="w-8 h-8">
@@ -72,7 +72,7 @@ import '../styles/base.css';
         class="relative w-32 h-32 cursor-pointer group"
       >
         <div class="
-          absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 
+          absolute inset-0 bg-linear-to-r from-cyan-400 to-blue-500 
           rounded-full flex items-center justify-center transform transition-all duration-300
             group-hover:scale-110 group-hover:rotate-180
         ">
@@ -83,7 +83,7 @@ import '../styles/base.css';
         <div class="absolute -inset-4 bg-cyan-400 opacity-20 rounded-full animate-pulse" />
       </div>
       
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-mono bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-pink-500">
         ROBOT
       </h1>
       
@@ -93,7 +93,7 @@ import '../styles/base.css';
         <Zap class="animate-bounce" />
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-8 w-full sm:w-auto">
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full sm:w-auto">
         <a href="/docs/" class="group bg-cyan-500 hover:bg-cyan-400 text-black font-mono px-6 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center justify-center gap-2 transform hover:scale-105 transition-all">
           BOOT UP
           <ArrowRight class="group-hover:translate-x-1 transition-transform" />
@@ -138,9 +138,9 @@ import '../styles/base.css';
     >
       <div class="space-y-6 text-gray-300 leading-relaxed">
         <p>
-          With Finite State Machines the term <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">state</code> might
+          With Finite State Machines the term <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded-sm">state</code> might
           not mean what you think. In the frontend we tend to think of state to mean <em>all</em> of
-          the variables that control the UI. When we say <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">state</code> in
+          the variables that control the UI. When we say <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded-sm">state</code> in
           Finite State Machines, we mean a higher-level sort of state.
         </p>
 
@@ -171,12 +171,13 @@ import '../styles/base.css';
         </p>
 
         <CodeBlock
+          class="my-6"
           title="SIMPLE_STATE.js"
           code="let editMode = false;\nlet title = '';"
         />
 
         <p>
-          When the <strong class="text-cyan-400">Edit</strong> button is clicked you would toggle the <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">editMode</code> variable to <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">true</code>. When <strong class="text-cyan-400">Save</strong> or <strong class="text-cyan-400">Cancel</strong> are clicked, toggle it back to <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded">false</code>.
+          When the <strong class="text-cyan-400">Edit</strong> button is clicked you would toggle the <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded-sm">editMode</code> variable to <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded-sm">true</code>. When <strong class="text-cyan-400">Save</strong> or <strong class="text-cyan-400">Cancel</strong> are clicked, toggle it back to <code class="text-cyan-400 bg-gray-800 px-2 py-1 rounded-sm">false</code>.
         </p>
 
         <p>
@@ -205,6 +206,7 @@ import '../styles/base.css';
         </p>
 
         <CodeBlock
+          class="my-6"
           title="BOOLEAN_FLAGS.js"
           code="let editMode = false;\nlet saving = false;\nlet validating = false;\nlet saveHadError = false;"
         />
@@ -218,6 +220,7 @@ import '../styles/base.css';
         </p>
 
         <CodeBlock
+          class="my-6"
           title="IMPERATIVE_STATE.js"
           code="function resetState() {\n  setValidating(false);\n  setSaving(false);\n  setBlurred(false);\n  setEditing(false);\n  if(!focused) setTouched(false);\n  setDirty(true);\n}"
         />
@@ -231,6 +234,7 @@ import '../styles/base.css';
         </p>
 
         <CodeBlock
+          class="my-6"
           title="TITLE_MACHINE.robot"
           code="import { createMachine, guard, immediate, invoke, state, transition, reduce } from 'robot3';\n\nconst machine = createMachine({\n  preview: state(\n    transition('edit', 'editMode',\n      // Save the current title as oldTitle so we can reset later.\n      reduce(ctx => ({ ...ctx, oldTitle: ctx.title }))\n    )\n  ),\n  editMode: state(\n    transition('input', 'editMode',\n      reduce((ctx, ev) => ({ ...ctx, title: ev.target.value }))\n    ),\n    transition('cancel', 'cancel'),\n    transition('save', 'validate')\n  ),\n  cancel: state(\n    immediate('preview',\n      // Reset the title back to oldTitle\n      reduce(ctx => ({ ...ctx, title: ctx.oldTitle }))\n    )\n  ),\n  validate: state(\n    // Check if the title is valid. If so go\n    // to the save state, otherwise go back to editMode\n    immediate('save', guard(titleIsValid)),\n    immediate('editMode')\n  ),\n  save: invoke(saveTitle,\n    transition('done', 'preview'),\n    transition('error', 'error')\n  ),\n  error: state(\n    // Should we provide a retry or...?\n  )\n});"
         />
