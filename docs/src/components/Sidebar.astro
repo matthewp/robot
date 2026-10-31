@@ -1,0 +1,19 @@
+---
+import NavGroups from './NavGroups.astro';
+import { sections } from '../lib/nav';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const current = sections.flatMap((s) => s.items).find((i) => i.slug === slug);
+---
+<aside class="sidebar">
+  <!-- Always shown on wide screens, folded into a menu on narrow ones. -->
+  <nav class="nav-wide" aria-label="Documentation"><NavGroups slug={slug} /></nav>
+  <details class="nav-narrow">
+    <summary class="label">Menu{current && <span class="accent">&nbsp;/ {current.title}</span>}</summary>
+    <nav class="nav-groups" aria-label="Documentation"><NavGroups slug={slug} /></nav>
+  </details>
+</aside>

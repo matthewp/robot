@@ -1,0 +1,84 @@
+---
+import Base from './Base.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { locate, href } from '../lib/nav';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  title: string;
+  slug: string;
+  headings?: Heading[];
+  /** Show the title as an h1 (pages whose markdown has its own h1 don't). */
+  showTitle?: boolean;
+  /** Plain-text source of this page, for machines. */
+  source?: string;
+  words?: number;
+}
+
+const { title, slug, headings = [], showTitle = true, source, words } = Astro.props;
+const { current, prev, next } = locate(slug);
+const toc = headings.filter((h) => h.depth === 2);
+const minutes = words ? Math.max(1, Math.round(words / 220)) : undefined;
+---
+<Base title={`${title} · Robot`} nav={current?.section.id === 'api' ? 'api' : 'docs'}>
+  <div class="wrap docs">
+    <Sidebar slug={slug} />
+
+    <main class="docs-main">
+      <div class="doc-meta">
+        {current && (
+          <span class="label">
+            Section <b>{String(current.sectionIndex).padStart(2, '0')} / {current.section.label}</b>
+          </span>
+        )}
+        <span class="label">Doc_id <b>{slug || 'index'}</b></span>
+        {minutes && <span class="label">Read_time <b>{minutes} min</b></span>}
+      </div>
+
+      <article class="prose">
+        {showTitle && <h1>{title}</h1>}
+        <slot />
+      </article>
+
+      <nav class="pager" aria-label="Pagination">
+        {prev && (
+          <a href={href(prev.slug)}>
+            <span class="label">◂ Previous</span>
+            <span class="title">{prev.title}</span>
+          </a>
+        )}
+        {next && (
+          <a class="next" href={href(next.slug)}>
+            <span class="label">Next ▸</span>
+            <span class="title">{next.title}</span>
+          </a>
+        )}
+      </nav>
+    </main>
+
+    <aside class="toc" aria-label="On this page">
+      {toc.length > 0 && (
+        <>
+          <span class="label">On this page</span>
+          <ul>
+            {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+          </ul>
+        </>
+      )}
+      {source && (
+        <div class="machine">
+          <span class="label">For machines</span>
+          <ul>
+            <li><a href={source}>▸ View as markdown</a></li>
+            <li><a href="/llms.txt">▸ llms.txt</a></li>
+          </ul>
+        </div>
+      )}
+    </aside>
+  </div>
+</Base>

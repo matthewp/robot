@@ -1,160 +1,26 @@
 ---
-import Search from '../../../icons/Search.astro';
-import BookOpen from '../../../icons/BookOpen.astro';
-import ChevronRight from '../../../icons/ChevronRight.astro';
-import Footer from '../../../components/Footer.astro';
-import Sidebar from '../../../components/DocsSidebar.astro';
-import Menu from '../../../icons/Menu.astro';
-import { Prism } from '@astrojs/prism';
-import '../../../styles/base.css';
-import CommonHead from '../../../components/CommonHead.astro';
-
+import Docs from '../../../layouts/Docs.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs');
-  return docs.map(item => {
-    return {
-      params: { slug: item.id },
-      props: { item }
-    }
-  });
+  return docs.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
 }
 
-const isSearchFocused = false;
-
-const { Content } = await render(Astro.props.item);
+const { item } = Astro.props;
+const { Content, headings } = await render(item);
+const words = item.body?.split(/\s+/).length;
 ---
-<html>
-<head>
-  <title>{ Astro.props.item.data.title }</title>
-  <CommonHead />
-  <style is:global>
-    .prose p {
-      margin-bottom: 1.5rem;
-    }
-
-    .prose h2 {
-      font-size: 1.875rem; /* 30px */
-      line-height: 2.25rem;
-      font-weight: 700;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      margin-bottom: 1.5rem;
-
-      --to-stop: ;
-      --from-stop: ;
-      background-clip: text;
-      background-image: linear-gradient(to right, #ec4899 var(--to-stop), #22d3ee var(--from-stop));
-    }
-  </style>
-</head>
-<body>
-<div class="min-h-screen bg-linear-to-b from-purple-900 via-indigo-900 to-blue-900 text-gray-100">
-  <div class="fixed inset-0 pointer-events-none">
-    <div class="absolute inset-0 opacity-5">
-      {[...Array(20)].map((_, i) => (
-        <div
-          key={i}
-          class="absolute left-0 right-0 h-px bg-cyan-400"
-          style={{
-            top: `${i * 5}%`,
-            animation: `scanline 8s ${i * 0.1}s infinite linear`
-          }}
-        />
-      ))}
-    </div>
-  </div>
-
-  <header class="border-b border-cyan-500/20 bg-gray-900/50 backdrop-blur-xs sticky top-0 z-50">
-    <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-4 lg:gap-8">
-        <button id="mobile-sidebar-toggle" class="lg:hidden text-cyan-400 p-2" aria-label="Toggle sidebar">
-          <Menu size={24} />
-        </button>
-        <a href="/" class="font-mono text-lg lg:text-xl font-bold text-cyan-400">ROBOT_DOCS</a>
-        <div class={`hidden lg:block relative w-64 transition-all duration-300 ${isSearchFocused ? 'w-96' : ''}`}>
-          <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
-          <input
-            type="text"
-            placeholder="Search documentation..."
-            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-hidden"
-            onFocus={() => setIsSearchFocused(true)}
-            onBlur={() => setIsSearchFocused(false)}
-          />
-        </div>
-      </div>
-      <nav class="hidden lg:flex gap-6 text-sm font-mono">
-        <a href="/docs/" class="text-cyan-400 hover:text-cyan-300">DOCS</a>
-        <a href="/docs/createmachine/" class="text-gray-400 hover:text-gray-300">API</a>
-        <a href="https://github.com/matthewp/robot" class="text-gray-400 hover:text-gray-300">GITHUB</a>
-      </nav>
-      <button id="mobile-menu-toggle" class="lg:hidden text-cyan-400 p-2" aria-label="Toggle menu">
-        <Menu size={24} />
-      </button>
-    </div>
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden lg:hidden border-t border-cyan-500/30">
-      <div class="px-4 py-4 space-y-3">
-        <a href="/docs/" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">DOCS</a>
-        <a href="/docs/createmachine/" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">API</a>
-        <a href="https://github.com/matthewp/robot" class="block font-mono text-cyan-300 hover:text-cyan-400 transition-colors">GITHUB</a>
-        <div class="relative">
-          <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
-          <input
-            type="text"
-            placeholder="Search..."
-            class="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm border-2 border-transparent focus:border-cyan-500 outline-hidden"
-          />
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <script>
-    import { initMobileNav } from '../../../scripts/mobile-nav.js';
-    initMobileNav();
-  </script>
-
-  <div class="container mx-auto px-4 flex gap-6">
-    <div id="docs-sidebar" class="fixed lg:static lg:translate-x-0 -translate-x-full top-16 left-0 h-[calc(100vh-4rem)] lg:h-auto w-64 bg-gray-900/95 lg:bg-transparent backdrop-blur-xs lg:backdrop-blur-none z-50 lg:z-auto transition-transform duration-300 overflow-y-auto">
-      <Sidebar />
-    </div>
-    
-    <main class="flex-1 py-8 min-w-0">
-      <div class="prose prose-invert max-w-none">
-        <div class="flex items-center gap-2 text-sm font-mono text-gray-400 mb-4">
-          <BookOpen size={16} />
-          <span>DOCS</span>
-          <ChevronRight size={16} />
-          <span>CORE_CONCEPTS</span>
-          <ChevronRight size={16} />
-          <span>{ Astro.props.item.data.title }</span>
-        </div>
-        
-        <h1 class="font-mono text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-pink-500 mb-6">
-          { Astro.props.item.data.title }
-        </h1>
-
-        <Content />
-      </div>
-    </main>
-  </div>
-
-  <style is:inline>
-  @keyframes scanline {
-    0% { transform: translateY(0) translateX(-100%); }
-    100% { transform: translateY(0) translateX(100%); }
-  }
-  </style>
-
-  <Footer />
-</div>
-</body>
-</html>
-
-
-
-
-
-</body>
-</html>
+<Docs
+  title={item.data.title}
+  slug={item.id}
+  headings={headings}
+  showTitle={!headings.some((h) => h.depth === 1)}
+  source={`/docs/${item.id}.md`}
+  words={words}
+>
+  <Content />
+</Docs>

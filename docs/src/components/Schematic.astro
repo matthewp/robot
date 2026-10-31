@@ -1,0 +1,79 @@
+---
+// Figure 1 on the home page: the hero's users.js machine, drawn as a
+// state diagram. Final states get a double border, as in the textbooks.
+const W = 160;
+const H = 46;
+const nodes = [
+  { id: 'idle', x: 40, y: 40 },
+  { id: 'loading', x: 440, y: 40, current: true },
+  { id: 'loaded', x: 840, y: 40, final: true },
+  { id: 'error', x: 440, y: 160 },
+];
+---
+<figure class="schematic">
+  <figcaption>
+    <span class="label"><span class="accent">Fig. 1</span> &nbsp;users.js, as a machine</span>
+    <span class="label">4 states · 4 transitions · current: <b>loading</b></span>
+  </figcaption>
+  <div class="schematic-scroll">
+    <svg viewBox="0 0 1040 230" role="img"
+      aria-label="State diagram: idle goes to loading on fetch; loading goes to loaded on done, or to error on error; error goes back to loading on retry. The machine is currently in loading.">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" style="fill: var(--text-3)" />
+        </marker>
+      </defs>
+
+      <g class="edges">
+        <circle cx="10" cy="63" r="4" class="start" />
+        <line x1="14" y1="63" x2="38" y2="63" marker-end="url(#arrow)" />
+
+        <line x1="200" y1="63" x2="438" y2="63" marker-end="url(#arrow)" />
+        <text x="319" y="53">fetch</text>
+
+        <line x1="600" y1="63" x2="838" y2="63" marker-end="url(#arrow)" />
+        <text x="719" y="53">done</text>
+
+        <line x1="500" y1="86" x2="500" y2="158" marker-end="url(#arrow)" />
+        <text x="490" y="127" class="end">error</text>
+
+        <line x1="540" y1="160" x2="540" y2="88" marker-end="url(#arrow)" />
+        <text x="550" y="127" class="start-text">retry</text>
+      </g>
+
+      {nodes.map((n) => (
+        <g class:list={['node', { current: n.current }]}>
+          <rect x={n.x} y={n.y} width={W} height={H} rx="5" />
+          {n.final && <rect class="inner" x={n.x + 4} y={n.y + 4} width={W - 8} height={H - 8} rx="3" />}
+          <circle class="dot" cx={n.x + 22} cy={n.y + H / 2} r="4" />
+          <text x={n.x + 36} y={n.y + H / 2 + 5}>{n.id}</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .schematic { margin: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; padding: 0.9rem 0; border-bottom: 1px dashed var(--line); }
+  figcaption b { color: var(--amber); font-weight: 500; }
+  .schematic-scroll { overflow-x: auto; padding: 2rem 0 1.5rem; }
+  svg { width: 100%; min-width: 720px; height: auto; font-family: var(--mono); }
+
+  .edges line { stroke: var(--text-3); stroke-width: 1.25; }
+  .edges text { fill: var(--text-3); font-size: 13px; text-anchor: middle; letter-spacing: 0.04em; }
+  .edges .start { fill: var(--text-3); }
+  .edges text.end { text-anchor: end; }
+  .edges text.start-text { text-anchor: start; }
+
+  .node rect { fill: var(--bg-raised); stroke: var(--line-strong); stroke-width: 1.25; }
+  .node .inner { fill: none; }
+  .node text { fill: var(--text-2); font-size: 15px; }
+  .node .dot { fill: var(--line-strong); }
+
+  .node.current rect { stroke: rgb(242 185 75 / 0.55); }
+  .node.current text { fill: var(--text); }
+  .node.current .dot { fill: var(--amber); animation: blink 1.6s steps(2, jump-none) infinite; }
+  @keyframes blink { 50% { opacity: 0.35; } }
+  @media (prefers-reduced-motion: reduce) { .node.current .dot { animation: none; } }
+</style>
